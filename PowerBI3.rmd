@@ -20,6 +20,8 @@ summary(cars)
 names(cars)
 names(cars)
 #comentário avulso
+
+# 2
 ```
 
 ## Including Plots
