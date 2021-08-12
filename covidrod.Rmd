@@ -1,0 +1,125 @@
+---
+title: "Covid19OD e Git"
+author: "fildalboni"
+date: "12/08/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+{ 
+  # Check if the packages that we need are installed
+  want = c("tidyverse", "COVID19", "readr", "data.table", "dplyr", "stringr", "magrittr", "pipeR",              "plotly", "Microsoft365R", "httr")
+  have = want %in% rownames(installed.packages())
+  # Install the packages that we miss
+  if ( any(!have) ) { install.packages( want[!have] ) }
+  # Load the packages
+  junk <- lapply(want, library, character.only = T)
+  # Remove the objects we created
+  rm(have, want, junk)
+} # Import packages
+
+```
+
+``` {r, onedrive, include = FALSE}
+
+
+
+
+
+```
+
+
+```{r import, include=FALSE}
+
+{
+  # set directory
+  setwd("C:/UseR/Bases/")
+  
+  # Import world database
+  dcovid19 = covid19(level = 1) 
+
+  write.csv(dcovid19,"C:/UseR/Bases/dcovid19.csv", row.names = FALSE)
+  }
+  
+```
+
+
+```{r, export 1, include = FALSE}
+
+setwd("C:/UseR/Bases")
+
+#Set and pair Onedrive to R
+od<- get_personal_onedrive()
+
+#Upload archive
+od$upload_file("dcovid19.csv", dest = "Documentos/dcovid19bruto.csv")
+
+
+```
+
+
+```{r treatment, include = FALSE}
+{  
+  # Change column names
+  names(dcovid19)[names(dcovid19) == "id"] = "country"
+  
+  # Organize database
+  dcovid19 = dcovid19 %>% 
+    group_by(date, country, administrative_area_level_1) %>%
+    dplyr::summarise(deaths = sum(deaths),
+                     confirmed = sum(confirmed),
+                     pop = sum(population)) %>%
+    arrange(country, date) %>%
+    filter(deaths > 0) %>%
+    group_by(country) %>% dplyr::mutate(id = sequence(n()), 
+                                        date = as.Date(date, format = "%Y-%m-%d"),
+                                        base = "Normal") %>%
+    arrange(country, date)  
+  
+  
+  
+  # Include a time lag variables
+  setDT(dcovid19)[, deaths_1 := shift(deaths, fill=0), by = country]
+  setDT(dcovid19)[, confirmed_1 := shift(confirmed, fill=0), by = country]
+  
+  # Organize database  
+  dcovid19 = dcovid19 %>% 
+    mutate(deaths_new = deaths - deaths_1,
+           confirmed_new = confirmed - confirmed_1) %>%
+    mutate(drop = case_when(date == max(date) & confirmed_new <= 0 ~ TRUE, TRUE ~ FALSE)) %>% 
+    filter(drop == FALSE) %>%
+    mutate(country_name = administrative_area_level_1) %>%
+    select(date, country, country_name, deaths, deaths_new, confirmed, confirmed_new, pop, id, base) %>%
+    tidyr::gather(key = "variable", value = "occurrences", deaths, deaths_new, confirmed, confirmed_new) %>%
+    mutate(variable = case_when(variable == "deaths" ~ "Mortes",
+                                variable == "deaths_new" ~"Novas mortes",
+                                variable == "confirmed" ~ "Casos confirmados",
+                                variable == "confirmed_new" ~ "Novas confirmações",
+                                TRUE ~ "")) %>%
+    mutate(occurrences = as.numeric(occurrences)) %>%
+    mutate(occurrences = case_when(occurrences < 0 ~ 0,
+                                   TRUE ~ occurrences)) %>%
+    filter(country %in% c("AFG", "AGO", "ALB", "AND", "ARE"))
+  
+} # Import and organize world database 
+
+# export database
+write.csv(dcovid19,"C:/UseR/Bases/dcovid19b.csv", row.names = FALSE)
+
+```
+
+
+```{r, export 2, include = FALSE}
+
+setwd("C:/UseR/Bases")
+
+#Set and pair Onedrive to R
+od<- get_personal_onedrive()
+
+#Upload archive
+od$upload_file("dcovid19b.csv", dest = "Documentos/dcovid19tratado.csv")
+
+
+```
