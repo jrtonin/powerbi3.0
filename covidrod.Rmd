@@ -23,12 +23,12 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ``` {r, onedrive, include = FALSE}
+##Aqui pode inserir um download do One drive para puxar a base mais atualizada.
+## Email: prprodutivor@outlook.com
 
+## Senha: rotinas21
 
-
-
-
-```
+``` 
 
 
 ```{r import, include=FALSE}
