@@ -20,7 +20,7 @@ summary(cars)
 
 ### 
 
-cxcxcx
+cxcxc
 
 
 ```
