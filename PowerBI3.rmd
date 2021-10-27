@@ -10,32 +10,139 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```
 
-## R Markdown
+```{r HEALTH, include=FALSE}
 
-# test
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+library(readxl)
+library(dplyr)
+library(doBy)
+library(gdata)
+library(ggplot2)
+library(xlsx)
+library(data.table)
+library(stringr)
+library(tidyr)
+library(zoo)
+library(reshape2)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+########### REFERENCE ####################
 
-```{r cars}
-summary(cars)
-print(cars)
+#fcity will be key to join all data frames into one with the usefull city code
+
+fcity <- fcity <- read.csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/fcity2.csv", encoding="UTF-8", sep=";")
+
+fcity <- rename(fcity, code = X.U.FEFF.code)
+
+#fcity2 is needes as a base structure to city names in different data frames
+fcity2 <- fcity %>%
+  mutate_if(is.character, tolower)
+
+##Now we need to introduce reference variables that will be used to calculate taxes.
+#Population
+
+#Import
+pop_pr <- read_excel("~/Profissional/SEPL/PowerBi 3/Banco de Dados/População/pop_pr.xlsx")
+
+#Rename
+pop_pr <- rename(pop_pr, city = Localidade, variable = Variável )
+
+pop_pr2 <- melt(pop_pr)
+
+pop_pr2 <- pop_pr2[, -2]
+
+pop_pr2 <- rename(pop_pr2, year = variable, result = value)
+
+###################################################
+
+dProf_obi <- read.csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Saúde/Profissionais e obitos.csv", sep=";")
+
+write.csv(dProf_obi, "db/raw/health/obitosprofissionaissaude.csv")
+
+#Rename columns
+dProf_obi <- rename(dProf_obi, "1996" = "X1996", "1997" = "X1997", "1998" = "X1998", "1999" = "X1999",
+                "2000" = "X2000", "2001" = "X2001", "2002" = "X2002", "2003" = "X2003",
+                "2004" = "X2004", "2005" = "X2005", "2006" = "X2006", "2007" = "X2007",
+                "2008" = "X2008", "2009" = "X2009", "2010" = "X2010", "2011" = "X2011",
+                "2012" = "X2012", "2013" = "X2013", "2014" = "X2014", "2015" = "X2015",
+                "2016" = "X2016", "2017" = "X2017", "2018" = "X2018", "2019" = "X2019",
+                "2020" = "X2020")
+
+
+dProf_obi2 <- melt(dProf_obi)
+
+
+
+dProf_obi2 <- rename(dProf_obi2, city = Localidade, year = variable, variable = Variável, result = value)
+
+dProf_obi2 <- dProf_obi2[!is.na(dProf_obi2$result),]
+
+dProf_obi3 <- left_join(dProf_obi2, pop_pr2, by = c("city", "year"))
+
+dProf_obi3 <- rename(dProf_obi3, result = result.x, reference = result.y)
+
+dProf_obi2 <- dProf_obi2[!is.na(dProf_obi2$reference),]
+
+remove(dProf_obi, dProf_obi2)
+
+
+
+
+
+Hospitais <- read.csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Saúde/Hospitais.csv", sep=";")
+
+write.csv(Hospitais, "db/raw/health/hospitais.csv")
+
+Hospitais <- Hospitais[, -c(3:6)]
+#Rename columns
+Hospitais <- rename(Hospitais, "1998" = "X1998", "1999" = "X1999",
+                    "2000" = "X2000", "2001" = "X2001", "2002" = "X2002", "2003" = "X2003",
+                    "2004" = "X2004", "2005" = "X2005", "2006" = "X2006", "2007" = "X2007",
+                    "2008" = "X2008", "2009" = "X2009", "2010" = "X2010", "2011" = "X2011",
+                    "2012" = "X2012", "2013" = "X2013", "2014" = "X2014", "2015" = "X2015",
+                    "2016" = "X2016", "2017" = "X2017", "2018" = "X2018", "2019" = "X2019",
+                    "2020" = "X2020")
+
+
+Hospitais <- melt(Hospitais, id.vars = c("Localidade", "Variável") )
+
+Hospitais <- Hospitais[!(is.na(Hospitais$value) | Hospitais$value==""), ]
+
+Hospitais <- rename(Hospitais, city = Localidade, year = variable, variable = Variável, result = value)
+
+Hospitais <- Hospitais[!is.na(Hospitais$result),]
+
+Hospitais <- left_join(Hospitais, pop_pr2, by = c("city", "year"))
+
+Hospitais <- rename(Hospitais, result = result.x, reference = result.y)
+
+Hospitais <- Hospitais[!is.na(Hospitais$reference),]
+
+Hospitais$result <- gsub(",", "\\.", Hospitais$result)
+
+dhealth <- rbind(dProf_obi3, Hospitais)
+
+dhealth <- left_join(fcity, dhealth, by = "city")
+
+dhealth <- dhealth[, -c(2:3)]
+
+dhealth$variable <- gsub("Óbitos [(]CID10[)] [-] Total [(]Mortalidade Geral[)] ", "Mortalidade Geral", dhealth$variable, ignore.case =  TRUE)
+dhealth$variable <- gsub("Óbitos de Menores de 1 ano [(]CID10[)] [-] Total [(]Mortalidade Infantil[)] ", "Mortalidade Infantil", dhealth$variable, ignore.case =  TRUE)
+dhealth$variable <- gsub("Óbitos Maternos [-] Total [(]Mortalidade Materna[)] ", "Mortalidade Materna", dhealth$variable, ignore.case =  TRUE)
+dhealth$variable <- gsub("Crianças Menores de 2 anos Desnutridas ", "Desnutrição Infantil", dhealth$variable, ignore.case =  TRUE)
+dhealth$variable <- gsub("Profissionais de Saúde [-] Total ", "Total de Profissionais da Saúde", dhealth$variable, ignore.case =  TRUE)
+dhealth$variable <- gsub("Profissionais de Saúde [-] Médicos ", "Quantidade de Médicos", dhealth$variable, ignore.case =  TRUE)
+dhealth$variable <- gsub("Profissionais de Saúde [-] Enfermeiros ", "Quantidade de Enfermeiros", dhealth$variable, ignore.case =  TRUE)
+dhealth$variable <- gsub("Hospitalizações pelo SUS [-] Geral por Local de Residência [-] Número de Internações ", "Número de Internações", dhealth$variable, ignore.case =  TRUE)
+dhealth$variable <- gsub("Hospitalizações pelo SUS [-] Geral por Local de Residência [-] Gastos Total com Internações [(]R[$] 1,00[)]", "Gastos Totais com Internaççoes", dhealth$variable, ignore.case =  TRUE)
+dhealth$variable <- gsub("Hospitalizações pelo SUS [-] Geral por Local de Residência [-] Taxa de Mortalidade nas Internações [(][%][)]", "Taxa de Mortalidade das Internações", dhealth$variable, ignore.case =  TRUE)
+dhealth$variable <- gsub("Leitos Hospitalares [-] Existente [-] Total ", "Total de Leitos Hospitalares", dhealth$variable, ignore.case =  TRUE)
+dhealth$variable <- gsub("Leitos Hospitalares [-] SUS [-] Total ", "Leitos Hospitalares no SUS", dhealth$variable, ignore.case =  TRUE)
+dhealth$variable <- gsub("Leitos Hospitalares [-] Não SUS [-] Total ", "Leitos Hospitalares não SUS", dhealth$variable, ignore.case =  TRUE)
+
+unique(dhealth$variable)
+
+
+write.csv(dhealth, "db/clean/health/dhealth.csv")
+
 
 ```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-
-
-# teste
-
-# dsdsdsss
-
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
