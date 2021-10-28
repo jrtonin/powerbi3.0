@@ -32,7 +32,6 @@ knitr::opts_chunk$set(echo = TRUE)
 - code only in english
 - one chunck, one final database
 
-
 ```{r health, include=FALSE}
 
 
