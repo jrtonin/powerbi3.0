@@ -34,6 +34,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r health, include=FALSE}
+<<<<<<< HEAD
+=======
+# ab
+>>>>>>> 997deb9b1c434361be63284bd58d81d29dfdf3f7
 
 #Importando a base cidades
 fcity <- fcity <- read.csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/fcity2.csv", encoding="UTF-8", sep=";")
