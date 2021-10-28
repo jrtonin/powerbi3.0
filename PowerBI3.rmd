@@ -1,35 +1,29 @@
 ---
-title: "PowerBI3.0"
-author: "Equipe PR Produtivo"
+title: "Base de Informações - Paraná Produtivo"
+author: "SEPL, PR Projetos, FACIAP e IPARDES"
 date: "10/08/2021"
 output: html_document
 ---
 
 ```{r setup}
-#Seguindo o procedimento ExtraÃ§Ã£o, Tratamento e Carga
+
+knitr::opts_chunk$set(echo = TRUE)
+{ 
+  # Check if the packages that we need are installed
+  want = c("tidyverse","readxl", "doBy", "gdata", "ggplot2", "data.table", "stringr",
+           "zoo", "reshape2")
+  have = want %in% rownames(installed.packages())
+  # Install the packages that we miss
+  if ( any(!have) ) { install.packages( want[!have] ) }
+  # Load the packages
+  junk <- lapply(want, library, character.only = T)
+  # Remove the objects we created
+  rm(have, want, junk)
+} # Import packages
 
 ```
 
-```{r packages}
 
-#Instalando pacotes
-library(readxl)
-library(dplyr)
-library(doBy)
-library(gdata)
-library(ggplot2)
-library(xlsx)
-library(data.table)
-library(stringr)
-library(tidyr)
-library(zoo)
-library(reshape2)
-
-```
-
-<<<<<<< HEAD
-```{r import reference data}
-=======
 ## clean code references
 - d = database
 - f = feature (label database)
@@ -37,6 +31,7 @@ library(reshape2)
 - labels database start with a capital letter and with the first five initials  words of the principal database (ex. dDemogGroup)
 - code only in english
 - one chunck, one final database
+
 
 ```{r health, include=FALSE}
 >>>>>>> 890211f412885f27ad0077b7a72311bc5a4ebd9d
