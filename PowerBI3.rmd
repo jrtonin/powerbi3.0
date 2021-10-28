@@ -27,7 +27,20 @@ library(reshape2)
 
 ```
 
+<<<<<<< HEAD
 ```{r import reference data}
+=======
+## clean code references
+- d = database
+- f = feature (label database)
+- first letter capital to start a database name (ex. dDemography or dDemographyAge)
+- labels database start with a capital letter and with the first five initials  words of the principal database (ex. dDemogGroup)
+- code only in english
+- one chunck, one final database
+
+
+```{r health, include=FALSE}
+>>>>>>> 890211f412885f27ad0077b7a72311bc5a4ebd9d
 
 #Importando a base cidades
 fcity <- fcity <- read.csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/fcity2.csv", encoding="UTF-8", sep=";")
@@ -757,3 +770,4 @@ write.csv(dpobreza, "db/clean/health/pobreza.csv")
 
 
 ```
+
