@@ -1,29 +1,35 @@
 ---
-title: "Base de Informações - Paraná Produtivo"
-author: "SEPL, PR Projetos, FACIAP e IPARDES"
+title: "PowerBI3.0"
+author: "Equipe PR Produtivo"
 date: "10/08/2021"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-
-{ 
-  # Check if the packages that we need are installed
-  want = c("tidyverse","readxl", "doBy", "gdata", "ggplot2", "data.table", "stringr",
-           "zoo", "reshape2")
-  have = want %in% rownames(installed.packages())
-  # Install the packages that we miss
-  if ( any(!have) ) { install.packages( want[!have] ) }
-  # Load the packages
-  junk <- lapply(want, library, character.only = T)
-  # Remove the objects we created
-  rm(have, want, junk)
-} # Import packages
-
+```{r setup}
+#Seguindo o procedimento ExtraÃ§Ã£o, Tratamento e Carga
 
 ```
 
+```{r packages}
+
+#Instalando pacotes
+library(readxl)
+library(dplyr)
+library(doBy)
+library(gdata)
+library(ggplot2)
+library(xlsx)
+library(data.table)
+library(stringr)
+library(tidyr)
+library(zoo)
+library(reshape2)
+
+```
+
+<<<<<<< HEAD
+```{r import reference data}
+=======
 ## clean code references
 - d = database
 - f = feature (label database)
@@ -33,126 +39,733 @@ knitr::opts_chunk$set(echo = TRUE)
 - one chunck, one final database
 
 ```{r health, include=FALSE}
+>>>>>>> 890211f412885f27ad0077b7a72311bc5a4ebd9d
 
-
-########### REFERENCE ####################
-
-#fcity will be key to join all data frames into one with the usefull city code
-
+#Importando a base cidades
 fcity <- fcity <- read.csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/fcity2.csv", encoding="UTF-8", sep=";")
 
+#Importar populaÃ§Ã£o - fonte IPARDES (pop estimada)
+pop_pr <- read_excel("~/Profissional/SEPL/PowerBi 3/Banco de Dados/population/pop_pr.xlsx")
+
+```
+
+```{r transform reference}
+
+{
+#renomear colunas
 fcity <- rename(fcity, code = X.U.FEFF.code)
 
-#fcity2 is needes as a base structure to city names in different data frames
+#tornar tudo letra minusculas para utilizar em bases do iBGE
 fcity2 <- fcity %>%
   mutate_if(is.character, tolower)
+}#Codigo e Nome das Cidades
 
-##Now we need to introduce reference variables that will be used to calculate taxes.
-#Population
-
-#Import
-pop_pr <- read_excel("~/Profissional/SEPL/PowerBi 3/Banco de Dados/População/pop_pr.xlsx")
-
-#Rename
+{
+#renomear colunas
 pop_pr <- rename(pop_pr, city = Localidade, variable = Variável )
 
+#transofrmar os anos de nome de colunas para dados de uma coluna year
 pop_pr2 <- melt(pop_pr)
 
+#retirando colunas desnecessaria
 pop_pr2 <- pop_pr2[, -2]
 
+#renomeando para o modelo convencionado
 pop_pr2 <- rename(pop_pr2, year = variable, result = value)
+  }#Population
 
-###################################################
+```
 
-dProf_obi <- read.csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Saúde/Profissionais e obitos.csv", sep=";")
-
-write.csv(dProf_obi, "db/raw/health/obitosprofissionaissaude.csv")
-
-#Rename columns
-dProf_obi <- rename(dProf_obi, "1996" = "X1996", "1997" = "X1997", "1998" = "X1998", "1999" = "X1999",
-                "2000" = "X2000", "2001" = "X2001", "2002" = "X2002", "2003" = "X2003",
-                "2004" = "X2004", "2005" = "X2005", "2006" = "X2006", "2007" = "X2007",
-                "2008" = "X2008", "2009" = "X2009", "2010" = "X2010", "2011" = "X2011",
-                "2012" = "X2012", "2013" = "X2013", "2014" = "X2014", "2015" = "X2015",
-                "2016" = "X2016", "2017" = "X2017", "2018" = "X2018", "2019" = "X2019",
-                "2020" = "X2020")
+```{r import health data}
 
 
-dProf_obi2 <- melt(dProf_obi)
+#Bases de profissionais da saÃºde e nÃºmero de Ã³bitos - fonte IPARDES
+dprofissionaisobitos <- read.csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/Profissionais e obitos.csv", sep=";")
 
+#Importando bases dos hospitais - fonte IPARDES
+Hospitais <- read.csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/Hospitais.csv", sep=";")
 
+```
 
-dProf_obi2 <- rename(dProf_obi2, city = Localidade, year = variable, variable = Variável, result = value)
+```{r transform health}
 
-dProf_obi2 <- dProf_obi2[!is.na(dProf_obi2$result),]
+{
+#Renomear colunas
+colnames(dprofissionaisobitos) <- gsub("X","", colnames(dprofissionaisobitos))
 
-dProf_obi3 <- left_join(dProf_obi2, pop_pr2, by = c("city", "year"))
+#Tranformar anos que estÃ£o nomeando colunas em dados de um coluna year
+dprofissionaisobitos <- melt(dprofissionaisobitos)
 
-dProf_obi3 <- rename(dProf_obi3, result = result.x, reference = result.y)
+dprofissionaisobitos <- rename(dprofissionaisobitos, city = Localidade, year = variable, variable = Variável, result = value)
 
-dProf_obi2 <- dProf_obi2[!is.na(dProf_obi2$reference),]
+dprofissionaisobitos <- dprofissionaisobitos[!is.na(dprofissionaisobitos$result),]
 
-remove(dProf_obi, dProf_obi2)
+dprofissionaisobitos <- left_join(dprofissionaisobitos, pop_pr2, by = c("city", "year"))
 
+dprofissionaisobitos <- rename(dprofissionaisobitos, result = result.x, reference = result.y)
 
+dprofissionaisobitos <- dprofissionaisobitos[!is.na(dprofissionaisobitos$reference),]
 
+}#Profissionais de SaÃºde e obitos
 
-
-Hospitais <- read.csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Saúde/Hospitais.csv", sep=";")
-
-write.csv(Hospitais, "db/raw/health/hospitais.csv")
-
+{
+#Excluir colunas desnecessÃ¡rias 
 Hospitais <- Hospitais[, -c(3:6)]
-#Rename columns
-Hospitais <- rename(Hospitais, "1998" = "X1998", "1999" = "X1999",
-                    "2000" = "X2000", "2001" = "X2001", "2002" = "X2002", "2003" = "X2003",
-                    "2004" = "X2004", "2005" = "X2005", "2006" = "X2006", "2007" = "X2007",
-                    "2008" = "X2008", "2009" = "X2009", "2010" = "X2010", "2011" = "X2011",
-                    "2012" = "X2012", "2013" = "X2013", "2014" = "X2014", "2015" = "X2015",
-                    "2016" = "X2016", "2017" = "X2017", "2018" = "X2018", "2019" = "X2019",
-                    "2020" = "X2020")
 
+#Renomear colunas de anos de "X1990" para "1990"
+colnames(Hospitais) <- gsub("X","", colnames(Hospitais))
 
-Hospitais <- melt(Hospitais, id.vars = c("Localidade", "Variável") )
+#Transformar anos de nome de colunas para dados de uma coluna year
+Hospitais <- melt(Hospitais, id.vars = c("Localidade", "VariÃ¡vel") )
 
+#Retirar linhas em que o resultado Ã© 0 ou NA
 Hospitais <- Hospitais[!(is.na(Hospitais$value) | Hospitais$value==""), ]
 
+#Renomear colunas
 Hospitais <- rename(Hospitais, city = Localidade, year = variable, variable = Variável, result = value)
 
+#Conferir se hÃ¡ algum NA
 Hospitais <- Hospitais[!is.na(Hospitais$result),]
 
+#Inserir uma coluna para populaÃ§Ã£o
 Hospitais <- left_join(Hospitais, pop_pr2, by = c("city", "year"))
 
+#Renomear colunas
 Hospitais <- rename(Hospitais, result = result.x, reference = result.y)
 
+#Verificar se houve alguma join mal sucedida
 Hospitais <- Hospitais[!is.na(Hospitais$reference),]
 
+#Trocar de virgula para ponto para manipulaÃ§Ã£o no R
 Hospitais$result <- gsub(",", "\\.", Hospitais$result)
+}#Dados do Hospital
 
-dhealth <- rbind(dProf_obi3, Hospitais)
+{
+  #Unir as duas bases anteriores
+dhealth <- rbind(dprofissionaisobitos, Hospitais)
 
+  #Unir base saÃºde ao cÃ³digo correto de cidade
 dhealth <- left_join(fcity, dhealth, by = "city")
 
+  #Retirar colunas de cidade e regiÃ£o
 dhealth <- dhealth[, -c(2:3)]
 
-dhealth$variable <- gsub("Óbitos [(]CID10[)] [-] Total [(]Mortalidade Geral[)] ", "Mortalidade Geral", dhealth$variable, ignore.case =  TRUE)
-dhealth$variable <- gsub("Óbitos de Menores de 1 ano [(]CID10[)] [-] Total [(]Mortalidade Infantil[)] ", "Mortalidade Infantil", dhealth$variable, ignore.case =  TRUE)
-dhealth$variable <- gsub("Óbitos Maternos [-] Total [(]Mortalidade Materna[)] ", "Mortalidade Materna", dhealth$variable, ignore.case =  TRUE)
-dhealth$variable <- gsub("Crianças Menores de 2 anos Desnutridas ", "Desnutrição Infantil", dhealth$variable, ignore.case =  TRUE)
-dhealth$variable <- gsub("Profissionais de Saúde [-] Total ", "Total de Profissionais da Saúde", dhealth$variable, ignore.case =  TRUE)
-dhealth$variable <- gsub("Profissionais de Saúde [-] Médicos ", "Quantidade de Médicos", dhealth$variable, ignore.case =  TRUE)
-dhealth$variable <- gsub("Profissionais de Saúde [-] Enfermeiros ", "Quantidade de Enfermeiros", dhealth$variable, ignore.case =  TRUE)
-dhealth$variable <- gsub("Hospitalizações pelo SUS [-] Geral por Local de Residência [-] Número de Internações ", "Número de Internações", dhealth$variable, ignore.case =  TRUE)
-dhealth$variable <- gsub("Hospitalizações pelo SUS [-] Geral por Local de Residência [-] Gastos Total com Internações [(]R[$] 1,00[)]", "Gastos Totais com Internaççoes", dhealth$variable, ignore.case =  TRUE)
-dhealth$variable <- gsub("Hospitalizações pelo SUS [-] Geral por Local de Residência [-] Taxa de Mortalidade nas Internações [(][%][)]", "Taxa de Mortalidade das Internações", dhealth$variable, ignore.case =  TRUE)
+  #Renomear variÃ¡veis para melhor visualizaÃ§Ã£o do BI
+  #Mortalidade Geral
+dhealth$variable <- gsub("?bitos [(]CID10[)] [-] Total [(]Mortalidade Geral[)] ", "Mortalidade Geral", dhealth$variable, ignore.case =  TRUE)
+
+  #Mortalidade Infantil
+dhealth$variable <- gsub("?bitos de Menores de 1 ano [(]CID10[)] [-] Total [(]Mortalidade Infantil[)] ", "Mortalidade Infantil", dhealth$variable, ignore.case =  TRUE)
+
+  #Mortalidade Materna
+dhealth$variable <- gsub("?bitos Maternos [-] Total [(]Mortalidade Materna[)] ", "Mortalidade Materna", dhealth$variable, ignore.case =  TRUE)
+
+  #DesnutriÃ§Ã£o Infantil
+dhealth$variable <- gsub("Crian?as Menores de 2 anos Desnutridas ", "Desnutri??o Infantil", 
+dhealth$variable, ignore.case =  TRUE)
+
+  #Total Profissionais da SaÃºde
+dhealth$variable <- gsub("Profissionais de Sa?de [-] Total ", "Total de Profissionais da Sa?de", dhealth$variable, ignore.case =  TRUE)
+
+  #Quantidade de MÃ©dicos
+dhealth$variable <- gsub("Profissionais de Sa?de [-] M?dicos ", "Quantidade de M?dicos", dhealth$variable, ignore.case =  TRUE)
+
+  #Quantidade de Enfermeiros
+dhealth$variable <- gsub("Profissionais de Sa?de [-] Enfermeiros ", "Quantidade de Enfermeiros", dhealth$variable, ignore.case =  TRUE)
+
+  #NÃºmero de InternaÃ§Ãµes
+dhealth$variable <- gsub("Hospitaliza??es pelo SUS [-] Geral por Local de Resid?ncia [-] N?mero de Interna??es ", "N?mero de Interna??es", dhealth$variable, ignore.case =  TRUE)
+
+  #Gastos com InternaÃ§Ãµes
+dhealth$variable <- gsub("Hospitaliza??es pelo SUS [-] Geral por Local de Resid?ncia [-] Gastos Total com Interna??es [(]R[$] 1,00[)]", "Gastos Totais com Interna??oes", dhealth$variable, ignore.case =  TRUE)
+
+  #Taxa de Mortalidade nas InternaÃ§Ãµes
+dhealth$variable <- gsub("Hospitaliza??es pelo SUS [-] Geral por Local de Resid?ncia [-] Taxa de Mortalidade nas Interna??es [(][%][)]", "Taxa de Mortalidade das Interna??es", dhealth$variable, ignore.case =  TRUE)
+
+  #Total de Leitos Hospitalares
 dhealth$variable <- gsub("Leitos Hospitalares [-] Existente [-] Total ", "Total de Leitos Hospitalares", dhealth$variable, ignore.case =  TRUE)
+
+  #Total de Leitos no SUS
 dhealth$variable <- gsub("Leitos Hospitalares [-] SUS [-] Total ", "Leitos Hospitalares no SUS", dhealth$variable, ignore.case =  TRUE)
-dhealth$variable <- gsub("Leitos Hospitalares [-] Não SUS [-] Total ", "Leitos Hospitalares não SUS", dhealth$variable, ignore.case =  TRUE)
 
-unique(dhealth$variable)
+  #Total de Leitos fora do SUS
+dhealth$variable <- gsub("Leitos Hospitalares [-] N?o SUS [-] Total ", "Leitos Hospitalares n?o SUS", dhealth$variable, ignore.case =  TRUE)
 
+}#Base da saÃºde
 
+```
+
+```{r export health}
+
+  #Base crua (raw)
+#Exportar Base Profissionais da SaÃºde e obitos
+write.csv(dprofissionaisobitos, "db/raw/health/obitosprofissionaissaude.csv")
+
+#Exportar Base de dados Hospitalares
+write.csv(Hospitais, "db/raw/health/hospitais.csv")
+
+  #Base limpa(clean)
 write.csv(dhealth, "db/clean/health/dhealth.csv")
+
+```
+
+```{r import POVERTY}
+
+  #Import Aux?lio Emergencial
+AE <- read.csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/ae.csv")
+
+  #Import CadUnico
+cad <- read.csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/caunico.csv")
+
+  #Import taxa de pobreza
+taxa_de_pobreza <- read.csv2("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/taxa_de_pobreza.csv")
+
+  #Import Pop Census
+pop_census <- read_excel("C:\\Users\\CepaTech\\Documents\\Profissional\\SEPL\\PowerBi 3\\Banco de Dados\\Pobreza\\Tabela 202.xlsx")
+
+  #Import pessoas no bolsa familia
+dpesbolsa <- read.csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/pessoasbeneficiadasbolsafamilia.csv")
+
+  #Import valores do bolsa familia
+dvalbolsa <- read.csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/valorbolsafamilia.csv")
+
+  #Import indices de pobreza
+index <- read.csv2("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/idh_ipdm_vulnerabilidade.csv")
+
+```
+
+```{r transform poverty}
+
+{
+  #Renomear Variaveis
+  AE <- rename(AE, total_elegiveis = total.de.pessoas.elegíveis.ao.recebimento.do.auxílio.emergencial)
+AE <- rename(AE, soma_repasse = Soma.do.total.a.ser.repassado.pelo.Auxílio.emergencial.e.pela.extensão.do.auxílio..todos.os.públicos.)
+
+  #Excluindo colunas inuteis
+  AE <- AE[-c(7:13)]
+  
+  #Filtrar dados para os estado do Parana
+  AE_PR <- AE %>%
+  filter(UF == "PR", Referência == 2020)
+  
+  #Renomear colunas
+  AE_PR <- rename(AE_PR,code = Código, year = Referência, city = Unidade.Territorial)
+
+  #Transformar cidades em letra minuscula
+  AE_PR <- AE_PR %>%
+    mutate_if(is.character, tolower) %>%
+    format(decimal.mark=",")
+  
+  #Trocar um elemento da planilha por apostrofe
+  AE_PR$city <- str_replace_all(AE_PR$city, "´", "'")
+  
+  #Acrescentar o codigo a base do auxilio
+  dAE_PR <- left_join(fcity2, AE_PR, by = "city", suffix = c("_ok", "_errado"))
+
+}#Auxilio Emergencial
+```
+write.csv(AE, "db/raw/health/auxilioemergencial.csv")
+
+#Prepare to join
+
+
+
+
+#Join with fcity
+
+
+#Clean Data Frame
+dAE_PR <- dAE_PR[, -c(2:5)]
+
+dAE_PR <- rename(dAE_PR,code = code_ok)
+
+#Turn col names into variables
+dAE_PR <- as.data.table(dAE_PR)
+
+#Total Elegiveis
+dae1 <- melt(dAE_PR, id.vars = c("code", "year"), measure.vars = "total_elegiveis",
+             variable.name = "variable", value.name = "result")
+
+
+#Soma Repasse
+dae2 <- melt(dAE_PR, id.vars = c("code", "year"), measure.vars = "soma_repasse",
+             variable.name = "variable", value.name = "result")
+
+
+
+dae1 <- as.data.frame(dae1)
+dae2 <- as.data.frame(dae2)
+
+#Bind all variables into one column
+dae <- rbind(dae1, dae2)
+
+dae$variable <- gsub("total_elegiveis", "Eleg?veis para Aux. Emergencial", dae$variable)
+dae$variable <- gsub("soma_repasse",  "Repasse de Aux.Emergencial", dae$variable)
+
+#Verify any error
+dae[is.na(dae$result),]
+
+#Clean Data
+remove(AE, AE_PR, dAE_PR, dae1, dae2)
+
+#Join Aux?lio Emergencial Data with Population Data
+dae$year <- as.numeric(dae$year)
+dae <- left_join(dae, pop_pr2, by = c("code", "year"), suffix = c("_v", "_pop"))
+
+######CadUnico########
+
+######CadUnico########
+
+
+
+write.csv(cad, "db/raw/health/cadunico.csv")
+
+#Rename columns
+cad <- rename(cad, code = C?digo, city = Unidade.Territorial, date = Refer?ncia, result =  Total.de.pessoas.inscritas.no.Cadastro.?nico)
+
+#Selecting PR cities
+cad <- cad %>%
+  filter(UF == "PR")
+
+#Fixing date
+cad <- cbind(cad, str_split_fixed(cad$date, "/", 2))
+
+#cleaning data
+cad <- cad[,-c(3:4, 6)]
+cad <- rename(cad, year = "2")
+
+#agregating per year
+cad2 <- cad %>%
+  group_by(code, year, city) %>%
+  summarize(result = sum(result)/n())
+
+cad2$result <- round(cad2$result, digits = 0) 
+
+#Preparing to merge with the right code
+cad3 <- cad2 %>%
+  mutate_if(is.character, tolower)
+
+fcity2$city <- str_replace_all(fcity2$city, "'", "")
+
+#Joining codes by city
+cad3 <- left_join(fcity2, cad3, by = "city", suffix = c("_ok", "_errado"))
+
+#cleaning data
+cad4 <- cad3[, -c(2:4)]
+
+cad4 <- rename(cad4, code = code_ok)
+
+cad4$variable <- c("Pessoas no CadUnico")
+
+cad4 <- cad4[,c(1,2,4,3)]
+
+cad4$year <- as.numeric(cad4$year)
+
+dcad <- left_join(cad4, pop_pr2, by = c("code", "year"), suffix = c("_v", "_pop"))
+
+remove(cad, cad2, cad3, cad4)
+#####################################################################################
+######Taxa de Pobreza###########
+
+
+
+write.csv(taxa_de_pobreza, "db/raw/health/taxapobreza.csv")
+
+
+#Prepare to join
+taxa_de_pobreza <- orderBy(~city, taxa_de_pobreza)
+taxa_de_pobreza <- taxa_de_pobreza %>%
+  format(decimal.mark=",")
+
+
+taxa_de_pobreza <- rename(taxa_de_pobreza, result = taxa_pobreza)
+
+#Join
+dtx <- merge(x = fcity, y = taxa_de_pobreza, by = "city", all.y = TRUE )
+
+##Check NA##
+dtx[is.na(dtx$code),]
+
+#Arrange data frame
+dtx <- dtx[,-c(1,3) ]
+dtx <- dtx[,c(1,4,2,3)]
+
+
+#############
+
+
+######## Popula??o Censo #############
+
+#Import
+
+#Join
+pop_census <- left_join(fcity, pop_census, by = c("city"= "Munic?pio"))
+
+#Clean
+pop_census <- pop_census[,-c(2,3)]
+
+pop_census[is.na(pop_census$code),]
+
+#Turn columns into variables
+pop_census <- as.data.table(pop_census)
+pop_census1 <- melt(pop_census, id.vars = "code", measure.vars = "1991",
+                    variable.name = "year", value.name = "result")
+
+pop_census2 <- melt(pop_census, id.vars = "code", measure.vars = "2000",
+                    variable.name = "year", value.name = "result")
+
+pop_census3 <- melt(pop_census, id.vars = "code", measure.vars = "2010",
+                    variable.name = "year", value.name = "result")
+
+pop_census <- rbind(pop_census1, pop_census2, pop_census3)
+
+pop_census <- as.data.frame(pop_census)
+
+####### Join Dtx e Pop #############
+
+#Join
+dtxabs <- left_join(dtx, pop_census, by = c("code", "year"), suffix = c("_tx", "_pop"))
+
+#Clean
+dtxabs$result_tx <- gsub(",", ".", dtxabs$result_tx, ignore.case = TRUE)
+dtxabs$result_tx <- as.numeric(dtxabs$result_tx)
+dtxabs$result_pop <- as.numeric(dtxabs$result_pop)
+dtxabs[is.na(dtxabs$result_pop),]
+
+#Create absolute result
+dtxabs <- mutate(dtxabs, result = (result_tx * result_pop)/100)
+dtxabs$result <- round(dtxabs$result, digits = 0)
+
+#Clean final data
+dtxabs <- dtxabs[,-c(4:5)]
+dtxabs$variable <- gsub("Taxa de Pobreza [(][%][])]", "Pessoas em Pobreza", dtxabs$variable, ignore.case = TRUE)
+
+#Join Pessoas with Pop Census
+dtxabs <- left_join(dtxabs, pop_census, by = c("code", "year"), suffix = c("_v", "_pop"))
+
+remove(dtx, pop_census, pop_census1, pop_census2, pop_census3, taxa_de_pobreza)
+
+
+##################### BOLSA FAM?LIA #################################
+
+### PESSOAS BENEFICIADAS
+
+#Import
+
+
+write.csv(dpesbolsa, "db/raw/health/pessoasbolsafamilia.csv")
+
+#Rename columns
+dpesbolsa <- rename(dpesbolsa, code = C?digo, city = Unidade.Territorial, date = Refer?ncia, result =  Quantidade.total.de.pessoas.em.fam?lias.benefici?rias.do.Programa.Bolsa.Fam?lia)
+
+#Selecting PR cities
+dpesbolsa1 <- dpesbolsa %>%
+  filter(UF == "PR")
+
+#Fixing date
+dpesbolsa1 <- cbind(dpesbolsa1, str_split_fixed(dpesbolsa1$date, "/", 2))
+
+#cleaning data
+dpesbolsa1 <- dpesbolsa1[,-c(3:4, 6)]
+dpesbolsa1 <- rename(dpesbolsa1, year = "2")
+
+#agregating per year
+dpesbolsa2 <- dpesbolsa1 %>%
+  group_by(code, year, city) %>%
+  summarize(result = sum(result)/n())
+
+dpesbolsa2$result <- round(dpesbolsa2$result, digits = 0) 
+
+
+#Preparing to merge with the right code
+dpesbolsa3 <- dpesbolsa2 %>%
+  mutate_if(is.character, tolower)
+
+fcity2$city <- str_replace_all(fcity2$city, "'", "")
+
+#Joining codes by city
+dpesbolsa3 <- left_join(fcity2, dpesbolsa3, by = "city", suffix = c("_ok", "_errado"))
+
+#cleaning data
+dpesbolsa4 <- dpesbolsa3[, -c(2:4)]
+
+dpesbolsa4 <- rename(dpesbolsa4, code = code_ok)
+
+dpesbolsa4$variable <- c("Pessoas Beneficiadas pelo Bolsa Fam?lia")
+
+dpesbolsa4 <- dpesbolsa4[,c(1,2,4,3)]
+
+dpesbolsa4$year <- as.numeric(dpesbolsa4$year)
+
+dpesbolsa4 <- left_join(dpesbolsa4, pop_pr2, by = c("code", "year"), suffix = c("_v", "_pop"))
+
+### VALOR BOLSA FAM?LIA 
+
+#Import
+
+
+write.csv(dvalbolsa, "db/raw/health/valorbolsafamilia.csv")
+
+#Rename columns
+dvalbolsa <- rename(dvalbolsa, code = C?digo, city = Unidade.Territorial, date = Refer?ncia, result =  Valor.total.pago.?s.fam?lias.por.meio.do.Programa.Bolsa.Fam?lia)
+
+#Selecting PR cities
+dvalbolsa1 <- dvalbolsa %>%
+  filter(UF == "PR")
+
+#Fixing date
+dvalbolsa1 <- cbind(dvalbolsa1, str_split_fixed(dvalbolsa1$date, "/", 2))
+
+#cleaning data
+dvalbolsa1 <- dvalbolsa1[,-c(3:4, 6)]
+dvalbolsa1 <- rename(dvalbolsa1, year = "2")
+
+#agregating per year
+dvalbolsa2 <- dvalbolsa1 %>%
+  group_by(code, year, city) %>%
+  summarize(result = sum(result)/n())
+
+dvalbolsa2$result <- round(dvalbolsa2$result, digits = 0) 
+
+
+#Preparing to merge with the right code
+dvalbolsa3 <- dvalbolsa2 %>%
+  mutate_if(is.character, tolower)
+
+fcity2$city <- str_replace_all(fcity2$city, "'", "")
+
+#Joining codes by city
+dvalbolsa3 <- left_join(fcity2, dvalbolsa3, by = "city", suffix = c("_ok", "_errado"))
+
+#cleaning data
+dvalbolsa4 <- dvalbolsa3[, -c(2:4)]
+
+dvalbolsa4 <- rename(dvalbolsa4, code = code_ok)
+
+dvalbolsa4$variable <- c("Valor Repassado pelo Bolsa Fam?lia")
+
+dvalbolsa4 <- dvalbolsa4[,c(1,2,4,3)]
+
+dvalbolsa4$year <- as.numeric(dvalbolsa4$year)
+
+dvalbolsa4 <- dvalbolsa4 %>%
+  group_by(year) %>%
+  left_join(pop_pr2, by = c("code", "year"), suffix = c("_v", "_pop"))
+  #mutate(result_pop = sum(result))
+
+
+remove(
+  dpesbolsa,dpesbolsa1, dpesbolsa2, dpesbolsa3,
+  dvalbolsa, dvalbolsa1, dvalbolsa2, dvalbolsa3
+)
+
+
+########### INDEX ####################
+#Import
+
+
+write.csv(index, "db/raw/health/indicespobreza.csv")
+
+#Rename columns
+index <- rename(index, "1991" = "X1991", "2000" = "X2000", "2010" = "X2010", "2011" = "X2011",
+                "2012" = "X2012", "2013" = "X2013", "2014" = "X2014", "2015" = "X2015",
+                "2016" = "X2016", "2017" = "X2017", "2018" = "X2018")
+
+
+#Turn year into one single columns
+index <- as.data.table(index)
+
+#IPDM
+dipdm10 <- index %>%
+  filter(Vari?vel == "?ndice Ipardes de Desempenho Municipal (IPDM) ") %>%
+  melt(id.vars = c("Localidade", "Vari?vel"), measure.vars = "2010",
+       variable.name = "year", value.name = "result")
+
+dipdm11 <- index %>%
+  filter(Vari?vel == "?ndice Ipardes de Desempenho Municipal (IPDM) ") %>%
+  melt(id.vars = c("Localidade", "Vari?vel"), measure.vars = "2011",
+       variable.name = "year", value.name = "result")
+
+dipdm12 <- index %>%
+  filter(Vari?vel == "?ndice Ipardes de Desempenho Municipal (IPDM) ") %>%
+  melt(id.vars = c("Localidade", "Vari?vel"), measure.vars = "2012",
+       variable.name = "year", value.name = "result")
+
+dipdm13 <- index %>%
+  filter(Vari?vel == "?ndice Ipardes de Desempenho Municipal (IPDM) ") %>%
+  melt(id.vars = c("Localidade", "Vari?vel"), measure.vars = "2013",
+       variable.name = "year", value.name = "result")
+
+dipdm14 <- index %>%
+  filter(Vari?vel == "?ndice Ipardes de Desempenho Municipal (IPDM) ") %>%
+  melt(id.vars = c("Localidade", "Vari?vel"), measure.vars = "2014",
+       variable.name = "year", value.name = "result")
+
+dipdm15 <- index %>%
+  filter(Vari?vel == "?ndice Ipardes de Desempenho Municipal (IPDM) ") %>%
+  melt(id.vars = c("Localidade", "Vari?vel"), measure.vars = "2015",
+       variable.name = "year", value.name = "result")
+
+dipdm16 <- index %>%
+  filter(Vari?vel == "?ndice Ipardes de Desempenho Municipal (IPDM) ") %>%
+  melt(id.vars = c("Localidade", "Vari?vel"), measure.vars = "2016",
+       variable.name = "year", value.name = "result")
+
+dipdm17 <- index %>%
+  filter(Vari?vel == "?ndice Ipardes de Desempenho Municipal (IPDM) ") %>%
+  melt(id.vars = c("Localidade", "Vari?vel"), measure.vars = "2017",
+       variable.name = "year", value.name = "result")
+
+dipdm18 <- index %>%
+  filter(Vari?vel == "?ndice Ipardes de Desempenho Municipal (IPDM) ") %>%
+  melt(id.vars = c("Localidade", "Vari?vel"), measure.vars = "2018",
+       variable.name = "year", value.name = "result")
+
+dipdm <- rbind(dipdm10,dipdm11,dipdm12,dipdm13, dipdm14, dipdm15,dipdm16, dipdm17, dipdm18)
+
+dipdm <- rename(dipdm, city = Localidade, variable = Vari?vel )
+
+dipdm <- dipdm[,c(1,3,2,4)]
+
+dipdm <- left_join(fcity, dipdm, by = "city")
+
+dipdm <- dipdm[, -c(2:3)]
+
+dipdm$year <- as.numeric(as.character(dipdm$year))
+
+dipdm <- dipdm %>%
+  left_join(pop_pr2, by = c("code", "year"), suffix = c("_v", "_pop"))
+
+dipdm<- mutate(dipdm, result_index = result_v * result_pop)
+
+remove(dipdm10,dipdm11,dipdm12,dipdm13, dipdm14, dipdm15,dipdm16, dipdm17, dipdm18)
+
+dipdm <- dipdm[, c(1,2,3,6,5)]
+
+dipdm <- rename(dipdm, result = result_index)
+
+#IDH
+index_idh <- index %>%
+  filter(Vari?vel == "?ndice de Desenvolvimento Humano Municipal (IDHM) ") %>%
+  melt(id.vars = c("Localidade", "Vari?vel"), measure.vars = "1991",
+       variable.name = "year", value.name = "result")
+
+index_idh2 <- index %>%
+  filter(Vari?vel == "?ndice de Desenvolvimento Humano Municipal (IDHM) ") %>%
+  melt(id.vars = c("Localidade", "Vari?vel"), measure.vars = "2000",
+       variable.name = "year", value.name = "result")
+
+index_idh3 <- index %>%
+  filter(Vari?vel == "?ndice de Desenvolvimento Humano Municipal (IDHM) ") %>%
+  melt(id.vars = c("Localidade", "Vari?vel"), measure.vars = "2010",
+       variable.name = "year", value.name = "result")
+
+#Bind and create IDH Data Frame
+didh <- rbind(index_idh, index_idh2, index_idh3)
+
+didh <- rename(didh, city = Localidade, variable = Vari?vel )
+
+didh <- didh[,c(1,3,2,4)]
+
+didh <- left_join(fcity, didh, by = "city")
+
+didh <- didh[, -c(2:3)]
+
+didh$year <- as.numeric(as.character(didh$year))
+
+didh <- didh %>%
+  left_join(pop_pr4, by = c("code", "year"), suffix = c("_v", "_pop")) %>%
+  mutate(result_index = result_v * result_pop)
+
+didh <- didh[, c(1,2,3,6,5)]
+
+didh <- rename(didh, result = result_index)
+
+#Verify
+didh[is.na(didh$result), ]
+
+#Clean dataset
+remove(index_idh, index_idh2, index_idh3)
+
+#Gini
+index_gini <- index %>%
+  filter(Vari?vel == "?ndice de Gini - Geral ") %>%
+  melt(id.vars = c("Localidade", "Vari?vel"), measure.vars = "1991",
+       variable.name = "year", value.name = "result")
+
+index_gini2 <- index %>%
+  filter(Vari?vel == "?ndice de Gini - Geral ") %>%
+  melt(id.vars = c("Localidade", "Vari?vel"), measure.vars = "2000",
+       variable.name = "year", value.name = "result")
+
+index_gini3 <- index %>%
+  filter(Vari?vel == "?ndice de Gini - Geral ") %>%
+  melt(id.vars = c("Localidade", "Vari?vel"), measure.vars = "2010",
+       variable.name = "year", value.name = "result")
+
+#Bind and create GINI Data Frame
+dgini <- rbind(index_gini, index_gini2, index_gini3)
+
+dgini <- rename(dgini, city = Localidade, variable = Vari?vel )
+
+dgini <- dgini[,c(1,3,2,4)]
+
+dgini <- left_join(fcity, dgini, by = "city")
+
+dgini <- dgini[, -c(2:3)]
+
+dgini$year <- as.numeric(as.character(dgini$year))
+
+dgini <- dgini %>%
+  left_join(pop_pr4, by = c("code", "year"), suffix = c("_v", "_pop")) %>%
+  mutate(result_index = result_v * result_pop)
+
+dgini <- dgini[, c(1,2,3,6,5)]
+
+dgini <- rename(dgini, result = result_index)
+
+#Verify
+didh[is.na(didh$result), ]
+
+#Verify
+dgini[is.na(dgini$result),]
+
+#Clear Dataset
+remove(index_gini, index_gini2, index_gini3)
+
+#Bind all index
+dindex <- rbind(dgini, dipdm, didh)
+
+dindex[is.na(dindex$result),]
+
+dindex <- as.data.frame(dindex)
+
+dabs <- rbind(dae, dcad, dpesbolsa4, dtxabs, dvalbolsa4)
+
+dabs <- rename(dabs, result = result_v)
+
+remove(pop_pr4, dae, dcad, dgini, didh, dipdm, dpesbolsa4, dtxabs, dvalbolsa4, index)
+
+################ POBREZA DATA FRAME ##################################
+
+dpobreza <- rbind(dabs, dindex)
+
+#Join with Pop
+
+dpobreza <- rename(dpobreza, reference = result_pop)
+
+#Write as Power BI needs, with comma regardless dot.
+dpobreza$result <- gsub("\\.", ",", dpobreza$result)
+dpobreza$reference <- gsub("\\.", ",", dpobreza$reference)
+
+
+#################### FYEAR  ##################
+
+fyear <- sort(unique(dpobreza$year))
+
+
+#Save Data Frames in CPU
+write.csv(dpobreza, "db/clean/health/pobreza.csv")
 
 
 ```
