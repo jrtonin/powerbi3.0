@@ -34,12 +34,11 @@ dwdir = print(getwd()) # main personal project root
 } # Import packages
 
 # setting principal roots (dw + first 3 database words + data type)
-dwagrirds = paste0(dwdir, "/db/raw/agricultural")
-
+dwagriraw = paste0(dwdir, "/db/raw/agricultural")
 
 ```
 
-```{r agricultura, include=FALSE}
+```{r agriculture}
 
 {
 # import city database
