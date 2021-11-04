@@ -29,7 +29,7 @@ dwdir = print(getwd()) # main personal project root
 { 
   # Check if the packages that we need are installed
   want = c("RCurl", "tidyverse", "readr", "zoo", "googledrive", "RCurl", 
-           "gsheet", "stringr", "knitr", "data.table")
+           "gsheet", "stringr", "knitr", "data.table", "readxl", "qdapRegex")
   have = want %in% rownames(installed.packages())
   # Install the packages that we miss
   if ( any(!have) ) { install.packages( want[!have] ) }
@@ -44,69 +44,91 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
 
 ```
 
-```{r agriculture}
+```{r health}
 
 {
 # import city database
-code_city = read_delim("C:/Users/jrton/OneDrive/BD/BI/PARAMETERS/GEO/code_city.csv", 
+fCity = read_delim("C:/Users/CepaTech/Documents/Profissional/SEPL/PowerBi 3/Banco de Dados/citiy/fcity2.csv", 
                        ";", escape_double = FALSE, 
                        locale = locale(decimal_mark = ",",
                                        grouping_mark = ".", 
-                                       encoding = "ISO-8859-1"),
+                                       encoding = "UTF-8"),
                        trim_ws = TRUE)
 
-# inseting id variable
-code_city = code_city %>% 
-  mutate(id = sequence(n())) %>% filter(id > 100 & id <=200)
+
+#Rename columns
+colnames(fCity)[1] <- "city_code"
 
 # creating a list 
-temp = code_city 
+temp = fCity 
 temp = as.vector(temp)
-temp = as.vector(code_city$code)
+temp = as.vector(fCity$city_code)
+
+# Import population database
+fPop <- read_excel("~/Profissional/SEPL/PowerBi 3/Banco de Dados/population/pop_pr.xlsx")
+
+#Rename
+colnames(fPop)[1:2] <- c("city", "variable")
+
+fPop <- melt(fPop)
+
+colnames(fPop)[3:4] <- c("year", "parameter")
+
+fPop[, 2] <- "Population"
+
+fPop <- fPop[!is.na(fPop$parameter), ]
 
 } # parameters database
 
-{
-  
-for (file in 1:100){ 
-
-data = get_sidra(x = 3939,
-          period = c(last = "10"),
-          geo = c("State","City"),
-          header = FALSE,
-          format = 4,
-          geo.filter = list("City" = temp[file], "State" = 41),
-          category = list("all"))
-
-# setting the directory      
-setwd("C:/Users/jrton/OneDrive/BD/BI/AGRIBUSINESS/WORKFLOW") 
-
-# Saving a single object to a file
-saveRDS(data, paste(file, ".rds"))
- 
-} # creating looping for files
 
 {
+  # Step 1: Import hospitalization database
+  dHospi <- read.delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/Hospitalizations.csv",
+                     sep=";")
   
-# Step 1: set the working directory (where files are saved)
-setwd("C:/Users/jrton/OneDrive/BD/BI/AGRIBUSINESS/WORKFLOW") 
+  # Step 2: Rename columns
+  colnames(dHospi)[1:2] <- c("city", "variable")
+  colnames(dHospi) <- gsub("X","", colnames(dHospi))
   
-# Step 2: get all the right file names
-file_names = list.files(getwd())
-file_names = file_names[grepl(".rds",file_names)]
-    
-# Step 3: get the read.csv function working
-files = readRDS("1 .rds")
-    
-# Step 4: use lapply to apply the read.csv function to all values of file_names
-files = lapply(file_names, readRDS)
-list = files
-files = rbindlist(files, fill = TRUE)
-    
-# check structure of new data set
-str(files)
-    
-} # join databases
+  # Step 3: Join city code with database
+  dHospi <- left_join(dHospi, fCity, by = "city")
+  
+  #Step 4: rearrange dHospi
+  dHospi <- dHospi[, c(1, 14, 2:13)]
+  
+}# Part 1: Import and Join with city_code
+
+{
+  # Step 1: Separate variable, group and type columns
+  dHospi <- cbind(dHospi, 
+                   as.data.frame(do.call("rbind", strsplit(as.character(dHospi$variable),' - '))))
+  dHospi <- dHospi[, !colnames(dHospi) == "V2"]
+  dHospi <- cbind(dHospi, 
+                   as.data.frame(do.call("rbind",
+                                         ex_between(dHospi$V3, "(", ")", 
+                                                    include.markers = TRUE,
+                                                    trim = TRUE,
+                                                    ))))
+  colnames(dHospi)[15:17] <- c("group", "variable", "standard")
+  dHospi <- dHospi[, c(1:2, 15:17, 4:14)]
+  dHospi$variable <- gsub("\\s*\\([^\\)]+\\)","", dHospi$variable)
+  dHospi$standard <- gsub("[()]", "", dHospi$standard)
+  
+  # Step 2: Create column group_code
+  dHospi$group <- "Hospitalization"
+  dHospi$group_code <- 1
+  
+  # Step 3: Create column variable_code
+  dHospi <- dHospi %>%
+    group_by(city) %>%
+    mutate(variable_code = sequence(n()))
+  
+  # Step 4: Create standard_code column
+  dHospi <- dHospi %>%
+    group_by(standard) %>%
+    mutate(standard_code = sequence())
+  
+} # Part 2: Create group_code, variable_code and type_code
 
 { 
   # selecting variables
