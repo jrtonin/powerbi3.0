@@ -124,9 +124,11 @@ fPop <- fPop[!is.na(fPop$parameter), ]
     mutate(variable_code = sequence(n()))
   
   # Step 4: Create standard_code column
-  dHospi <- dHospi %>%
-    group_by(standard) %>%
-    mutate(standard_code = sequence())
+  dHospi$standard <- case_when(is.na(dHospi$standard) ~ "pessoas", TRUE ~ dHospi$standard) 
+  standard <- unique(dHospi$standard)
+  fstand <- as.data.frame(standard) %>%
+    mutate(standard_code = sequence(n()))
+  dHospi <- left_join(dHospi, fstand, by = "standard")
   
 } # Part 2: Create group_code, variable_code and type_code
 
