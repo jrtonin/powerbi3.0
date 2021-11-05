@@ -83,7 +83,7 @@ fPop <- fPop[!is.na(fPop$parameter), ]
 
 {
   # Step 1: Import hospitalization database
-  dHospi <- read.delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/Hospitalizations.csv",
+  dHospi <- read.csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/Hospitalizations.csv",
                      sep=";")
   
   # Step 2: Rename columns
@@ -96,7 +96,7 @@ fPop <- fPop[!is.na(fPop$parameter), ]
   #Step 4: rearrange dHospi
   dHospi <- dHospi[, c(1, 14, 2:13)]
   
-}# Part 1: Import and Join with city_code
+}# Part 1: Import Hospitalization and Join with city_code
 
 {
   # Step 1: Separate variable, group and type columns
@@ -114,6 +114,235 @@ fPop <- fPop[!is.na(fPop$parameter), ]
   dHospi$variable <- gsub("\\s*\\([^\\)]+\\)","", dHospi$variable)
   dHospi$standard <- gsub("[()]", "", dHospi$standard)
   
+} # Part 2: Create group_code, variable_code and type_code for Hospitalization
+
+{
+ 
+  # Step 1: Import imunization database
+  dImun <- read.delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/imunization.csv",
+                     sep=";") 
+  
+  # Step 2: Rename columns
+  colnames(dImun)[1:2] <- c("city", "variable")
+  colnames(dImun) <- gsub("X","", colnames(dImun))
+  
+  # Step 3: Join city code with database
+  dImun <- left_join(dImun, fCity, by = "city")
+  
+  #Step 4: rearrange dImun
+  dImun <- dImun[, c(1, 14, 2:13)]
+  
+} # Part 3: Import and clean Imunization
+
+{
+  # Step 1: Separate variable, group and type columns
+  dImun <- cbind(dImun, 
+                   as.data.frame(do.call("rbind", strsplit(as.character(dImun$variable),' - '))))
+  
+  dImun <- cbind(dImun, 
+                   as.data.frame(do.call("rbind",
+                                         ex_between(dImun$V2, "(", ")", 
+                                                    include.markers = TRUE,
+                                                    trim = TRUE,
+                                                    ))))
+  dImun <- dImun[, -c(17:19)]
+  colnames(dImun)[15:17] <- c("group", "variable", "standard")
+  dImun <- dImun[, c(1:2, 15:17, 4:14)]
+  dImun$variable <- gsub("\\s*\\([^\\)]+\\)","", dImun$variable)
+  dImun$standard <- gsub("[()]", "", dImun$standard)
+  
+} # Part 4: Create Variable and Group Code
+
+{
+ 
+  # Step 1: Import Leitos database
+  dLeitos <- read.delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/leitos.csv",
+                     sep=";") 
+  
+  # Step 2: Rename columns
+  colnames(dLeitos)[1:2] <- c("city", "variable")
+  colnames(dLeitos) <- gsub("X","", colnames(dLeitos))
+  
+  # Step 3: Join city code with database
+  dLeitos <- left_join(dLeitos, fCity, by = "city")
+  
+  #Step 4: rearrange dLeitos
+  dLeitos <- dLeitos[, c(1, 14, 2:13)]
+  
+} # Part 5: Import and clean Leitos
+
+{
+  # Step 1: Separate variable, group and type columns
+  dLeitos <- cbind(dLeitos, 
+                   as.data.frame(do.call("rbind", strsplit(as.character(dLeitos$variable),' - '))))
+  
+  dLeitos <- unite(dLeitos, "variable", c("V2", "V3"), sep = " ", remove = TRUE)
+  dLeitos$variable <- gsub("Existente", "", dLeitos$variable)
+  dLeitos$standard <- "pessoas"
+  colnames(dLeitos)[14] <- "group"
+  dLeitos <- dLeitos[, c(1:2, 14:16, 3:13)]
+  
+} # Part 6: Create Variable and Group
+
+{
+ 
+  # Step 1: Import mortality database
+  dMorta <- read.delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/mortality.csv",
+                     sep=";") 
+  
+  # Step 2: Rename columns
+  colnames(dMorta)[1:2] <- c("city", "variable")
+  colnames(dMorta) <- gsub("X","", colnames(dMorta))
+  
+  # Step 3: Join city code with database
+  dMorta <- left_join(dMorta, fCity, by = "city")
+  
+  #Step 4: rearrange dMorta
+  dMorta <- dMorta[, c(1, 14, 2:13)]
+  
+} # Part 7: Import and clean Imunization
+
+{
+  # Step 1: Separate variable, group and type columns
+  dMorta <- cbind(dMorta, 
+                   as.data.frame(do.call("rbind", strsplit(as.character(dMorta$variable),' - '))))
+  
+  dMorta <- unite(dMorta, "variable", c("V2", "V3"), sep = " ", remove = TRUE)
+  dMorta$standard <- "pessoas"
+  colnames(dMorta)[14] <- "group"
+  dMorta <- dMorta[, c(1:2, 14:16, 3:13)]
+  
+} # Part 8: Create Variable and Group Code
+
+{
+ 
+  # Step 1: Import professionals database
+  dProfi <- read.delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/professionals.csv",
+                     sep=";") 
+  
+  # Step 2: Rename columns
+  colnames(dProfi)[1:2] <- c("city", "variable")
+  colnames(dProfi) <- gsub("X","", colnames(dProfi))
+  
+  # Step 3: Join city code with database
+  dProfi <- left_join(dProfi, fCity, by = "city")
+  
+  #Step 4: rearrange dProfi
+  dProfi <- dProfi[, c(1, 14, 2:13)]
+  
+} # Part 9: Import and clean professional
+
+{
+  # Step 1: Separate variable, group and type columns
+  dProfi <- cbind(dProfi, 
+                   as.data.frame(do.call("rbind", strsplit(as.character(dProfi$variable),' - '))))
+  dProfi$standard <- "pessoas"
+  dProfi <- dProfi[, c(1:2, 15:17, 4:14)]
+  colnames(dProfi)[3:4] <- c("group", "variable")
+  
+} # Part 10: Create Variable and Group Code
+
+{
+ 
+  # Step 1: Import expenses database
+  dExpen <- read.delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/expenses.csv",
+                     sep=";") 
+  
+  # Step 2: Rename columns
+  colnames(dExpen)[1:2] <- c("city", "variable")
+  colnames(dExpen) <- gsub("X","", colnames(dExpen))
+  
+  # Step 3: Join city code with database
+  dExpen <- left_join(dExpen, fCity, by = "city")
+  
+  #Step 4: rearrange dExpen
+  dExpen <- dExpen[, c(1, 14, 2:13)]
+  
+} # Part 11: Import and clean Expenses
+
+{
+  # Step 1: Separate variable, group and type columns
+  dExpen <- cbind(dExpen, 
+                   as.data.frame(do.call("rbind", strsplit(as.character(dExpen$variable),' - '))))
+  dExpen <- cbind(dExpen, 
+                   as.data.frame(do.call("rbind",
+                                         ex_between(dExpen$V2, "(", ")", 
+                                                    include.markers = TRUE,
+                                                    trim = TRUE,
+                                                    ))))
+  
+  
+  # Step 2: Rename and rearrange Columns
+  colnames(dExpen)[15:17] <- c("group", "variable", "standard")
+  dExpen <- dExpen[, c(1:2, 15:17, 4:14)]
+  
+  # Step 3: Eliminate problematic symbols
+  dExpen$variable <- gsub("\\s*\\([^\\)]+\\)","", dExpen$variable)
+  dExpen$standard <- gsub("[()]", "", dExpen$standard)
+  dExpen$group <- "Despesas Municipais"
+  
+} # Part 12: Create variable and group
+
+{
+  # Step 1: Bind all health databases
+  dHealth <- rbind(dExpen, dHospi, dImun, dLeitos, dMorta, dProfi)
+  
+  # Step 2: Remove previous databases
+  remove(dExpen, dHospi, dImun, dLeitos, dMorta, dProfi)
+  
+} # Part 13: Bind all databases
+
+{
+  # Step 1: Create fGroup with codes
+  fHealthGroup <- data.frame(unique(dHealth$group)) %>%
+    mutate(group_code = sequence(n()))
+  colnames(fHealthGroup)[1] <- "group"
+  
+  # Step 2: Create fvariable with codes
+  fHealthVariable <- data.frame(unique(dHealth$variable)) %>%
+    mutate(variable_code = sequence(n()))
+  colnames(fHealthVariable)[1] <- "variable"
+  
+  # Step 3: Transform Nas into Pessoas
+  dHealth$standard <- case_when(is.na(dHealth$standard) ~"pessoas",
+                                TRUE ~as.character(dHealth$standard))
+  fHealthStand <- data.frame(unique(dHealth$standard)) %>%
+    mutate(standar_code = sequence(n()))
+  colnames(fHealthStand)[1] <- "standard"
+    
+} # Part 14: Create Codes for Group, variable and standard 
+
+{
+
+  # Step 1: Join Group_code
+  dHealth <- left_join(dHealth, fHealthGroup, by = "group", keep = FALSE)
+  
+  # Step 2: Join variable_code
+  dHealth <- left_join(dHealth, fHealthVariable, by = "variable", keep = FALSE)
+  
+  # Step 3: Join standard_code
+  dHealth <- left_join(dHealth, fHealthStand, by = "standard", keep = FALSE)
+  
+  # Step 4: Clean dHealth
+  dHealth <- dHealth[, c(1:2, 17:19, 6:16)]
+  
+} # Part 15: Join all codes with dHealth
+
+{
+  
+  # Step 1: Turn columns into one single column called year and the values as result
+  dHealth <- gather(dHealth, key = "year", value = "result", c("2010":"2020"))
+  
+} # Part 16: Gather database
+
+```
+
+
+
+
+
+
+{
   # Step 2: Create column group_code
   dHospi$group <- "Hospitalization"
   dHospi$group_code <- 1
@@ -136,167 +365,7 @@ fPop <- fPop[!is.na(fPop$parameter), ]
   type <- c("absoluto", "taxa")
   type_code <- 1:2
   ftype <- data.frame(type, type_code)
-  
-  
-  
-} # Part 2: Create group_code, variable_code and type_code
+} # How to create codes
 
-{ 
-  # selecting variables
-  data = files %>%
-    select(D1C, D2C, D3C, D4C, MC, V) %>%
-    filter(V > 0)
-  
-  # renaming variables
-  names(data) = c("code", "year", "code_category", "code_variable", "code_standard", "result")
-  
-  # including group variable
-  data = data %>%
-    mutate(code_group = 1)
-  
-  # exporting database
-  write.csv2(data, "C:/Users/jrton/OneDrive/BD/BI/AGRIBUSINESS/DATABASE/dLivestock.csv", 
-             row.names=FALSE, na = "")
-  
-} # organizing database 
-
-{
-  # category
-  fLivestockCategory = data %>%
-    group_by(code_group) %>%
-    dplyr::summarise(n = n()) %>% 
-    select(-n) %>%
-    mutate(group = "PecuÃ¡ria")
-  
-  # variable
-  fLivestockVariable = files %>%
-    group_by(D4C, D4N) %>%
-    dplyr::summarise(n = n()) %>%
-    select(-n)
-  
-  # renaming variables
-  names(fLivestockVariable) = c("code_variable", "variable")
-  
-  # variable
-  fLivestockStandard = files %>%
-    group_by(MC, MN) %>%
-    dplyr::summarise(n = n()) %>%
-    select(-n)
-  
-  # renaming variables
-  names(fLivestockStandard) = c("code_standard", "standard")
-  
-} # creating filter databases
-
-
-  
-
-
-{
-  
-for (file in 1:399){ 
-
-data = get_sidra(x = 5457,
-          period = c(last = "10"),
-          geo = c("State","City"),
-          header = FALSE,
-          format = 4,
-          geo.filter = list("City" = temp[file], "State" = 41),
-          category = list("all"),
-          classific = "all")
-
-# setting the directory      
-setwd("C:/Users/jrton/OneDrive/BD/BI/AGRIBUSINESS/WORKFLOW") 
-
-# Saving a single object to a file
-saveRDS(data, paste(file, ".rds"))
- 
-} # creating looping for files
-
-{
-  
-# Step 1: set the working directory (where files are saved)
-setwd("C:/Users/jrton/OneDrive/BD/BI/AGRIBUSINESS/WORKFLOW") 
-  
-# Step 2: get all the right file names
-file_names = list.files(getwd())
-file_names = file_names[grepl(".rds",file_names)]
-    
-# Step 3: get the read.csv function working
-files = readRDS("1 .rds")
-    
-# Step 4: use lapply to apply the read.csv function to all values of file_names
-files = lapply(file_names, readRDS)
-list = files
-files = rbindlist(files, fill = TRUE)
-    
-# check structure of new data set
-str(files)
-    
-} # join databases
-
-{ 
-  # selecting variables
-  data = files %>%
-    select(D1C, D2C, D3C, D4C, MC, V) %>%
-    filter(V > 0)
-  
-  # renaming variables
-  names(data) = c("code", "year", "code_category", "code_variable", "code_standard", "result")
-  
-  # including group variable
-  data = data %>%
-    mutate(code_group = 2) %>%
-    filter(code_variable != 0)
-  
-  # exporting database
-  write.csv2(data, "C:/Users/jrton/OneDrive/BD/BI/AGRIBUSINESS/DATABASE/dFarming.csv", 
-             row.names=FALSE, na = "")
-  
-} # organizing database 
-
-{
-  # category
-  fFarmingCategory = data %>%
-    group_by(code_group) %>%
-    dplyr::summarise(n = n()) %>% 
-    select(-n) %>%
-    mutate(group = "Agricultura")
-  
-  # variable
-  fFarmingVariable = files %>%
-    group_by(D4C, D4N) %>%
-    dplyr::summarise(n = n()) %>%
-    select(-n) %>%
-    filter(D4C != 0)
-  
-  # renaming variables
-  names(fFarmingVariable) = c("code_variable", "variable")
-  
-  # variable
-  fFarmingStandard = files %>%
-    group_by(MC, MN) %>%
-    dplyr::summarise(n = n()) %>%
-    select(-n)
-  
-  # renaming variables
-  names(fFarmingStandard) = c("code_standard", "standard")
-  
-} # creating filter databases
-  
-{
-
-# setting folder  
-fold = "C:/Users/jrton/OneDrive/BD/BI/AGRIBUSINESS/WORKFLOW"
-
-# getting all files in the directories, recursively
-f = list.files(fold, include.dirs = F, full.names = T, recursive = T)
-
-# removing the files
-file.remove(f)
-  
-} # cleaning workspace folder
-
-} # farming database
 
 ```
