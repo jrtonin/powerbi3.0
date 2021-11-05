@@ -130,6 +130,15 @@ fPop <- fPop[!is.na(fPop$parameter), ]
     mutate(standard_code = sequence(n()))
   dHospi <- left_join(dHospi, fstand, by = "standard")
   
+  # Step 5: Create type_code column
+  dHospi$type_code <- if_else(dHospi$standard == "%", 2,
+                              1) 
+  type <- c("absoluto", "taxa")
+  type_code <- 1:2
+  ftype <- data.frame(type, type_code)
+  
+  
+  
 } # Part 2: Create group_code, variable_code and type_code
 
 { 
@@ -179,20 +188,9 @@ fPop <- fPop[!is.na(fPop$parameter), ]
   
 } # creating filter databases
 
-{
 
-# setting folder  
-fold = "C:/Users/jrton/OneDrive/BD/BI/AGRIBUSINESS/WORKFLOW"
-
-# getting all files in the directories, recursively
-f = list.files(fold, include.dirs = F, full.names = T, recursive = T)
-
-# removing the files
-file.remove(f)
   
-} # cleaning workspace folder
-  
-} # livestock database
+
 
 {
   
