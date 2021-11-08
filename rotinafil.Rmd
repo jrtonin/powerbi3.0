@@ -83,11 +83,13 @@ fPop <- fPop[!is.na(fPop$population), ]
 
 {
 
-  # Step 1: Import hospitalization database                     
+  # Step 1: Import hospitalization database and export raw base                     
   dHospi <- read_delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/Hospitalizations.csv", 
     delim = ";", escape_double = FALSE, locale = locale(decimal_mark = ",", 
         grouping_mark = ".", encoding = "ISO-8859-1"), 
     trim_ws = TRUE)
+  
+  write.csv(dHospi, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/health/dHospi.csv")
   
   # Step 2: Rename columns
   colnames(dHospi)[1:2] <- c("city", "variable")
@@ -130,9 +132,10 @@ fPop <- fPop[!is.na(fPop$population), ]
     locale = locale(decimal_mark = ",", grouping_mark = ".", 
         encoding = "ISO-8859-1"), trim_ws = TRUE)
   
+  write.csv(dImun, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/health/dImun.csv")
+  
   # Step 2: Rename columns
   colnames(dImun)[1:2] <- c("city", "variable")
-  colnames(dImun) <- gsub("X","", colnames(dImun))
   
   # Step 3: Join city code with database
   dImun <- left_join(dImun, fCity, by = "city")
@@ -173,6 +176,8 @@ fPop <- fPop[!is.na(fPop$population), ]
         `2019` = col_double(), `2020` = col_double()), 
     locale = locale(decimal_mark = ",", grouping_mark = ".", 
         encoding = "ISO-8859-1"), trim_ws = TRUE)
+  
+  write.csv(dLeitos, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/health/dLeitos.csv")
    
   
   # Step 2: Rename columns
@@ -212,9 +217,10 @@ fPop <- fPop[!is.na(fPop$population), ]
     locale = locale(decimal_mark = ",", grouping_mark = ".", 
         encoding = "ISO-8859-1"), trim_ws = TRUE)
   
+  write.csv(dMorta, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/health/dMorta.csv")
+  
   # Step 2: Rename columns
   colnames(dMorta)[1:2] <- c("city", "variable")
-  colnames(dMorta) <- gsub("X","", colnames(dMorta))
   
   # Step 3: Join city code with database
   dMorta <- left_join(dMorta, fCity, by = "city")
@@ -222,7 +228,7 @@ fPop <- fPop[!is.na(fPop$population), ]
   #Step 4: rearrange dMorta
   dMorta <- dMorta[, c(1, 14, 2:13)]
   
-} # Part 7: Import and clean Imunization
+} # Part 7: Import and clean Mortality
 
 {
   # Step 1: Separate variable, group and type columns
@@ -249,6 +255,8 @@ fPop <- fPop[!is.na(fPop$population), ]
         `2020` = col_double()), locale = locale(decimal_mark = ",", 
         grouping_mark = ".", encoding = "ISO-8859-1"), 
     trim_ws = TRUE)
+  
+  write.csv(dProfi, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/health/dProfi.csv")
 
   # Step 2: Rename columns
   colnames(dProfi)[1:2] <- c("city", "variable")
@@ -283,6 +291,8 @@ fPop <- fPop[!is.na(fPop$population), ]
         `2019` = col_number(), `2020` = col_number()), 
     locale = locale(decimal_mark = ",", grouping_mark = ".", 
         encoding = "ISO-8859-1"), trim_ws = TRUE)
+  
+  write.csv(dExpen, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/health/dExpen.csv")
      
   # Step 2: Rename columns
   colnames(dExpen)[1:2] <- c("city", "variable")
@@ -376,6 +386,9 @@ fPop <- fPop[!is.na(fPop$population), ]
   
   # Step 2: Drop columns and prepare to export
   dHealth <- dHealth[, -c(1, 8)]
+  
+  # Step 3: Export clean base
+  write.csv(dHealth, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/clean/health/dHealth.csv")
 } # Part 17: Join dHealth and Population
 
 
