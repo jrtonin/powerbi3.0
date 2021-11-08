@@ -82,13 +82,19 @@ fPop <- fPop[!is.na(fPop$parameter), ]
 
 
 {
+
   # Step 1: Import hospitalization database
-  dHospi <- read.csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/Hospitalizations.csv",
-                     sep=";")
+  dHospi <- read.table("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/Hospitalizations.csv",
+                       header = TRUE,
+                       sep=";",
+                       
+                       )
   
   # Step 2: Rename columns
   colnames(dHospi)[1:2] <- c("city", "variable")
   colnames(dHospi) <- gsub("X","", colnames(dHospi))
+  
+  
   
   # Step 3: Join city code with database
   dHospi <- left_join(dHospi, fCity, by = "city")
