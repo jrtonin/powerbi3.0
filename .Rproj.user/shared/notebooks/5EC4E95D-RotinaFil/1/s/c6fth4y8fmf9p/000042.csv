@@ -1,0 +1,33 @@
+"0","{
+"
+"2","Warning message:
+"
+"2","One or more parsing issues, see `problems()` for details 
+"
+"0"," "
+"0","  # Step 1: Import expenses database"
+"0","  dExpen <- read_delim(""~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/expenses.csv"", "
+"0","    delim = "";"", escape_double = FALSE, locale = locale(decimal_mark = "","", "
+"0","        grouping_mark = ""."", encoding = ""ISO-8859-1""), "
+"0","    trim_ws = TRUE)"
+"0","     "
+"0","  # Step 2: Rename columns"
+"0","  colnames(dExpen)[1:2] <- c(""city"", ""variable"")"
+"0","  "
+"0","  # Step 3: Join city code with database"
+"0","  dExpen <- left_join(dExpen, fCity, by = ""city"")"
+"0","  "
+"0","  #Step 4: rearrange dExpen"
+"0","  dExpen <- dExpen[, c(1, 14, 2:13)]"
+"0","  "
+"0","} # Part 11: Import and clean Expenses"
+"1","[1m[1mRows: [1m[22m[34m[34m399[34m[39m [1m[1mColumns: [1m[22m[34m[34m13[34m[39m
+"
+"1","[36m--[39m [1m[1mColumn specification[1m[22m [36m--------------------------------------------------------------------------------------------------[39m
+[1mDelimiter:[22m "";""
+[31mchr[39m (12): Localidade, Variável, 2010, 2011, 2012, 2013, 2014, 2016, 2017, 2018, 2019, 2020
+"
+"1","
+[36mi[39m Use [38;5;235m[48;5;253m[38;5;235m[48;5;253m`spec()`[48;5;253m[38;5;235m[49m[39m to retrieve the full column specification for this data.
+[36mi[39m Specify the column types or set [38;5;235m[48;5;253m[38;5;235m[48;5;253m`show_col_types = FALSE`[48;5;253m[38;5;235m[49m[39m to quiet this message.
+"

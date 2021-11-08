@@ -127,7 +127,7 @@ str(files)
     group_by(code_group) %>%
     dplyr::summarise(n = n()) %>% 
     select(-n) %>%
-    mutate(group = "Pecuária")
+    mutate(group = "PecuÃ¡ria")
   
   # variable
   fLivestockVariable = files %>%
