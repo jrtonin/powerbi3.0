@@ -72,29 +72,25 @@ colnames(fPop)[1:2] <- c("city", "variable")
 
 fPop <- melt(fPop)
 
-colnames(fPop)[3:4] <- c("year", "parameter")
+colnames(fPop)[3:4] <- c("year", "population")
 
 fPop[, 2] <- "Population"
 
-fPop <- fPop[!is.na(fPop$parameter), ]
+fPop <- fPop[!is.na(fPop$population), ]
 
 } # parameters database
 
 
 {
 
-  # Step 1: Import hospitalization database
-  dHospi <- read.table("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/Hospitalizations.csv",
-                       header = TRUE,
-                       sep=";",
-                       
-                       )
+  # Step 1: Import hospitalization database                     
+  dHospi <- read_delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/Hospitalizations.csv", 
+    delim = ";", escape_double = FALSE, locale = locale(decimal_mark = ",", 
+        grouping_mark = ".", encoding = "ISO-8859-1"), 
+    trim_ws = TRUE)
   
   # Step 2: Rename columns
   colnames(dHospi)[1:2] <- c("city", "variable")
-  colnames(dHospi) <- gsub("X","", colnames(dHospi))
-  
-  
   
   # Step 3: Join city code with database
   dHospi <- left_join(dHospi, fCity, by = "city")
@@ -125,8 +121,14 @@ fPop <- fPop[!is.na(fPop$parameter), ]
 {
  
   # Step 1: Import imunization database
-  dImun <- read.delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/imunization.csv",
-                     sep=";") 
+  dImun <- read_delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/imunization.csv", 
+    delim = ";", escape_double = FALSE, col_types = cols(`2010` = col_number(), 
+        `2012` = col_number(), `2013` = col_number(), 
+        `2014` = col_number(), `2015` = col_number(), 
+        `2016` = col_number(), `2018` = col_number(),
+        `2017` = col_number(), `2020` = col_number()), 
+    locale = locale(decimal_mark = ",", grouping_mark = ".", 
+        encoding = "ISO-8859-1"), trim_ws = TRUE)
   
   # Step 2: Rename columns
   colnames(dImun)[1:2] <- c("city", "variable")
@@ -162,12 +164,19 @@ fPop <- fPop[!is.na(fPop$parameter), ]
 {
  
   # Step 1: Import Leitos database
-  dLeitos <- read.delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/leitos.csv",
-                     sep=";") 
+  dLeitos <- read_delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/leitos.csv", 
+    delim = ";", escape_double = FALSE, col_types = cols(`2010` = col_double(), 
+        `2011` = col_double(), `2012` = col_double(), 
+        `2013` = col_double(), `2014` = col_double(), 
+        `2015` = col_double(), `2016` = col_double(), 
+        `2017` = col_double(), `2018` = col_double(), 
+        `2019` = col_double(), `2020` = col_double()), 
+    locale = locale(decimal_mark = ",", grouping_mark = ".", 
+        encoding = "ISO-8859-1"), trim_ws = TRUE)
+   
   
   # Step 2: Rename columns
   colnames(dLeitos)[1:2] <- c("city", "variable")
-  colnames(dLeitos) <- gsub("X","", colnames(dLeitos))
   
   # Step 3: Join city code with database
   dLeitos <- left_join(dLeitos, fCity, by = "city")
@@ -193,8 +202,15 @@ fPop <- fPop[!is.na(fPop$parameter), ]
 {
  
   # Step 1: Import mortality database
-  dMorta <- read.delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/mortality.csv",
-                     sep=";") 
+  dMorta <-  read_delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/mortality.csv", 
+    delim = ";", escape_double = FALSE, col_types = cols(`2010` = col_number(), 
+        `2011` = col_double(), `2012` = col_double(), 
+        `2013` = col_double(), `2014` = col_double(), 
+        `2015` = col_double(), `2016` = col_double(), 
+        `2017` = col_double(), `2018` = col_double(), 
+        `2019` = col_double(), `2020` = col_double()), 
+    locale = locale(decimal_mark = ",", grouping_mark = ".", 
+        encoding = "ISO-8859-1"), trim_ws = TRUE)
   
   # Step 2: Rename columns
   colnames(dMorta)[1:2] <- c("city", "variable")
@@ -223,12 +239,19 @@ fPop <- fPop[!is.na(fPop$parameter), ]
 {
  
   # Step 1: Import professionals database
-  dProfi <- read.delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/professionals.csv",
-                     sep=";") 
-  
+  dProfi <-    read_delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/professionals.csv", 
+    delim = ";", escape_double = FALSE, col_types = cols(`2010` = col_double(), 
+        `2011` = col_double(), `2012` = col_double(),
+        `2013` = col_double(), 
+        `2014` = col_double(), `2015` = col_double(), 
+        `2016` = col_double(), `2017` = col_double(), 
+        `2018` = col_double(), `2019` = col_double(), 
+        `2020` = col_double()), locale = locale(decimal_mark = ",", 
+        grouping_mark = ".", encoding = "ISO-8859-1"), 
+    trim_ws = TRUE)
+
   # Step 2: Rename columns
   colnames(dProfi)[1:2] <- c("city", "variable")
-  colnames(dProfi) <- gsub("X","", colnames(dProfi))
   
   # Step 3: Join city code with database
   dProfi <- left_join(dProfi, fCity, by = "city")
@@ -251,12 +274,18 @@ fPop <- fPop[!is.na(fPop$parameter), ]
 {
  
   # Step 1: Import expenses database
-  dExpen <- read.delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/expenses.csv",
-                     sep=";") 
-  
+  dExpen <- read_delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/expenses.csv", 
+    delim = ";", escape_double = FALSE, col_types = cols(`2010` = col_number(), 
+        `2011` = col_number(), `2012` = col_number(), 
+        `2013` = col_number(), `2014` = col_number(), 
+        `2015` = col_number(), `2016` = col_number(), 
+        `2017` = col_number(), `2018` = col_number(), 
+        `2019` = col_number(), `2020` = col_number()), 
+    locale = locale(decimal_mark = ",", grouping_mark = ".", 
+        encoding = "ISO-8859-1"), trim_ws = TRUE)
+     
   # Step 2: Rename columns
   colnames(dExpen)[1:2] <- c("city", "variable")
-  colnames(dExpen) <- gsub("X","", colnames(dExpen))
   
   # Step 3: Join city code with database
   dExpen <- left_join(dExpen, fCity, by = "city")
@@ -340,6 +369,16 @@ fPop <- fPop[!is.na(fPop$parameter), ]
   dHealth <- gather(dHealth, key = "year", value = "result", c("2010":"2020"))
   
 } # Part 16: Gather database
+
+{
+  # Step 1: Join
+  dHealth <- left_join(dHealth, fPop, by = c("city", "year"))
+  
+  # Step 2: Drop columns and prepare to export
+  dHealth <- dHealth[, -c(1, 8)]
+} # Part 17: Join dHealth and Population
+
+
 
 ```
 
