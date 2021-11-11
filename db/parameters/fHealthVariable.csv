@@ -1,0 +1,59 @@
+"","variable","variable_code"
+"1","Saúde",1
+"2","Número de Internações",2
+"3","Gastos Total com Internações",3
+"4","Dias de Permanência",4
+"5","Óbitos nas Internações",5
+"6","Taxa de Mortalidade nas Internações",6
+"7","BCG",7
+"8","Hepatite A",8
+"9","Hepatite B",9
+"10","Hepatite B em menores de 1 mês",10
+"11","Poliomielite",11
+"12","Febre Amarela",12
+"13","Rotavírus Humano",13
+"14","Meningocócica Conjugada",14
+"15","Pneumocócica 10V",15
+"16","Tríplice Viral",16
+"17","Tetra Viral",17
+"18","Tríplice, Tetra, Tetra / Penta Bacteriana",18
+"19","Penta Bacteriana",19
+"20","Sarampo",20
+"21","Dupla Adulto e Tríplice Acelular Gestante",21
+"22","Tríplice Acelular Gestante",22
+"23"," Total",23
+"24"," Cirúrgicos",24
+"25"," Clínicos",25
+"26"," Obstétricos",26
+"27"," Pediátricos",27
+"28"," Outras Especialidades",28
+"29"," Hospital / Dia",29
+"30","SUS Total",30
+"31","SUS Cirúrgicos",31
+"32","SUS Clínicos",32
+"33","SUS Obstétricos",33
+"34","SUS Pediátricos",34
+"35","SUS Outras Especialidades",35
+"36","SUS Hospital / Dia",36
+"37","Total Nascidos Vivos",37
+"38","Total (Mortalidade Geral) Óbitos (CID10)",38
+"39","Cap I Algumas Doenças Infecciosas e Parasitárias",39
+"40","Cap II Neoplasias (Tumores)",40
+"41","Cap III Doenças do Sangue, Órgãos Hematopoéticos e Transtornos Imunitários",41
+"42","Cap IV Doenças Endócrinas, Nutricionais e Metabólicas",42
+"43","Cap V Transtornos Mentais e Comportamentais",43
+"44","Cap VI Doenças do Sistema Nervoso",44
+"45","Cap IX Doenças do Aparelho Circulatório",45
+"46","Cap X Doenças do Aparelho Respiratório",46
+"47","Cap XI Doenças do Aparelho Digestivo",47
+"48","Cap XII Doenças da Pele e do Tecido Celular Subcutâneo",48
+"49","Cap XIII Doenças do Sistema Osteomuscular e do Tecido Conjuntivo",49
+"50","Cap XIV Doenças do Aparelho Geniturinário",50
+"51","Cap XV Gravidez, Parto e Puerpério",51
+"52","Cap XVI Algumas Afecções Originadas no Período Perinatal",52
+"53","Cap XVII Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",53
+"54","Total",54
+"55","Médicos",55
+"56","Enfermeiros",56
+"57","Dentistas",57
+"58","Farmacêuticos",58

@@ -64,6 +64,9 @@ temp = fCity
 temp = as.vector(temp)
 temp = as.vector(fCity$city_code)
 
+  # Export do db paste
+  write.csv(fCity, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fCity.csv")
+
 # Import population database
 fPop <- read_excel("~/Profissional/SEPL/PowerBi 3/Banco de Dados/population/pop_pr.xlsx")
 
@@ -77,6 +80,9 @@ colnames(fPop)[3:4] <- c("year", "population")
 fPop[, 2] <- "Population"
 
 fPop <- fPop[!is.na(fPop$population), ]
+
+  #Export to db parameter paste
+  write.csv(fPop, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fPop.csv")
 
 } # parameters database
 
@@ -354,7 +360,21 @@ fPop <- fPop[!is.na(fPop$population), ]
   fHealthStand <- data.frame(unique(dHealth$standard)) %>%
     mutate(standar_code = sequence(n()))
   colnames(fHealthStand)[1] <- "standard"
-    
+  
+  # Step 4:Create type code
+  fType <- as.data.frame(cbind(c(1,2), c("absolute", "rate")))
+  colnames(fType) <- c("type_code", "type")
+  
+  # Step 5: Export to db parameters paste
+  write.csv(fHealthGroup, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fHealthGroup.csv")
+  write.csv(fHealthVariable,
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fHealthVariable.csv")
+  write.csv(fHealthStand, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fHealthStandard.csv")
+  write.csv(fType, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fType.csv")
+  
 } # Part 14: Create Codes for Group, variable and standard 
 
 {
@@ -368,8 +388,12 @@ fPop <- fPop[!is.na(fPop$population), ]
   # Step 3: Join standard_code
   dHealth <- left_join(dHealth, fHealthStand, by = "standard", keep = FALSE)
   
-  # Step 4: Clean dHealth
-  dHealth <- dHealth[, c(1:2, 17:19, 6:16)]
+  # Step 4: Join type code
+  dHealth$type_code <- case_when(dHealth$standar_code == 4 ~ 2,
+                            TRUE ~1)
+  
+  # Step 5: Clean dHealth
+  dHealth <- dHealth[, c(1:2, 17:20, 6:16)]
   
 } # Part 15: Join all codes with dHealth
 
