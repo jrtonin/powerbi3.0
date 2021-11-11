@@ -428,3 +428,40 @@ fPop <- fPop[!is.na(fPop$population), ]
 
 
 ```
+```{r poverty}
+
+{
+  # Step 1: Import Auxilio Emergencial
+  dAuxEmerg <- read_csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/ae.csv", 
+    locale = locale(decimal_mark = ",", grouping_mark = ".", 
+        encoding = "ISO-8859-1")) %>%
+    filter(UF == "PR")
+  
+  dAuxEmerg <- dAuxEmerg[, c(2, 4:6)]
+  colnames(dAuxEmerg) <-  c("city", "year", "Elegiveis ao Auxilio", "Soma do Auxilio")
+  
+  dAuxEmerg <- gather(dAuxEmerg, key = "variable", value = "result", "Elegiveis ao Auxilio", "Soma do Auxilio")
+  dAuxEmerg$city <- tolower(dAuxEmerg$city)
+  dAuxEmerg$city <- gsub("´", "'", dAuxEmerg$city)
+  
+  # Step 2: Import CadUnico
+  dCadUnico <- read_csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/caunico.csv", 
+    locale = locale(decimal_mark = ",", grouping_mark = ".", 
+        encoding = "ISO-8859-1"))
+  dCadUnico <- dCadUnico[, c(2, 4:5)]
+  colnames(dCadUnico) <- c("city", "year", "result")
+  
+  dCadUnico <- cbind(dCadUnico, str_split_fixed(dCadUnico$year, "/", 2))
+  dCadUnico <- dCadUnico[, c(1,3,5)]
+  colnames(dCadUnico)[3] <- "year"
+  dCadUnico <- dCadUnico %>%
+    group_by(city, year) %>%
+    summarize(result = sum(result)/n())
+  dCadUnico$result <- round(dCadUnico$result, 0)
+  dCadUnico$city <- tolower(dCadUnico$city)
+  
+
+  
+} # Part 1: Import Database
+
+```
