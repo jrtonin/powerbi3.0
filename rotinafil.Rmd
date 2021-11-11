@@ -409,10 +409,11 @@ fPop <- fPop[!is.na(fPop$population), ]
   dHealth <- left_join(dHealth, fPop, by = c("city", "year"))
   
   # Step 2: Drop columns and prepare to export
-  dHealth <- dHealth[, -c(1, 8)]
+  dHealth <- dHealth[, -c(1, 9)]
   
   # Step 3: Export clean base
   write.csv(dHealth, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/clean/health/dHealth.csv")
+  
 } # Part 17: Join dHealth and Population
 
 
