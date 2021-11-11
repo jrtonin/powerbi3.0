@@ -411,11 +411,12 @@ fPop <- fPop[!is.na(fPop$population), ]
   # Step 2: Drop columns and prepare to export
   dHealth <- dHealth[, -c(1, 9)]
   
-  # Step3: Change dot to comma for use in power bi
-  dHealth$result <- gsub("\\.", ",", dHealth$result)
-  
-  # Step 4: Export clean base
-  write.csv(dHealth, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/clean/health/dHealth.csv")
+  # Step 3: Export clean base
+  write.table(dHealth,
+              "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/clean/health/dHealth.csv",
+              sep = ";", dec = ",",
+              row.names = FALSE, col.names = TRUE, 
+              na = "")
   
 } # Part 17: Join dHealth and Population
 
