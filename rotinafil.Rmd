@@ -365,7 +365,10 @@ fPop <- fPop[!is.na(fPop$population), ]
   fType <- as.data.frame(cbind(c(1,2), c("absolute", "rate")))
   colnames(fType) <- c("type_code", "type")
   
-  # Step 5: Export to db parameters paste
+  # Step 5: Create year
+  fYear <- c(2010:2021)
+  
+  # Step 6: Export to db parameters paste
   write.csv(fHealthGroup, 
             "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fHealthGroup.csv")
   write.csv(fHealthVariable,
@@ -374,6 +377,8 @@ fPop <- fPop[!is.na(fPop$population), ]
             "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fHealthStandard.csv")
   write.csv(fType, 
             "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fType.csv")
+  write.csv(fYear, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fYear.csv")
   
 } # Part 14: Create Codes for Group, variable and standard 
 
