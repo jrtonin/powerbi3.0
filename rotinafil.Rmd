@@ -596,7 +596,6 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   
   dPover <- left_join(dPover, fCity2, by = "city")
   dPover$type <- "absolute"
-  dPover <- left_join(dPover, fPoverGroup, by = "group")
   dPover <- left_join(dPover, fPoverVariable, by = "variable")
   dPover <- left_join(dPover, fType, by = "type")
   dPover <- left_join(dPover, fStandard, by = "standard" )
@@ -615,7 +614,6 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   dIPDM <- gather(dIPDM, key = "year", value = "result", "2010":"2018")
   
   dIPDM <- left_join(dIPDM, fCity, by = "city")
-  dIPDM <- left_join(dIPDM, fPoverGroup, "group")
   dIPDM <- left_join(dIPDM, fPoverVariable, "variable")
   dIPDM <- left_join(dIPDM, fStandard, "standard")
   dIPDM <- left_join(dIPDM, fType, "type")
