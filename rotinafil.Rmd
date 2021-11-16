@@ -199,7 +199,7 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   dImun$variable <- gsub("\\s*\\([^\\)]+\\)","", dImun$variable)
   dImun$standard <- gsub("[()]", "", dImun$standard)
   
-} # Part 4: Create Variable and Group Code
+} # Part 4: Create Variable and Group Code for Imun
 
 {
  
@@ -239,7 +239,7 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   dLeitos$standard <- "unidade"
   dLeitos <- dLeitos[, c(1:2, 14:16, 3:13)]
   
-} # Part 6: Create Variable and Group
+} # Part 6: Create Variable and Group for Leitos
 
 {
  
@@ -277,7 +277,7 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   colnames(dMorta)[14] <- "group"
   dMorta <- dMorta[, c(1:2, 14:16, 3:13)]
   
-} # Part 8: Create Variable and Group Code
+} # Part 8: Create Variable and Group Code Mortality
 
 {
  
@@ -314,7 +314,7 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   dProfi <- dProfi[, c(1:2, 15:17, 4:14)]
   colnames(dProfi)[3:4] <- c("group", "variable")
   
-} # Part 10: Create Variable and Group Code
+} # Part 10: Create Variable and Group Code Professional
 
 {
  
@@ -375,13 +375,19 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
 } # Part 13: Bind all databases
 
 {
+  
+  
   # Step 1: Create fGroup with codes
   fHealthGroup <- data.frame(group = unique(dHealth$group)) %>%
     mutate(group_code = sequence(n()))
   
   # Step 2: Create fvariable with codes
-  fHealthVariable <- data.frame(variable = unique(dHealth$variable)) %>%
-    mutate(variable_code = sequence(n()))
+  fHealthVariable = dHealth %>%
+    select(group, variable)
+  fHealthVariable = fHealthVariable[!duplicated(fHealthVariable), ]
+  fHealthVariable <- mutate(fHealthVariable, variable_code = sequence(n()))
+  fHealthVariable <- left_join(fHealthVariable, fHealthGroup, by = "group")
+  fHealthVariable <- fHealthVariable[, c(4,3,2)]
   
   # Step 4: Export to db parameters paste
   write.csv(fHealthGroup, 
@@ -567,12 +573,19 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   dPover <- rbind(dAuxEmerg, dCadUnico, dPessoBolsa, dValorBolsa) %>%
     mutate(group = "Assistencia Social")
   
-  # Step 2: Poverty Create Code Variable
-  fPoverVariable <- data.frame(
-    variable = c(unique(dPover$variable), "Índice Ipardes de Desempenho Municipal (IPDM)")) %>%
-    mutate(variable_code = sequence(n()))
-  
+  # Step 2: Poverty Create Code Group and Variable
   fPoverGroup <- data.frame( group = c("Assistencia Social", "Indice"), group_code = c(1:2))
+  
+  fPoverVariable = dPover %>%
+    select(group, variable) %>%
+    rbind(c("Indice", "Índice Ipardes de Desempenho Municipal (IPDM)"))
+  
+  fPoverVariable = fPoverVariable[!duplicated(fPoverVariable), ]
+  fPoverVariable <- mutate(fPoverVariable, variable_code = sequence(n()))
+  fPoverVariable <- left_join(fPoverVariable, fPoverGroup, by = "group")
+  fPoverVariable <- fPoverVariable[, c(4,3,2)]
+  
+  
   
   write.csv(fPoverVariable, 
             "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fPoverVariable.csv")
