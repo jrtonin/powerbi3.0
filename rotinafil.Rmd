@@ -574,6 +574,11 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   
   fPoverGroup <- data.frame( group = c("Assistencia Social", "Indice"), group_code = c(1:2))
   
+  write.csv(fPoverVariable, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fPoverVariable.csv")
+  write.csv(fPoverGroup, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fPoverGroup.csv")
+  
   # Step 3: Join codes with dPover
   
   dPover <- left_join(dPover, fCity2, by = "city")
