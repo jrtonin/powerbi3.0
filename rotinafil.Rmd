@@ -91,20 +91,18 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
 
 {
   # Step 1: Create fType
-  fType <- data.frame(type = c("absolute", "rate"), type_code = c(1:2))
+  fType <- data.frame(type = c("absolute", "rate", "per capita", "por mil", "proportion"), type_code = c(1:5))
   
   stand <- c("R$ 1,00", "pessoas", "dias",    "%",       "dT", "", "unidade")
   fStandard <- data.frame(standard = stand,
                           standard_code = sequence(length(stand)))
   
-  fYear <- c(2010:2021)
+  
   
   write.csv(fType,
             "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fType.csv")
   write.csv(fStandard,
             "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fStandard.csv")
-  write.csv(fYear,
-            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fYear.csv")
 
 
 
@@ -404,14 +402,17 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   dHealth <- left_join(dHealth, fHealthGroup, by = "group", keep = FALSE)
   
   # Step 2: Join variable_code
-  dHealth <- left_join(dHealth, fHealthVariable, by = "variable", keep = FALSE)
+  dHealth <- left_join(dHealth, fHealthVariable, by = c("variable", "group_code"), keep = FALSE)
   
   # Step 3: Join standard_code
   dHealth <- left_join(dHealth, fStandard, by = "standard", keep = FALSE)
+  dHealth$standard_code[is.na(dHealth$standard_code)] <- 6
   
   # Step 4: Join type code
-  dHealth$type_code <- case_when(dHealth$standard_code == 4 ~ 2,
-                            TRUE ~1)
+  dHealth$type_code <- case_when(dHealth$variable_code == 4 ~ 1,
+                            dHealth$variable_code == c(6:22) ~ 2,
+                            dHealth$variable_code == 1 ~ 3,
+                            TRUE ~ 4)
   
   # Step 5: Clean dHealth
   dHealth <- dHealth[, c(1:2, 17:20, 6:16)]
@@ -464,7 +465,8 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   dAuxEmerg <- gather(dAuxEmerg, key = "variable", value = "result", "Elegiveis ao Auxilio", "Soma do Auxilio")
   dAuxEmerg$city <- tolower(dAuxEmerg$city)
   dAuxEmerg$city <- gsub("´", "'", dAuxEmerg$city)
-  dAuxEmerg$standard <- "R$ 1,00"
+  dAuxEmerg$standard <- case_when(dAuxEmerg$variable == "Elegiveis ao Auxilio" ~ "pessoas",
+                                  TRUE ~ "R$ 1,00")
   
   # Step 2: Import CadUnico
   dCadUnico <- read_csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/caunico.csv", 
@@ -493,7 +495,7 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   
   # Step 5: Rearrange database
   dCadUnico$variable <- "Pessoas no CadUnico"
-  dCadUnico$standard <- "pessoa"
+  dCadUnico$standard <- "pessoas"
   dCadUnico <- dCadUnico[, c(1,2,4,3,5)]
   
   # Step 6: Import Pessoas no Bolsa Familia
@@ -523,7 +525,7 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   dPessoBolsa$result <- round(dPessoBolsa$result, 0)
   
   # Step 9: Rearrange Database
-  dPessoBolsa$standard <- "pessoa"
+  dPessoBolsa$standard <- "pessoas"
   dPessoBolsa$variable <- "Pessoas no Bolsa Familia"
   dPessoBolsa <- dPessoBolsa[, c(1,2,5,3, 4)]
   
@@ -595,26 +597,31 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   # Step 3: Join codes with dPover
   
   dPover <- left_join(dPover, fCity2, by = "city")
-  dPover$type <- "absolute"
   dPover <- left_join(dPover, fPoverVariable, by = "variable")
-  dPover <- left_join(dPover, fType, by = "type")
-  dPover <- left_join(dPover, fStandard, by = "standard" )
   fPop2 <- fPop
   fPop2$city <- tolower(fPop$city)
   dPover <- left_join(dPover, fPop2, by = c("city", "year"))
+  dPover <- left_join(dPover, fStandard, by = "standard")
+  colnames(dPover)[c(3,11)] <- c("variable", "population")
+  dPover$type_code <- case_when(dPover$variable == "Elegiveis ao Auxilio" ~ 5,
+                                dPover$variable == "Pessoas no CadUnico" ~5,
+                                dPover$variable == "Pessoas no Bolsa Familia" ~ 5,
+                                dPover$variable_code == 2 ~ 3,
+                                dPover$variable_code == 5 ~ 3,
+                                TRUE ~ 2)
   
-  dPover <- dPover[, c(7, 10, 11, 13, 12, 2, 4, 15)]
+  dPover <- dPover[, c(7, 9:10, 13:14, 2, 4, 12)]
   
   # Step: 4: Join Codes with IPDM
   colnames(dIPDM)[1:2] <- c("city", "variable")
   dIPDM$group <- "Indice"
-  dIPDM$standard <- "%"
+  dIPDM$standard <- ""
   dIPDM$type <- "rate"
   
   dIPDM <- gather(dIPDM, key = "year", value = "result", "2010":"2018")
   
   dIPDM <- left_join(dIPDM, fCity, by = "city")
-  dIPDM <- left_join(dIPDM, fPoverVariable, "variable")
+  dIPDM <- left_join(dIPDM, fPoverVariable, by = "variable")
   dIPDM <- left_join(dIPDM, fStandard, "standard")
   dIPDM <- left_join(dIPDM, fType, "type")
   dIPDM <- left_join(dIPDM, fPop, c("city", "year"))
@@ -629,7 +636,7 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   
   # Step 2: Export clean base
   write.table(dPover,
-              "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/clean/health/dPover.csv",
+              "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/clean/poverty/dPover.csv",
               sep = ";", dec = ",",
               row.names = FALSE, col.names = TRUE, 
               na = "")
