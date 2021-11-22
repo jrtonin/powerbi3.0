@@ -1,0 +1,646 @@
+---
+title: "Health"
+author: "fildalboni"
+date: "04/11/2021"
+output: html_document
+---
+---
+title: "BI PR Produtivo new version"
+author: "Equipe CIGE"
+date: "11/08/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+# setting the chunck configuration
+knitr::opts_chunk$set(echo = FALSE, 
+                      comment = NA,
+                      warning = FALSE,
+                      error = FALSE, 
+                      message = FALSE,
+                      tidy = TRUE)
+
+# setting main root in personal drive
+print(getwd())
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+dwdir = print(getwd()) # main personal project root
+
+{ 
+  # Check if the packages that we need are installed
+  want = c("RCurl", "tidyverse", "readr", "zoo", "googledrive", "RCurl", 
+           "gsheet", "stringr", "knitr", "data.table", "readxl", "qdapRegex")
+  have = want %in% rownames(installed.packages())
+  # Install the packages that we miss
+  if ( any(!have) ) { install.packages( want[!have] ) }
+  # Load the packages
+  junk <- lapply(want, library, character.only = T)
+  # Remove the objects we created
+  rm(have, want, junk)
+} # Import packages
+
+# setting principal roots (dw + first 3 database words + data type)
+dwagriraw = paste0(dwdir, "/db/raw/agricultural")
+
+```
+
+```{r parameter}
+
+{
+  # Step 1: import city database
+  fCity = read_delim("C:/Users/CepaTech/Documents/Profissional/SEPL/PowerBi 3/Banco de Dados/citiy/fcity2.csv", 
+                       ";", escape_double = FALSE, 
+                       locale = locale(decimal_mark = ",",
+                                       grouping_mark = ".", 
+                                       encoding = "UTF-8"),
+                       trim_ws = TRUE)
+
+
+  # Step 2: Rename columns
+  colnames(fCity)[1] <- "city_code"
+
+  # Step 3: creating a list 
+  temp = fCity 
+  temp = as.vector(temp)
+  temp = as.vector(fCity$city_code)
+
+  # Step4: Export do db paste
+  write.csv(fCity, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fCity.csv")
+  
+  # Step 5: Create lowercase city parameter to joins with IBGE Databases
+  fCity2 <- fCity
+  fCity2$city <- tolower(fCity2$city)
+  
+} # Part 1: Prepare City reference to forward joins
+
+{
+  # Step 1: Import Database
+  fPop <- read_excel("~/Profissional/SEPL/PowerBi 3/Banco de Dados/population/pop_pr.xlsx")
+  
+  # Step 2: Melt to create a year column
+  fPop <- melt(fPop)
+  colnames(fPop) <- c("city", "variable", "year", "population")
+  fPop$variable <- "population"
+  fPop$year <- as.character(fPop$year)
+  
+  # Step 3: Export database
+    write.csv(fPop, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fPop.csv")
+
+  
+} # Part 2: Prepare population to forward joins
+
+{
+  # Step 1: Create fType
+  fType <- data.frame(type = c("absolute", "rate", "por mil"), type_code = c(1:3))
+  
+  stand <- c("reais", "individuos", "dias",    "%", "por mil hab")
+  fStandard <- data.frame(standard = stand,
+                          standard_code = sequence(length(stand)))
+  
+  
+  
+  write.csv(fType,
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fType.csv")
+  write.csv(fStandard,
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fStandard.csv")
+
+
+
+  
+} # Part 3: Create General use parameter
+
+
+
+
+```
+
+```{r health}
+{
+
+  # Step 1: Import hospitalization database and export raw base                     
+  dHospi <- read_delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/Hospitalizations.csv", 
+    delim = ";", escape_double = FALSE, locale = locale(decimal_mark = ",", 
+        grouping_mark = ".", encoding = "ISO-8859-1"), 
+    trim_ws = TRUE)
+  
+  write.csv(dHospi, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/health/dHospi.csv")
+  
+  # Step 2: Rename columns
+  colnames(dHospi)[1:2] <- c("city", "variable")
+  
+  # Step 3: Join city code with database
+  dHospi <- left_join(dHospi, fCity, by = "city")
+  
+  #Step 4: rearrange dHospi
+  dHospi <- dHospi[, c(1, 14, 2:13)]
+  
+}# Part 1: Import Hospitalization and Join with city_code
+
+{
+  # Step 1: Separate variable, group and type columns
+  dHospi <- cbind(dHospi, 
+                   as.data.frame(do.call("rbind", strsplit(as.character(dHospi$variable),' - '))))
+  dHospi <- dHospi[, !colnames(dHospi) == "V2"]
+  dHospi <- cbind(dHospi, 
+                   as.data.frame(do.call("rbind",
+                                         ex_between(dHospi$V3, "(", ")", 
+                                                    include.markers = TRUE,
+                                                    trim = TRUE,
+                                                    ))))
+  dHospi <- dHospi[, -17]
+  colnames(dHospi)[15:16] <- c("group", "variable")
+  dHospi <- dHospi[, c(1:2, 15:16, 4:14)]
+  dHospi$variable <- gsub("\\s*\\([^\\)]+\\)","", dHospi$variable)
+  
+} # Part 2: Create group_code, variable_code and type_code for Hospitalization
+
+{
+ 
+  # Step 1: Import imunization database
+  dImun <- read_delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/imunization.csv", 
+    delim = ";", escape_double = FALSE, col_types = cols(`2010` = col_number(), 
+        `2011` = col_number(), `2012` = col_number(), 
+        `2013` = col_number(), `2014` = col_number(), 
+        `2015` = col_number(), `2016` = col_number(), 
+        `2017` = col_number(), `2018` = col_number(), 
+        `2019` = col_number(), `2020` = col_number()),
+    locale = locale(decimal_mark = ",", grouping_mark = ".", 
+        encoding = "ISO-8859-1"), trim_ws = TRUE)
+  
+  write.csv(dImun, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/health/dImun.csv")
+  
+  # Step 2: Rename columns
+  colnames(dImun)[1:2] <- c("city", "variable")
+  
+  # Step 3: Join city code with database
+  dImun <- left_join(dImun, fCity, by = "city")
+  
+  #Step 4: rearrange dImun
+  dImun <- dImun[, c(1, 14, 2:13)]
+  
+} # Part 3: Import and clean Imunization
+
+{
+  # Step 1: Separate variable, group and type columns
+  dImun <- cbind(dImun, 
+                   as.data.frame(do.call("rbind", strsplit(as.character(dImun$variable),' - '))))
+  
+  dImun <- cbind(dImun, 
+                   as.data.frame(do.call("rbind",
+                                         ex_between(dImun$V2, "(", ")", 
+                                                    include.markers = TRUE,
+                                                    trim = TRUE,
+                                                    ))))
+  dImun <- dImun[, -c(17:20)]
+  colnames(dImun)[15:16] <- c("group", "variable")
+  dImun <- dImun[, c(1:2, 15:16, 4:14)]
+  dImun$variable <- gsub("\\s*\\([^\\)]+\\)","", dImun$variable)
+  
+} # Part 4: Create Variable and Group Code for Imun
+
+{
+ 
+  # Step 1: Import Leitos database
+  dLeitos <- read_delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/leitos.csv", 
+    delim = ";", escape_double = FALSE, col_types = cols(`2010` = col_number(), 
+        `2011` = col_number(), `2012` = col_number(), 
+        `2013` = col_number(), `2014` = col_number(), 
+        `2015` = col_number(), `2016` = col_number(), 
+        `2017` = col_number(), `2018` = col_number(), 
+        `2019` = col_number(), `2020` = col_number()), 
+    locale = locale(decimal_mark = ",", grouping_mark = ".", 
+        encoding = "ISO-8859-1"), trim_ws = TRUE)
+  
+  write.csv(dLeitos, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/health/dLeitos.csv")
+   
+  
+  # Step 2: Rename columns
+  colnames(dLeitos)[1:2] <- c("city", "variable")
+  
+  # Step 3: Join city code with database
+  dLeitos <- left_join(dLeitos, fCity, by = "city")
+  
+  #Step 4: rearrange dLeitos
+  dLeitos <- dLeitos[, c(1, 14, 2:13)]
+  
+} # Part 5: Import and clean Leitos
+
+{
+  # Step 1: Separate variable, group and type columns
+  dLeitos <- cbind(dLeitos, 
+                   as.data.frame(do.call("rbind", strsplit(as.character(dLeitos$variable),' - '))))
+  
+  dLeitos <- unite(dLeitos, "variable", c("V2", "V3"), sep = " ", remove = TRUE)
+  dLeitos$variable <- gsub("Existente", "", dLeitos$variable)
+  colnames(dLeitos)[14] <- "group"
+  dLeitos <- dLeitos[, c(1:2, 14:15, 3:13)]
+  
+} # Part 6: Create Variable and Group for Leitos
+
+{
+ 
+  # Step 1: Import mortality database
+  dMorta <-  read_delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/mortality.csv", 
+    delim = ";", escape_double = FALSE, col_types = cols(`2010` = col_number(), 
+        `2011` = col_number(), `2012` = col_number(), 
+        `2013` = col_number(), `2014` = col_number(), 
+        `2015` = col_number(), `2016` = col_number(), 
+        `2017` = col_number(), `2018` = col_number(), 
+        `2019` = col_number(), `2020` = col_number()), 
+    locale = locale(decimal_mark = ",", grouping_mark = ".", 
+        encoding = "ISO-8859-1"), trim_ws = TRUE)
+  
+  write.csv(dMorta, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/health/dMorta.csv")
+  
+  # Step 2: Rename columns
+  colnames(dMorta)[1:2] <- c("city", "variable")
+  
+  # Step 3: Join city code with database
+  dMorta <- left_join(dMorta, fCity, by = "city")
+  
+  #Step 4: rearrange dMorta
+  dMorta <- dMorta[, c(1, 14, 2:13)]
+  
+} # Part 7: Import and clean Mortality
+
+{
+  # Step 1: Separate variable, group and type columns
+  dMorta <- cbind(dMorta, 
+                   as.data.frame(do.call("rbind", strsplit(as.character(dMorta$variable),' - '))))
+  
+  dMorta <- unite(dMorta, "variable", c("V2", "V3"), sep = " ", remove = TRUE)
+  colnames(dMorta)[14] <- "group"
+  dMorta <- dMorta[, c(1:2, 14:15, 3:13)]
+  
+} # Part 8: Create Variable and Group Code Mortality
+
+{
+ 
+  # Step 1: Import professionals database
+  dProfi <-    read_delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/professionals.csv", 
+    delim = ";", escape_double = FALSE, col_types = cols(`2010` = col_number(), 
+        `2011` = col_number(), `2012` = col_number(),
+        `2013` = col_number(), 
+        `2014` = col_number(), `2015` = col_number(), 
+        `2016` = col_number(), `2017` = col_number(), 
+        `2018` = col_number(), `2019` = col_number(), 
+        `2020` = col_number()), locale = locale(decimal_mark = ",", 
+        grouping_mark = ".", encoding = "ISO-8859-1"), 
+    trim_ws = TRUE)
+  
+  write.csv(dProfi, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/health/dProfi.csv")
+
+  # Step 2: Rename columns
+  colnames(dProfi)[1:2] <- c("city", "variable")
+  
+  # Step 3: Join city code with database
+  dProfi <- left_join(dProfi, fCity, by = "city")
+  
+  #Step 4: rearrange dProfi
+  dProfi <- dProfi[, c(1, 14, 2:13)]
+  
+} # Part 9: Import and clean professional
+
+{
+  # Step 1: Separate variable, group and type columns
+  dProfi <- cbind(dProfi, 
+                   as.data.frame(do.call("rbind", strsplit(as.character(dProfi$variable),' - '))))
+  dProfi <- dProfi[, c(1:2, 15:16, 4:14)]
+  colnames(dProfi)[3:4] <- c("group", "variable")
+  
+} # Part 10: Create Variable and Group Code Professional
+
+{
+ 
+  # Step 1: Import expenses database
+  dExpen <- read_delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/health/expenses.csv", 
+    delim = ";", escape_double = FALSE, col_types = cols(`2010` = col_number(), 
+        `2011` = col_number(), `2012` = col_number(), 
+        `2013` = col_number(), `2014` = col_number(), 
+        `2015` = col_number(), `2016` = col_number(), 
+        `2017` = col_number(), `2018` = col_number(), 
+        `2019` = col_number(), `2020` = col_number()), 
+    locale = locale(decimal_mark = ",", grouping_mark = ".", 
+        encoding = "ISO-8859-1"), trim_ws = TRUE)
+  
+  write.csv(dExpen, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/health/dExpen.csv")
+     
+  # Step 2: Rename columns
+  colnames(dExpen)[1:2] <- c("city", "variable")
+  
+  # Step 3: Join city code with database
+  dExpen <- left_join(dExpen, fCity, by = "city")
+  
+  #Step 4: rearrange dExpen
+  dExpen <- dExpen[, c(1, 14, 2:13)]
+  
+} # Part 11: Import and clean Expenses
+
+{
+  # Step 1: Separate variable, group and type columns
+  dExpen <- cbind(dExpen, 
+                   as.data.frame(do.call("rbind", strsplit(as.character(dExpen$variable),' - '))))
+  dExpen <- cbind(dExpen, 
+                   as.data.frame(do.call("rbind",
+                                         ex_between(dExpen$V2, "(", ")", 
+                                                    include.markers = TRUE,
+                                                    trim = TRUE,
+                                                    ))))
+  
+  
+  # Step 2: Rename and rearrange Columns
+  colnames(dExpen)[15:16] <- c("group", "variable")
+  dExpen <- dExpen[, c(1:2, 15:16, 4:14)]
+  
+  # Step 3: Eliminate problematic symbols
+  dExpen$variable <- gsub("\\s*\\([^\\)]+\\)","", dExpen$variable)
+  dExpen$group <- "Despesas Municipais"
+  
+} # Part 12: Create variable and group
+
+{
+  # Step 1: Bind all health databases
+  dHealth <- rbind(dExpen, dHospi, dImun, dLeitos, dMorta, dProfi)
+  
+  # Step 2: Remove previous databases
+  remove(dExpen, dHospi, dImun, dLeitos, dMorta, dProfi)
+  
+} # Part 13: Bind all databases
+
+{
+  
+  
+  # Step 1: Create fGroup with codes
+  fHealthGroup <- data.frame(group = unique(dHealth$group)) %>%
+    mutate(group_code = sequence(n()))
+  
+  # Step 2: Create fvariable with codes
+  fHealthVariable = dHealth %>%
+    select(group, variable)
+  fHealthVariable = fHealthVariable[!duplicated(fHealthVariable), ]
+  fHealthVariable <- mutate(fHealthVariable, variable_code = sequence(n()))
+  fHealthVariable <- left_join(fHealthVariable, fHealthGroup, by = "group")
+  fHealthVariable <- fHealthVariable[, c(4,3,2)]
+  
+  # Step 4: Export to db parameters paste
+  write.csv(fHealthGroup, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fHealthGroup.csv")
+  write.csv(fHealthVariable,
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fHealthVariable.csv")
+  
+  
+} # Part 14: Create Codes for Group, variable and standard 
+
+{
+
+  # Step 1: Join Group_code
+  dHealth <- left_join(dHealth, fHealthGroup, by = "group", keep = FALSE)
+  
+  # Step 2: Join variable_code
+  dHealth <- left_join(dHealth, fHealthVariable, by = c("variable", "group_code"), keep = FALSE)
+  
+  # Step 3: Join standard code
+  dHealth$standard_code <- case_when(dHealth$variable_code == 1|dHealth$variable_code == 3 ~ 1,
+                                     dHealth$variable_code == 4 ~ 3,
+                                     dHealth$variable_code >= 6 & dHealth$variable_code <= 22 ~ 4,
+                                     TRUE ~ 5)
+  
+  # Step 5: Join Type code
+  dHealth$type_code <- case_when(dHealth$standard_code == 1 | dHealth$standard_code == 5  ~ 3,
+                                 dHealth$standard_code == 3 ~ 1,
+                                 TRUE ~ 2)
+  
+  # Step 5: Clean dHealth
+  dHealth <- dHealth[, c(1:2, 16:17, 19, 18, 5:15)]
+  
+} # Part 15: Join all codes with dHealth
+
+{
+  
+  # Step 1: Turn columns into one single column called year and the values as result
+  dHealth <- gather(dHealth, key = "year", value = "result", c("2010":"2020"))
+  
+} # Part 16: Gather database
+
+{
+  # Step 1: Join
+  dHealth <- left_join(dHealth, fPop, by = c("city", "year"))
+  
+  # Step 2: Drop columns and prepare to export
+  dHealth <- dHealth[, -c(1, 9)]
+  
+  # Step 3: Export clean base
+  write.table(dHealth,
+              "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/clean/health/dHealth.csv",
+              sep = ";", dec = ",",
+              row.names = FALSE, col.names = TRUE, 
+              na = "")
+  
+  # Step 4: Remove Health parameters
+  remove(fHealthGroup, fHealthVariable)
+} # Part 17: Join dHealth and Population
+
+
+
+```
+
+```{r poverty}
+
+{
+  # Step 1: Import Auxilio Emergencial
+  dAuxEmerg <- read_csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/ae.csv", 
+    locale = locale(decimal_mark = ",", grouping_mark = ".", 
+        encoding = "ISO-8859-1")) %>%
+    filter(UF == "PR")
+  
+  write.csv(dAuxEmerg, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/poverty/dAuxEmerg.csv")
+  
+  dAuxEmerg <- dAuxEmerg[, c(2, 4:6)]
+  colnames(dAuxEmerg) <-  c("city", "year", "Elegiveis ao Auxilio", "Soma do Auxilio")
+  
+  dAuxEmerg <- gather(dAuxEmerg, key = "variable", value = "result", "Elegiveis ao Auxilio", "Soma do Auxilio")
+  dAuxEmerg$city <- tolower(dAuxEmerg$city)
+  dAuxEmerg$city <- gsub("´", "'", dAuxEmerg$city)
+  dAuxEmerg$standard <- case_when(dAuxEmerg$variable == "Elegiveis ao Auxilio" ~ "por mil hab",
+                                  TRUE ~ "reais")
+  
+  # Step 2: Import CadUnico
+  dCadUnico <- read_csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/caunico.csv", 
+    locale = locale(decimal_mark = ",", grouping_mark = ".", 
+        encoding = "ISO-8859-1"))
+  
+  ##Export
+    write.csv(dCadUnico, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/poverty/dCadUnico.csv")
+
+  
+  dCadUnico <- dCadUnico[, c(2, 4:5)]
+  colnames(dCadUnico) <- c("city", "year", "result")
+  
+  # Step 3: Make result yearly
+  dCadUnico <- cbind(dCadUnico, str_split_fixed(dCadUnico$year, "/", 2))
+  dCadUnico <- dCadUnico[, c(1,3,5)]
+  colnames(dCadUnico)[3] <- "year"
+  dCadUnico <- dCadUnico %>%
+    group_by(city, year) %>%
+    summarize(result = sum(result)/n())
+  dCadUnico$result <- round(dCadUnico$result, 0)
+  
+  # Step 4: Make City lower to join with code
+  dCadUnico$city <- tolower(dCadUnico$city)
+  dCadUnico$city <- gsub("´", "'", dCadUnico$city)
+  
+  # Step 5: Rearrange database
+  dCadUnico$variable <- "Pessoas no CadUnico"
+  dCadUnico$standard <- "por mil hab"
+  dCadUnico <- dCadUnico[, c(1,2,4,3,5)]
+  
+  # Step 6: Import Pessoas no Bolsa Familia
+  dPessoBolsa <- read_csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/pessoasbeneficiadasbolsafamilia.csv", 
+    locale = locale(decimal_mark = ",", grouping_mark = ".", 
+        encoding = "ISO-8859-1"))
+  dPessoBolsa <- filter(dPessoBolsa, UF == "PR")
+  
+  ##Export
+  write.csv(dPessoBolsa, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/poverty/dPessoBolsa.csv")
+
+  
+  dPessoBolsa <- dPessoBolsa[, c(2,4:5)]
+  colnames(dPessoBolsa) <- c("city", "ref", "Pessoas no Bolsa Familia")
+  
+  # Step 7: Make city as lowercase to join
+  dPessoBolsa$city <- tolower(dPessoBolsa$city) 
+  dPessoBolsa$city <- gsub("´", "'", dPessoBolsa$city)
+  
+  # Step 8: Make result yearly
+  dPessoBolsa <- cbind(dPessoBolsa, str_split_fixed(dPessoBolsa$ref, "/", 2))
+  colnames(dPessoBolsa)[5] <- "year"
+  dPessoBolsa <- dPessoBolsa[, c(1,5,3)]
+  dPessoBolsa <- dPessoBolsa %>%
+    group_by(city, year) %>%
+    summarize(result = sum(`Pessoas no Bolsa Familia`)/n())
+  dPessoBolsa$result <- round(dPessoBolsa$result, 0)
+  
+  # Step 9: Rearrange Database
+  dPessoBolsa$standard <- "por mil hab"
+  dPessoBolsa$variable <- "Pessoas no Bolsa Familia"
+  dPessoBolsa <- dPessoBolsa[, c(1,2,5,3, 4)]
+  
+  
+  # Step 10: Import Valor do Bolsa Familia
+  dValorBolsa <- read_csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/valorbolsafamilia.csv", 
+    locale = locale(decimal_mark = ",", grouping_mark = ".", 
+        encoding = "ISO-8859-1"))
+  
+  dValorBolsa <- dValorBolsa %>%
+    filter(UF == "PR")
+  
+  ##Export
+  write.csv(dValorBolsa, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/poverty/dValorBolsa.csv")
+
+  
+  dValorBolsa$`Unidade Territorial` <- tolower(dValorBolsa$`Unidade Territorial`)
+  
+  # Step 11: Make rresult yearly
+  dValorBolsa <- cbind(dValorBolsa, str_split_fixed(dValorBolsa$Referência,"/", 2))
+  dValorBolsa <- dValorBolsa[, c(2,7, 5)]
+  colnames(dValorBolsa)[c(1:3)] <- c("city", "year", "result")
+  dValorBolsa <- dValorBolsa %>%
+    group_by(city, year) %>%
+    summarize(result = sum(result)/n())
+  
+  # Step 12: Rearrange Database
+  dValorBolsa$variable <- "Valor do Bolsa Familia"
+  dValorBolsa$standard <- "reais"
+  dValorBolsa <- dValorBolsa[,c(1:2, 4, 3,5)]
+  
+  # Step 13: Import IPDM
+  dIPDM <- read_delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/Pobreza/ipdm.csv", 
+    delim = ";", escape_double = FALSE, locale = locale(decimal_mark = ",", 
+        grouping_mark = ".", encoding = "ISO-8859-1"), 
+    trim_ws = TRUE)
+  
+  ##Export
+  write.csv(dIPDM, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/poverty/dIPDM.csv")
+
+
+  
+} # Part 1: Import Database
+
+{
+  # Step 1: Bind same type data
+  dPover <- rbind(dAuxEmerg, dCadUnico, dPessoBolsa, dValorBolsa) %>%
+    mutate(group = "Assistencia Social")
+  
+  # Step 2: Poverty Create Code Group and Variable
+  fPoverGroup <- data.frame( group = c("Assistencia Social", "Indice"), group_code = c(1:2))
+  
+  fPoverVariable = dPover %>%
+    select(group, variable) %>%
+    rbind(c("Indice", "Índice Ipardes de Desempenho Municipal (IPDM)"))
+  
+  fPoverVariable = fPoverVariable[!duplicated(fPoverVariable), ]
+  fPoverVariable <- mutate(fPoverVariable, variable_code = sequence(n()))
+  fPoverVariable <- left_join(fPoverVariable, fPoverGroup, by = "group")
+  fPoverVariable <- fPoverVariable[, c(4,3,2)]
+  
+  
+  
+  write.csv(fPoverVariable, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fPoverVariable.csv")
+  write.csv(fPoverGroup, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fPoverGroup.csv")
+  
+  # Step 3: Join codes with dPover
+  
+  dPover <- left_join(dPover, fCity2, by = "city")
+  dPover <- left_join(dPover, fPoverVariable, by = "variable")
+  fPop2 <- fPop
+  fPop2$city <- tolower(fPop$city)
+  dPover <- left_join(dPover, fPop2, by = c("city", "year"))
+  dPover <- left_join(dPover, fStandard, by = "standard")
+  colnames(dPover)[c(3,11)] <- c("variable", "population")
+  dPover$type_code <- case_when(dPover$variable == "Elegiveis ao Auxilio" ~ 3,
+                                dPover$variable == "Pessoas no CadUnico" ~3,
+                                dPover$variable == "Pessoas no Bolsa Familia" ~ 3,
+                                dPover$variable_code == 2 ~ 3,
+                                dPover$variable_code == 5 ~ 3,
+                                TRUE ~ 2)
+  
+  dPover <- dPover[, c(7, 9:10, 13:14, 2, 4, 12)]
+  
+  # Step: 4: Join Codes with IPDM
+  colnames(dIPDM)[1:2] <- c("city", "variable")
+  dIPDM$group <- "Indice"
+  dIPDM$standard <- ""
+  dIPDM$type <- "rate"
+  
+  dIPDM <- gather(dIPDM, key = "year", value = "result", "2010":"2018")
+  
+  dIPDM <- left_join(dIPDM, fCity, by = "city")
+  dIPDM <- left_join(dIPDM, fPoverVariable, by = "variable")
+  dIPDM <- left_join(dIPDM, fStandard, "standard")
+  dIPDM <- left_join(dIPDM, fType, "type")
+  dIPDM <- left_join(dIPDM, fPop, c("city", "year"))
+  
+  dIPDM <- dIPDM[, c(8, 10:13, 6:7, 15)]
+  
+} # Part 2: Adding Codes
+
+{
+  # Step 1: Bind
+  dPover <- rbind(dPover, dIPDM)
+  
+  # Step 2: Export clean base
+  write.table(dPover,
+              "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/clean/poverty/dPover.csv",
+              sep = ";", dec = ",",
+              row.names = FALSE, col.names = TRUE, 
+              na = "")
+  
+  # Step 4: Remove Poverty parameter
+  remove(dAuxEmerg, dCadUnico, dIPDM, dPessoBolsa, dValorBolsa, fPoverGroup, fPoverVariable)
+
+  
+} # Part 3: Join into one Povery DF
+
+```
