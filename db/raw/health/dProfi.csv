@@ -294,7 +294,7 @@
 "293","Campo do Tenente","Profissionais de Saúde - Enfermeiros",4,3,3,4,4,4,4,7,7,9,8
 "294","Campo do Tenente","Profissionais de Saúde - Dentistas",2,2,2,2,2,2,2,2,2,5,5
 "295","Campo do Tenente","Profissionais de Saúde - Farmacêuticos",2,2,3,NA,NA,1,2,2,2,2,1
-"296","Campo Largo","Profissionais de Saúde - Total",470,476,521,529,600,615,708,742,728,874,NA
+"296","Campo Largo","Profissionais de Saúde - Total",470,476,521,529,600,615,708,742,728,874,1016
 "297","Campo Largo","Profissionais de Saúde - Médicos",313,280,310,330,355,365,448,446,424,477,457
 "298","Campo Largo","Profissionais de Saúde - Enfermeiros",86,116,122,126,171,166,170,198,208,284,388
 "299","Campo Largo","Profissionais de Saúde - Dentistas",50,51,59,60,61,67,72,78,77,90,94
@@ -344,8 +344,8 @@
 "343","Carlópolis","Profissionais de Saúde - Enfermeiros",5,5,6,6,5,5,4,10,10,10,7
 "344","Carlópolis","Profissionais de Saúde - Dentistas",4,5,6,6,6,6,7,7,7,7,6
 "345","Carlópolis","Profissionais de Saúde - Farmacêuticos",4,4,6,3,1,1,1,NA,NA,NA,NA
-"346","Cascavel","Profissionais de Saúde - Total",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"347","Cascavel","Profissionais de Saúde - Médicos",595,621,661,711,788,816,857,935,NA,NA,NA
+"346","Cascavel","Profissionais de Saúde - Total",1117,1160,1371,1400,1544,1611,1695,1854,2042,2127,2324
+"347","Cascavel","Profissionais de Saúde - Médicos",595,621,661,711,788,816,857,935,1025,1067,1080
 "348","Cascavel","Profissionais de Saúde - Enfermeiros",221,229,334,355,394,414,439,477,559,597,684
 "349","Cascavel","Profissionais de Saúde - Dentistas",221,235,261,279,290,298,308,331,337,335,349
 "350","Cascavel","Profissionais de Saúde - Farmacêuticos",80,75,115,55,72,83,91,111,121,128,179
@@ -469,10 +469,10 @@
 "468","Cruzmaltina","Profissionais de Saúde - Enfermeiros",2,2,2,2,3,4,3,4,4,4,4
 "469","Cruzmaltina","Profissionais de Saúde - Dentistas",2,2,2,2,2,2,2,2,2,2,2
 "470","Cruzmaltina","Profissionais de Saúde - Farmacêuticos",2,NA,NA,1,1,1,1,1,1,1,1
-"471","Curitiba","Profissionais de Saúde - Total",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"472","Curitiba","Profissionais de Saúde - Médicos",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"473","Curitiba","Profissionais de Saúde - Enfermeiros",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"474","Curitiba","Profissionais de Saúde - Dentistas",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"471","Curitiba","Profissionais de Saúde - Total",10199,10783,11618,11919,12610,12870,13320,13775,14469,15122,16167
+"472","Curitiba","Profissionais de Saúde - Médicos",5785,6105,6505,6789,7145,7107,7433,7769,8146,8595,8701
+"473","Curitiba","Profissionais de Saúde - Enfermeiros",1560,1725,1996,2274,2511,2755,2823,2860,3097,3293,3653
+"474","Curitiba","Profissionais de Saúde - Dentistas",2204,2306,2405,2492,2549,2593,2629,2685,2740,2736,2760
 "475","Curitiba","Profissionais de Saúde - Farmacêuticos",650,647,712,364,405,415,435,461,486,498,558
 "476","Curiúva","Profissionais de Saúde - Total",22,20,18,20,20,22,23,24,25,25,32
 "477","Curiúva","Profissionais de Saúde - Médicos",7,6,4,6,5,7,8,10,7,7,9
@@ -599,7 +599,7 @@
 "598","Formosa do Oeste","Profissionais de Saúde - Enfermeiros",5,7,8,10,7,7,8,8,8,11,12
 "599","Formosa do Oeste","Profissionais de Saúde - Dentistas",6,5,5,6,4,5,5,5,3,5,3
 "600","Formosa do Oeste","Profissionais de Saúde - Farmacêuticos",3,2,2,NA,NA,NA,NA,1,1,1,1
-"601","Foz do Iguaçu","Profissionais de Saúde - Total",798,789,847,828,873,908,991,NA,NA,NA,NA
+"601","Foz do Iguaçu","Profissionais de Saúde - Total",798,789,847,828,873,908,991,1025,1081,1228,1403
 "602","Foz do Iguaçu","Profissionais de Saúde - Médicos",356,347,364,380,418,426,454,504,519,578,660
 "603","Foz do Iguaçu","Profissionais de Saúde - Enfermeiros",192,197,224,220,224,248,300,281,305,363,465
 "604","Foz do Iguaçu","Profissionais de Saúde - Dentistas",196,191,202,199,202,190,194,195,204,223,193
@@ -959,9 +959,9 @@
 "958","Lobato","Profissionais de Saúde - Enfermeiros",2,5,6,6,6,6,6,7,8,7,7
 "959","Lobato","Profissionais de Saúde - Dentistas",3,2,2,3,3,1,1,1,2,4,4
 "960","Lobato","Profissionais de Saúde - Farmacêuticos",1,1,1,NA,1,1,1,1,1,2,2
-"961","Londrina","Profissionais de Saúde - Total",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"962","Londrina","Profissionais de Saúde - Médicos",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"963","Londrina","Profissionais de Saúde - Enfermeiros",697,628,684,809,NA,NA,NA,NA,NA,NA,NA
+"961","Londrina","Profissionais de Saúde - Total",2721,2569,2780,2871,3333,3489,3621,3753,3930,4086,4279
+"962","Londrina","Profissionais de Saúde - Médicos",1401,1307,1443,1498,1609,1603,1660,1789,1926,1965,2018
+"963","Londrina","Profissionais de Saúde - Enfermeiros",697,628,684,809,1106,1261,1313,1300,1314,1411,1433
 "964","Londrina","Profissionais de Saúde - Dentistas",480,486,502,518,551,559,574,587,611,613,613
 "965","Londrina","Profissionais de Saúde - Farmacêuticos",143,148,151,46,67,66,74,77,79,97,149
 "966","Luiziana","Profissionais de Saúde - Total",10,9,11,9,9,10,10,11,9,8,12
@@ -1049,9 +1049,9 @@
 "1048","Mariluz","Profissionais de Saúde - Enfermeiros",5,5,6,6,8,7,8,10,10,11,11
 "1049","Mariluz","Profissionais de Saúde - Dentistas",6,6,5,6,7,5,6,7,6,8,7
 "1050","Mariluz","Profissionais de Saúde - Farmacêuticos",2,2,2,1,1,3,3,3,2,2,2
-"1051","Maringá","Profissionais de Saúde - Total",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"1052","Maringá","Profissionais de Saúde - Médicos",949,943,990,NA,NA,NA,NA,NA,NA,NA,NA
-"1053","Maringá","Profissionais de Saúde - Enfermeiros",334,422,519,680,814,939,987,978,NA,NA,NA
+"1051","Maringá","Profissionais de Saúde - Total",1808,1926,2105,2308,2549,2762,2888,2957,3163,3414,3604
+"1052","Maringá","Profissionais de Saúde - Médicos",949,943,990,1128,1214,1278,1336,1393,1453,1531,1575
+"1053","Maringá","Profissionais de Saúde - Enfermeiros",334,422,519,680,814,939,987,978,1089,1199,1242
 "1054","Maringá","Profissionais de Saúde - Dentistas",352,384,400,407,418,428,444,465,478,522,541
 "1055","Maringá","Profissionais de Saúde - Farmacêuticos",173,177,196,93,103,117,121,121,143,162,184
 "1056","Mariópolis","Profissionais de Saúde - Total",10,12,12,17,18,18,20,20,17,22,18
@@ -1379,7 +1379,7 @@
 "1378","Planalto","Profissionais de Saúde - Enfermeiros",7,7,7,8,8,8,10,11,11,11,11
 "1379","Planalto","Profissionais de Saúde - Dentistas",6,6,6,7,8,9,8,10,9,9,7
 "1380","Planalto","Profissionais de Saúde - Farmacêuticos",4,3,4,2,2,2,2,4,4,4,4
-"1381","Ponta Grossa","Profissionais de Saúde - Total",990,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"1381","Ponta Grossa","Profissionais de Saúde - Total",990,1094,1175,1158,1303,1337,1334,1378,1451,1589,1655
 "1382","Ponta Grossa","Profissionais de Saúde - Médicos",450,485,518,530,619,615,616,649,660,703,672
 "1383","Ponta Grossa","Profissionais de Saúde - Enfermeiros",195,235,265,298,336,358,356,352,386,452,480
 "1384","Ponta Grossa","Profissionais de Saúde - Dentistas",262,283,292,301,307,315,304,312,328,350,363

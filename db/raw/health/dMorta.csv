@@ -50,7 +50,7 @@
 "49","Agudos do Sul","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "50","Agudos do Sul","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",NA,2,1,NA,3,NA,1,1,3,NA,NA
 "51","Agudos do Sul","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",NA,NA,NA,NA,NA,2,NA,NA,1,NA,NA
-"52","Almirante Tamandaré","Nascidos Vivos - Total",1846,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"52","Almirante Tamandaré","Nascidos Vivos - Total",1846,1871,1886,1923,1914,2027,1811,1786,1724,1665,1592
 "53","Almirante Tamandaré","Óbitos (CID10) - Total (Mortalidade Geral)",652,636,628,636,673,650,686,603,639,641,766
 "54","Almirante Tamandaré","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",25,20,24,21,17,29,30,28,23,28,129
 "55","Almirante Tamandaré","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",98,87,104,106,121,123,111,100,111,110,129
@@ -288,7 +288,7 @@
 "287","Antônio Olinto","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "288","Antônio Olinto","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",NA,1,1,1,NA,1,2,NA,NA,NA,NA
 "289","Antônio Olinto","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",NA,NA,NA,1,NA,1,1,NA,NA,NA,NA
-"290","Apucarana","Nascidos Vivos - Total",1658,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"290","Apucarana","Nascidos Vivos - Total",1658,1671,1664,1708,1804,1796,1697,1786,1710,1712,1600
 "291","Apucarana","Óbitos (CID10) - Total (Mortalidade Geral)",771,838,816,873,854,866,893,877,864,975,956
 "292","Apucarana","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",19,23,20,20,14,29,18,20,15,27,112
 "293","Apucarana","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",144,142,142,180,164,133,172,166,193,179,167
@@ -305,7 +305,7 @@
 "304","Apucarana","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,1,NA,1,2,1,1,1,1,1,1
 "305","Apucarana","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",13,15,12,8,14,17,11,16,10,13,13
 "306","Apucarana","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",7,6,5,6,8,4,8,10,3,10,2
-"307","Arapongas","Nascidos Vivos - Total",1500,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"307","Arapongas","Nascidos Vivos - Total",1500,1486,1533,1660,1656,1628,1563,1589,1593,1509,1499
 "308","Arapongas","Óbitos (CID10) - Total (Mortalidade Geral)",713,718,793,714,711,768,850,796,748,825,901
 "309","Arapongas","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",15,18,19,29,21,20,16,27,18,24,152
 "310","Arapongas","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",142,102,137,135,122,121,141,159,161,145,139
@@ -373,7 +373,7 @@
 "372","Araruna","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "373","Araruna","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",3,NA,NA,1,2,1,1,1,2,5,NA
 "374","Araruna","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",NA,1,2,1,NA,2,NA,NA,2,1,NA
-"375","Araucária","Nascidos Vivos - Total",2089,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"375","Araucária","Nascidos Vivos - Total",2089,2249,2285,2336,2465,2460,2255,2358,2207,2262,2187
 "376","Araucária","Óbitos (CID10) - Total (Mortalidade Geral)",699,709,654,685,674,680,745,737,772,779,888
 "377","Araucária","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",23,21,25,29,30,34,31,25,29,32,147
 "378","Araucária","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",114,129,128,127,131,144,169,157,132,159,162
@@ -883,7 +883,7 @@
 "882","Cambará","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,1,NA,1,1,1,NA,1,NA
 "883","Cambará","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",NA,3,2,1,2,1,1,1,NA,1,2
 "884","Cambará","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",NA,1,2,1,1,2,NA,1,NA,NA,1
-"885","Cambé","Nascidos Vivos - Total",1202,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"885","Cambé","Nascidos Vivos - Total",1202,1271,1287,1391,1311,1410,1256,1355,1298,1251,1239
 "886","Cambé","Óbitos (CID10) - Total (Mortalidade Geral)",564,595,668,623,666,656,662,692,676,697,795
 "887","Cambé","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",16,12,19,22,35,16,16,14,6,27,83
 "888","Cambé","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",91,97,115,133,133,147,142,130,133,148,147
@@ -1002,7 +1002,7 @@
 "1001","Campo do Tenente","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,NA
 "1002","Campo do Tenente","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",1,1,3,NA,1,3,NA,1,NA,NA,2
 "1003","Campo do Tenente","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",NA,NA,1,NA,NA,NA,NA,NA,NA,1,NA
-"1004","Campo Largo","Nascidos Vivos - Total",1697,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"1004","Campo Largo","Nascidos Vivos - Total",1697,1711,1744,1795,1807,1843,1720,1735,1715,1656,1589
 "1005","Campo Largo","Óbitos (CID10) - Total (Mortalidade Geral)",685,742,669,740,723,731,736,663,786,784,829
 "1006","Campo Largo","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",17,22,38,35,31,30,42,31,36,41,163
 "1007","Campo Largo","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",121,137,134,142,128,137,145,127,152,156,145
@@ -1036,7 +1036,7 @@
 "1035","Campo Magro","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",1,NA,NA,1,NA,NA,1,NA,NA,1,NA
 "1036","Campo Magro","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",5,4,6,1,1,1,NA,2,NA,1,1
 "1037","Campo Magro","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",1,4,NA,2,3,1,2,2,NA,1,1
-"1038","Campo Mourão","Nascidos Vivos - Total",1246,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"1038","Campo Mourão","Nascidos Vivos - Total",1246,1219,1289,1328,1387,1292,1274,1385,1429,1238,1253
 "1039","Campo Mourão","Óbitos (CID10) - Total (Mortalidade Geral)",602,620,674,636,671,661,714,680,637,664,726
 "1040","Campo Mourão","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",22,13,25,24,18,14,17,17,16,21,79
 "1041","Campo Mourão","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",98,109,112,134,110,137,117,123,111,131,123
@@ -1172,8 +1172,8 @@
 "1171","Carlópolis","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
 "1172","Carlópolis","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",1,1,1,2,3,1,2,1,3,1,NA
 "1173","Carlópolis","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",1,NA,NA,NA,2,1,1,1,1,3,1
-"1174","Cascavel","Nascidos Vivos - Total",4406,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"1175","Cascavel","Óbitos (CID10) - Total (Mortalidade Geral)",1515,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"1174","Cascavel","Nascidos Vivos - Total",4406,4372,4435,4646,4900,4768,4705,4879,4934,5209,4934
+"1175","Cascavel","Óbitos (CID10) - Total (Mortalidade Geral)",1515,1684,1759,1605,1620,1704,1747,1680,1669,1768,1965
 "1176","Cascavel","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",36,47,49,56,40,49,44,40,48,65,272
 "1177","Cascavel","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",298,342,360,294,377,388,384,374,343,379,384
 "1178","Cascavel","Óbitos (CID10) - Cap III - Doenças do Sangue, Órgãos Hematopoéticos e Transtornos Imunitários",7,7,9,13,8,7,6,5,3,6,11
@@ -1189,7 +1189,7 @@
 "1188","Cascavel","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",2,1,NA,2,NA,3,1,1,1,1,4
 "1189","Cascavel","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",22,24,18,32,25,22,19,25,17,21,21
 "1190","Cascavel","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",18,18,20,19,19,22,20,23,16,27,18
-"1191","Castro","Nascidos Vivos - Total",1283,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"1191","Castro","Nascidos Vivos - Total",1283,1180,1206,1231,1178,1210,1113,1209,1215,1187,1127
 "1192","Castro","Óbitos (CID10) - Total (Mortalidade Geral)",411,466,450,426,448,403,492,441,463,452,466
 "1193","Castro","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",15,12,22,10,10,14,17,13,13,21,49
 "1194","Castro","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",68,83,71,73,71,75,91,82,76,81,82
@@ -1291,7 +1291,7 @@
 "1290","Chopinzinho","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,NA,NA,NA,1,NA,NA,NA,NA
 "1291","Chopinzinho","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",3,1,2,NA,3,1,3,3,2,1,1
 "1292","Chopinzinho","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",NA,6,1,NA,NA,2,4,1,1,1,3
-"1293","Cianorte","Nascidos Vivos - Total",952,997,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"1293","Cianorte","Nascidos Vivos - Total",952,997,1029,1047,1020,1138,1069,1124,1093,1105,1022
 "1294","Cianorte","Óbitos (CID10) - Total (Mortalidade Geral)",439,388,390,438,453,452,476,449,516,502,542
 "1295","Cianorte","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",12,9,17,11,13,14,7,7,16,9,49
 "1296","Cianorte","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",69,65,63,79,68,81,68,84,83,96,106
@@ -1342,8 +1342,8 @@
 "1341","Clevelândia","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,NA,NA,1,NA,1,NA,NA,NA
 "1342","Clevelândia","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",1,2,3,1,4,3,2,3,1,4,2
 "1343","Clevelândia","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",NA,NA,2,3,2,1,1,1,NA,1,2
-"1344","Colombo","Nascidos Vivos - Total",3681,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"1345","Colombo","Óbitos (CID10) - Total (Mortalidade Geral)",1312,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"1344","Colombo","Nascidos Vivos - Total",3681,3735,3827,3854,3820,3854,3720,3696,3567,3458,3290
+"1345","Colombo","Óbitos (CID10) - Total (Mortalidade Geral)",1312,1303,1220,1323,1275,1322,1336,1257,1287,1316,1588
 "1346","Colombo","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",41,47,52,67,37,57,82,66,50,62,328
 "1347","Colombo","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",206,194,184,217,218,251,230,224,241,251,256
 "1348","Colombo","Óbitos (CID10) - Cap III - Doenças do Sangue, Órgãos Hematopoéticos e Transtornos Imunitários",3,1,3,5,3,5,3,5,5,10,5
@@ -1597,16 +1597,16 @@
 "1596","Cruzmaltina","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "1597","Cruzmaltina","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA
 "1598","Cruzmaltina","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",NA,NA,NA,2,NA,NA,1,NA,NA,NA,NA
-"1599","Curitiba","Nascidos Vivos - Total",25345,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"1600","Curitiba","Óbitos (CID10) - Total (Mortalidade Geral)",9851,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"1601","Curitiba","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",319,346,338,384,398,419,446,352,378,400,NA
-"1602","Curitiba","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",2144,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"1599","Curitiba","Nascidos Vivos - Total",25345,25249,25079,24932,24815,24506,23217,22745,22112,21393,19728
+"1600","Curitiba","Óbitos (CID10) - Total (Mortalidade Geral)",9851,9966,10046,10227,10212,10414,11130,10716,10881,10943,13014
+"1601","Curitiba","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",319,346,338,384,398,419,446,352,378,400,2601
+"1602","Curitiba","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",2144,2091,2167,2204,2174,2319,2427,2423,2526,2618,2595
 "1603","Curitiba","Óbitos (CID10) - Cap III - Doenças do Sangue, Órgãos Hematopoéticos e Transtornos Imunitários",26,25,22,26,31,33,28,30,35,30,42
 "1604","Curitiba","Óbitos (CID10) - Cap IV - Doenças Endócrinas, Nutricionais e Metabólicas",781,810,875,823,564,608,655,727,823,649,784
 "1605","Curitiba","Óbitos (CID10) - Cap V - Transtornos Mentais e Comportamentais",142,148,96,85,74,63,63,72,122,100,172
 "1606","Curitiba","Óbitos (CID10) - Cap VI - Doenças do Sistema Nervoso",319,377,420,511,585,565,664,693,767,817,834
-"1607","Curitiba","Óbitos (CID10) - Cap IX - Doenças do Aparelho Circulatório",2839,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"1608","Curitiba","Óbitos (CID10) - Cap X - Doenças do Aparelho Respiratório",782,879,891,NA,994,NA,NA,NA,988,981,798
+"1607","Curitiba","Óbitos (CID10) - Cap IX - Doenças do Aparelho Circulatório",2839,2757,2843,2750,2883,2867,3142,2952,2855,2834,2650
+"1608","Curitiba","Óbitos (CID10) - Cap X - Doenças do Aparelho Respiratório",782,879,891,1032,994,1031,1167,1048,988,981,798
 "1609","Curitiba","Óbitos (CID10) - Cap XI - Doenças do Aparelho Digestivo",549,591,592,567,600,607,599,612,557,625,597
 "1610","Curitiba","Óbitos (CID10) - Cap XII - Doenças da Pele e do Tecido Celular Subcutâneo",3,11,7,16,11,18,19,22,22,38,37
 "1611","Curitiba","Óbitos (CID10) - Cap XIII - Doenças do Sistema Osteomuscular e do Tecido Conjuntivo",60,59,54,72,68,77,69,68,60,59,55
@@ -1869,7 +1869,7 @@
 "1868","Faxinal","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",1,NA,NA,NA,NA,NA,NA,NA,1,NA,NA
 "1869","Faxinal","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",3,3,NA,4,1,1,2,NA,1,NA,1
 "1870","Faxinal","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",NA,NA,4,1,NA,2,1,NA,2,NA,1
-"1871","Fazenda Rio Grande","Nascidos Vivos - Total",1494,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"1871","Fazenda Rio Grande","Nascidos Vivos - Total",1494,1595,1809,1771,1785,2099,1969,1952,1980,1901,2017
 "1872","Fazenda Rio Grande","Óbitos (CID10) - Total (Mortalidade Geral)",464,493,507,526,510,519,517,550,529,554,711
 "1873","Fazenda Rio Grande","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",15,26,28,23,28,22,20,18,21,24,163
 "1874","Fazenda Rio Grande","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",70,60,78,71,80,93,93,101,101,101,105
@@ -2039,8 +2039,8 @@
 "2038","Formosa do Oeste","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "2039","Formosa do Oeste","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",NA,1,NA,1,1,NA,1,NA,3,NA,NA
 "2040","Formosa do Oeste","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",NA,NA,NA,NA,NA,1,1,NA,NA,1,NA
-"2041","Foz do Iguaçu","Nascidos Vivos - Total",4307,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"2042","Foz do Iguaçu","Óbitos (CID10) - Total (Mortalidade Geral)",1402,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"2041","Foz do Iguaçu","Nascidos Vivos - Total",4307,4312,4392,4385,4501,4327,4198,4401,4422,4423,4162
+"2042","Foz do Iguaçu","Óbitos (CID10) - Total (Mortalidade Geral)",1402,1388,1451,1495,1520,1531,1635,1525,1635,1656,1855
 "2043","Foz do Iguaçu","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",47,40,33,67,67,61,66,52,46,58,339
 "2044","Foz do Iguaçu","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",253,263,300,290,287,309,287,312,334,378,314
 "2045","Foz do Iguaçu","Óbitos (CID10) - Cap III - Doenças do Sangue, Órgãos Hematopoéticos e Transtornos Imunitários",3,3,6,5,6,4,8,4,5,7,4
@@ -2090,7 +2090,7 @@
 "2089","Francisco Alves","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
 "2090","Francisco Alves","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",2,NA,2,2,NA,2,NA,1,1,1,NA
 "2091","Francisco Alves","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",NA,NA,1,NA,1,1,1,NA,NA,1,2
-"2092","Francisco Beltrão","Nascidos Vivos - Total",1202,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"2092","Francisco Beltrão","Nascidos Vivos - Total",1202,1189,1182,1192,1225,1252,1301,1313,1325,1348,1275
 "2093","Francisco Beltrão","Óbitos (CID10) - Total (Mortalidade Geral)",459,482,530,496,461,492,511,474,493,502,498
 "2094","Francisco Beltrão","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",8,5,10,5,10,12,10,5,11,8,56
 "2095","Francisco Beltrão","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",86,94,130,98,99,105,87,101,106,118,112
@@ -2311,8 +2311,8 @@
 "2310","Guaraniaçu","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,1,1,1,NA,NA,NA,NA,NA,NA,NA
 "2311","Guaraniaçu","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",1,NA,NA,5,1,NA,2,1,NA,2,NA
 "2312","Guaraniaçu","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",1,NA,1,NA,1,NA,1,NA,2,NA,NA
-"2313","Guarapuava","Nascidos Vivos - Total",2741,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"2314","Guarapuava","Óbitos (CID10) - Total (Mortalidade Geral)",1093,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"2313","Guarapuava","Nascidos Vivos - Total",2741,2833,2735,2795,2924,2984,2847,2984,3062,3014,2932
+"2314","Guarapuava","Óbitos (CID10) - Total (Mortalidade Geral)",1093,1127,1160,1213,1109,1167,1282,1192,1239,1248,1241
 "2315","Guarapuava","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",22,13,23,19,17,19,23,23,18,28,81
 "2316","Guarapuava","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",221,218,192,224,218,226,266,239,255,245,256
 "2317","Guarapuava","Óbitos (CID10) - Cap III - Doenças do Sangue, Órgãos Hematopoéticos e Transtornos Imunitários",7,9,9,3,3,6,4,7,4,8,5
@@ -3263,15 +3263,15 @@
 "3262","Lobato","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "3263","Lobato","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",NA,NA,1,1,NA,2,1,NA,NA,NA,1
 "3264","Lobato","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",1,NA,1,NA,1,NA,NA,NA,1,NA,NA
-"3265","Londrina","Nascidos Vivos - Total",6916,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"3266","Londrina","Óbitos (CID10) - Total (Mortalidade Geral)",3103,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"3265","Londrina","Nascidos Vivos - Total",6916,7022,7154,7195,7258,7365,7012,7116,7002,6907,6416
+"3266","Londrina","Óbitos (CID10) - Total (Mortalidade Geral)",3103,3272,3561,3457,3529,3662,3645,3625,3578,3683,4155
 "3267","Londrina","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",99,102,106,112,98,109,98,112,96,103,561
 "3268","Londrina","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",604,656,720,698,707,718,781,743,769,795,824
 "3269","Londrina","Óbitos (CID10) - Cap III - Doenças do Sangue, Órgãos Hematopoéticos e Transtornos Imunitários",10,10,10,24,18,10,19,16,15,15,15
 "3270","Londrina","Óbitos (CID10) - Cap IV - Doenças Endócrinas, Nutricionais e Metabólicas",103,131,183,413,259,270,276,265,215,193,191
 "3271","Londrina","Óbitos (CID10) - Cap V - Transtornos Mentais e Comportamentais",48,67,63,61,53,44,45,38,21,33,47
 "3272","Londrina","Óbitos (CID10) - Cap VI - Doenças do Sistema Nervoso",134,148,166,170,172,211,186,231,268,307,241
-"3273","Londrina","Óbitos (CID10) - Cap IX - Doenças do Aparelho Circulatório",934,968,NA,888,941,939,979,918,870,874,833
+"3273","Londrina","Óbitos (CID10) - Cap IX - Doenças do Aparelho Circulatório",934,968,1057,888,941,939,979,918,870,874,833
 "3274","Londrina","Óbitos (CID10) - Cap X - Doenças do Aparelho Respiratório",364,358,343,334,424,469,399,390,454,476,428
 "3275","Londrina","Óbitos (CID10) - Cap XI - Doenças do Aparelho Digestivo",150,190,205,179,215,208,184,210,226,213,241
 "3276","Londrina","Óbitos (CID10) - Cap XII - Doenças da Pele e do Tecido Celular Subcutâneo",7,10,5,2,9,2,10,11,16,18,33
@@ -3569,8 +3569,8 @@
 "3568","Mariluz","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,NA,NA,1,NA,NA,NA,NA,NA
 "3569","Mariluz","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",1,2,NA,NA,1,1,5,4,2,5,2
 "3570","Mariluz","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",1,NA,NA,1,NA,NA,1,1,NA,NA,NA
-"3571","Maringá","Nascidos Vivos - Total",4644,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"3572","Maringá","Óbitos (CID10) - Total (Mortalidade Geral)",2032,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"3571","Maringá","Nascidos Vivos - Total",4644,4783,4782,4925,4922,5087,4794,5157,4985,5120,4803
+"3572","Maringá","Óbitos (CID10) - Total (Mortalidade Geral)",2032,1975,2058,2128,2111,2082,2159,2286,2528,2454,2739
 "3573","Maringá","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",53,58,69,66,74,64,60,76,73,48,397
 "3574","Maringá","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",410,360,428,430,440,458,469,541,568,491,524
 "3575","Maringá","Óbitos (CID10) - Cap III - Doenças do Sangue, Órgãos Hematopoéticos e Transtornos Imunitários",10,8,5,6,6,5,10,7,10,6,18
@@ -4317,8 +4317,8 @@
 "4316","Paranacity","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,1,NA,NA,1,NA,NA,NA,NA
 "4317","Paranacity","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",1,NA,NA,2,2,NA,1,2,1,1,2
 "4318","Paranacity","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",NA,2,NA,NA,1,2,1,2,1,1,NA
-"4319","Paranaguá","Nascidos Vivos - Total",2322,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"4320","Paranaguá","Óbitos (CID10) - Total (Mortalidade Geral)",937,904,876,898,997,NA,NA,942,NA,NA,NA
+"4319","Paranaguá","Nascidos Vivos - Total",2322,2396,2412,2394,2401,2469,2156,2360,2327,2323,2230
+"4320","Paranaguá","Óbitos (CID10) - Total (Mortalidade Geral)",937,904,876,898,997,1020,1077,942,1004,1012,1155
 "4321","Paranaguá","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",67,64,55,54,78,66,91,53,70,58,208
 "4322","Paranaguá","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",148,149,155,175,156,163,166,156,139,167,171
 "4323","Paranaguá","Óbitos (CID10) - Cap III - Doenças do Sangue, Órgãos Hematopoéticos e Transtornos Imunitários",5,12,8,1,4,6,4,5,8,5,3
@@ -4351,7 +4351,7 @@
 "4350","Paranapoema","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "4351","Paranapoema","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",1,1,1,NA,1,NA,NA,NA,NA,NA,NA
 "4352","Paranapoema","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"4353","Paranavaí","Nascidos Vivos - Total",1088,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"4353","Paranavaí","Nascidos Vivos - Total",1088,1206,1155,1223,1242,1234,1269,1287,1273,1287,1083
 "4354","Paranavaí","Óbitos (CID10) - Total (Mortalidade Geral)",568,528,620,583,627,656,640,590,641,704,715
 "4355","Paranavaí","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",21,19,15,22,13,24,23,11,15,14,50
 "4356","Paranavaí","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",107,113,114,96,126,132,90,102,111,115,130
@@ -4385,7 +4385,7 @@
 "4384","Pato Bragado","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "4385","Pato Bragado","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",1,2,2,NA,NA,NA,NA,NA,NA,NA,NA
 "4386","Pato Bragado","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",NA,NA,1,NA,1,1,NA,1,1,NA,NA
-"4387","Pato Branco","Nascidos Vivos - Total",1071,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"4387","Pato Branco","Nascidos Vivos - Total",1071,1107,1168,1170,1298,1330,1300,1214,1293,1307,1347
 "4388","Pato Branco","Óbitos (CID10) - Total (Mortalidade Geral)",398,431,404,436,447,455,474,424,514,518,544
 "4389","Pato Branco","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",3,13,6,7,17,16,20,10,32,20,68
 "4390","Pato Branco","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",79,93,83,95,95,102,114,97,97,123,111
@@ -4521,7 +4521,7 @@
 "4520","Piên","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "4521","Piên","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",1,1,NA,NA,3,1,2,NA,2,NA,NA
 "4522","Piên","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",1,NA,NA,2,1,1,NA,1,NA,1,NA
-"4523","Pinhais","Nascidos Vivos - Total",1927,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"4523","Pinhais","Nascidos Vivos - Total",1927,1912,2006,2022,2117,2195,2095,1891,1872,1655,1615
 "4524","Pinhais","Óbitos (CID10) - Total (Mortalidade Geral)",768,735,679,769,718,678,773,684,723,677,843
 "4525","Pinhais","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",27,30,32,38,41,30,23,33,32,30,165
 "4526","Pinhais","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",130,121,114,137,129,125,163,126,143,142,152
@@ -4606,7 +4606,7 @@
 "4605","Piraí do Sul","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,1,1,NA,NA,NA,NA,NA,NA,1
 "4606","Piraí do Sul","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",2,6,3,NA,3,1,2,NA,1,1,1
 "4607","Piraí do Sul","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",3,1,1,NA,3,2,2,2,NA,2,1
-"4608","Piraquara","Nascidos Vivos - Total",1504,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"4608","Piraquara","Nascidos Vivos - Total",1504,1490,1684,1621,1671,1608,1543,1567,1563,1608,1578
 "4609","Piraquara","Óbitos (CID10) - Total (Mortalidade Geral)",586,580,565,592,583,572,583,566,593,583,709
 "4610","Piraquara","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",19,26,25,31,32,33,26,19,28,22,144
 "4611","Piraquara","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",89,84,77,64,68,115,107,110,91,103,109
@@ -4691,8 +4691,8 @@
 "4690","Planalto","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "4691","Planalto","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",1,1,1,NA,2,NA,NA,1,1,NA,2
 "4692","Planalto","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",1,NA,NA,1,NA,1,1,2,NA,NA,2
-"4693","Ponta Grossa","Nascidos Vivos - Total",5120,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"4694","Ponta Grossa","Óbitos (CID10) - Total (Mortalidade Geral)",2172,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"4693","Ponta Grossa","Nascidos Vivos - Total",5120,5154,5257,5196,5569,5375,5340,5292,5415,4995,4737
+"4694","Ponta Grossa","Óbitos (CID10) - Total (Mortalidade Geral)",2172,2173,2099,2183,2180,2251,2346,2235,2271,2428,2404
 "4695","Ponta Grossa","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",73,77,65,59,84,79,83,65,69,67,271
 "4696","Ponta Grossa","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",361,400,405,455,461,451,454,451,500,456,429
 "4697","Ponta Grossa","Óbitos (CID10) - Cap III - Doenças do Sangue, Órgãos Hematopoéticos e Transtornos Imunitários",12,7,10,14,8,19,9,14,9,11,13
@@ -5303,7 +5303,7 @@
 "5302","Rio Negro","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,2,NA,NA,NA,NA,NA,NA,NA
 "5303","Rio Negro","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",7,2,1,3,NA,4,2,3,4,NA,2
 "5304","Rio Negro","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",2,1,3,2,1,1,2,1,NA,2,NA
-"5305","Rolândia","Nascidos Vivos - Total",780,839,843,883,897,911,883,967,NA,923,981
+"5305","Rolândia","Nascidos Vivos - Total",780,839,843,883,897,911,883,967,1072,923,981
 "5306","Rolândia","Óbitos (CID10) - Total (Mortalidade Geral)",400,407,423,454,483,446,442,426,435,432,510
 "5307","Rolândia","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",14,6,14,11,18,14,12,8,13,18,76
 "5308","Rolândia","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",59,80,78,79,73,92,70,91,84,108,96
@@ -5966,8 +5966,8 @@
 "5965","São José das Palmeiras","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "5966","São José das Palmeiras","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",1,1,1,NA,NA,NA,NA,1,NA,NA,NA
 "5967","São José das Palmeiras","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",NA,NA,NA,NA,NA,NA,NA,NA,1,2,NA
-"5968","São José dos Pinhais","Nascidos Vivos - Total",4549,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"5969","São José dos Pinhais","Óbitos (CID10) - Total (Mortalidade Geral)",1531,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"5968","São José dos Pinhais","Nascidos Vivos - Total",4549,4506,4752,5011,5157,5078,4875,4669,4616,4551,4570
+"5969","São José dos Pinhais","Óbitos (CID10) - Total (Mortalidade Geral)",1531,1623,1554,1540,1494,1531,1581,1533,1615,1603,1945
 "5970","São José dos Pinhais","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",40,61,59,69,68,92,74,71,51,64,350
 "5971","São José dos Pinhais","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",245,239,261,271,285,318,306,313,314,340,364
 "5972","São José dos Pinhais","Óbitos (CID10) - Cap III - Doenças do Sangue, Órgãos Hematopoéticos e Transtornos Imunitários",2,7,3,6,4,4,4,2,5,6,3
@@ -6136,7 +6136,7 @@
 "6135","Sapopema","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
 "6136","Sapopema","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",NA,1,1,2,2,NA,NA,NA,2,1,NA
 "6137","Sapopema","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",NA,NA,NA,NA,1,NA,NA,NA,NA,NA,NA
-"6138","Sarandi","Nascidos Vivos - Total",1190,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"6138","Sarandi","Nascidos Vivos - Total",1190,1313,1329,1374,1402,1551,1520,1630,1630,1655,1577
 "6139","Sarandi","Óbitos (CID10) - Total (Mortalidade Geral)",521,582,594,555,505,506,581,581,610,587,717
 "6140","Sarandi","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",10,13,8,19,20,22,19,19,17,13,65
 "6141","Sarandi","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",60,84,61,77,78,80,91,97,108,88,124
@@ -6357,7 +6357,7 @@
 "6356","Teixeira Soares","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,NA,NA,1,NA,NA,NA,1,NA
 "6357","Teixeira Soares","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",1,3,3,NA,1,1,2,1,3,NA,NA
 "6358","Teixeira Soares","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",3,NA,NA,1,NA,NA,NA,NA,NA,1,NA
-"6359","Telêmaco Borba","Nascidos Vivos - Total",1166,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"6359","Telêmaco Borba","Nascidos Vivos - Total",1166,1105,1117,1086,1103,1170,1195,1152,1153,1128,1040
 "6360","Telêmaco Borba","Óbitos (CID10) - Total (Mortalidade Geral)",500,477,471,483,500,532,526,483,542,523,583
 "6361","Telêmaco Borba","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",12,21,14,22,15,11,13,12,11,22,105
 "6362","Telêmaco Borba","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",72,68,84,66,77,91,73,89,92,74,84
@@ -6459,7 +6459,7 @@
 "6458","Tijucas do Sul","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "6459","Tijucas do Sul","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",1,NA,NA,2,1,NA,NA,3,1,1,3
 "6460","Tijucas do Sul","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",2,NA,NA,NA,3,2,NA,NA,NA,1,2
-"6461","Toledo","Nascidos Vivos - Total",1693,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"6461","Toledo","Nascidos Vivos - Total",1693,1755,1824,1899,1995,2045,2056,2162,2034,2071,1977
 "6462","Toledo","Óbitos (CID10) - Total (Mortalidade Geral)",647,689,687,704,745,720,753,760,801,780,900
 "6463","Toledo","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",22,18,22,25,33,19,27,19,18,8,119
 "6464","Toledo","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",115,111,132,132,159,147,130,152,140,161,166
@@ -6595,7 +6595,7 @@
 "6594","Ubiratã","Óbitos (CID10) - Cap XV - Gravidez, Parto e Puerpério",NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA
 "6595","Ubiratã","Óbitos (CID10) - Cap XVI - Algumas Afecções Originadas no Período Perinatal",2,2,2,1,2,3,2,1,2,1,1
 "6596","Ubiratã","Óbitos (CID10) - Cap XVII - Mal Formação Congênita, Deformidades, Anomalias Cromossômicas",NA,2,2,2,1,1,1,2,2,3,2
-"6597","Umuarama","Nascidos Vivos - Total",1387,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"6597","Umuarama","Nascidos Vivos - Total",1387,1432,1381,1381,1575,1493,1471,1567,1555,1610,1574
 "6598","Umuarama","Óbitos (CID10) - Total (Mortalidade Geral)",608,657,641,700,717,699,782,759,748,764,868
 "6599","Umuarama","Óbitos (CID10) - Cap I - Algumas Doenças Infecciosas e Parasitárias",9,38,31,34,27,34,34,28,12,13,95
 "6600","Umuarama","Óbitos (CID10) - Cap II - Neoplasias (Tumores)",85,102,79,109,103,112,137,141,147,152,159

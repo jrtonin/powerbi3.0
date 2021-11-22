@@ -825,7 +825,7 @@
 "824","Campo do Tenente","Leitos Hospitalares - SUS - Pediátricos",3,3,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "825","Campo do Tenente","Leitos Hospitalares - SUS - Outras Especialidades",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "826","Campo do Tenente","Leitos Hospitalares - SUS - Hospital / Dia",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"827","Campo Largo","Leitos Hospitalares - Existente - Total",378,360,396,411,739,739,704,923,973,NA,NA
+"827","Campo Largo","Leitos Hospitalares - Existente - Total",378,360,396,411,739,739,704,923,973,1010,1010
 "828","Campo Largo","Leitos Hospitalares - Existente - Cirúrgicos",103,87,125,125,277,277,277,283,349,349,211
 "829","Campo Largo","Leitos Hospitalares - Existente - Clínicos",70,72,93,93,216,216,216,356,396,431,621
 "830","Campo Largo","Leitos Hospitalares - Existente - Obstétricos",24,23,46,49,85,85,52,48,63,63,53
@@ -965,7 +965,7 @@
 "964","Carlópolis","Leitos Hospitalares - SUS - Pediátricos",5,5,5,5,5,NA,NA,NA,NA,NA,NA
 "965","Carlópolis","Leitos Hospitalares - SUS - Outras Especialidades",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "966","Carlópolis","Leitos Hospitalares - SUS - Hospital / Dia",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"967","Cascavel","Leitos Hospitalares - Existente - Total",860,855,905,926,867,981,990,NA,NA,NA,949
+"967","Cascavel","Leitos Hospitalares - Existente - Total",860,855,905,926,867,981,990,1005,1030,1013,949
 "968","Cascavel","Leitos Hospitalares - Existente - Cirúrgicos",465,459,451,465,426,482,483,485,481,484,425
 "969","Cascavel","Leitos Hospitalares - Existente - Clínicos",222,226,281,288,273,310,316,328,328,313,338
 "970","Cascavel","Leitos Hospitalares - Existente - Obstétricos",78,78,78,78,76,80,80,80,76,77,69
@@ -1315,16 +1315,16 @@
 "1314","Cruzmaltina","Leitos Hospitalares - SUS - Pediátricos",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "1315","Cruzmaltina","Leitos Hospitalares - SUS - Outras Especialidades",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "1316","Cruzmaltina","Leitos Hospitalares - SUS - Hospital / Dia",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"1317","Curitiba","Leitos Hospitalares - Existente - Total",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"1318","Curitiba","Leitos Hospitalares - Existente - Cirúrgicos",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"1319","Curitiba","Leitos Hospitalares - Existente - Clínicos",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"1317","Curitiba","Leitos Hospitalares - Existente - Total",6289,6340,5975,5912,5673,5580,5469,5514,5547,5623,5978
+"1318","Curitiba","Leitos Hospitalares - Existente - Cirúrgicos",2332,2386,2256,2248,2179,2184,2152,2058,2039,2022,1739
+"1319","Curitiba","Leitos Hospitalares - Existente - Clínicos",1621,1677,1553,1571,1452,1433,1376,1465,1557,1540,2164
 "1320","Curitiba","Leitos Hospitalares - Existente - Obstétricos",527,470,455,444,398,400,400,400,400,401,307
 "1321","Curitiba","Leitos Hospitalares - Existente - Pediátricos",462,462,454,442,404,373,367,357,333,376,381
 "1322","Curitiba","Leitos Hospitalares - Existente - Outras Especialidades",797,792,785,670,679,624,602,613,595,647,689
 "1323","Curitiba","Leitos Hospitalares - Existente - Hospital / Dia",550,553,472,537,561,566,572,621,623,637,698
-"1324","Curitiba","Leitos Hospitalares - SUS - Total",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"1325","Curitiba","Leitos Hospitalares - SUS - Cirúrgicos",NA,NA,NA,NA,977,981,967,932,897,904,777
-"1326","Curitiba","Leitos Hospitalares - SUS - Clínicos",953,987,888,915,743,753,693,727,840,858,NA
+"1324","Curitiba","Leitos Hospitalares - SUS - Total",3598,3650,3383,3256,2953,2884,2745,2731,2782,2520,2959
+"1325","Curitiba","Leitos Hospitalares - SUS - Cirúrgicos",1106,1135,1043,1054,977,981,967,932,897,904,777
+"1326","Curitiba","Leitos Hospitalares - SUS - Clínicos",953,987,888,915,743,753,693,727,840,858,1491
 "1327","Curitiba","Leitos Hospitalares - SUS - Obstétricos",276,279,264,253,220,218,218,218,223,223,160
 "1328","Curitiba","Leitos Hospitalares - SUS - Pediátricos",317,323,317,305,258,258,258,247,243,276,271
 "1329","Curitiba","Leitos Hospitalares - SUS - Outras Especialidades",477,457,450,368,374,304,304,302,318,233,233
@@ -2687,14 +2687,14 @@
 "2686","Lobato","Leitos Hospitalares - SUS - Pediátricos",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "2687","Lobato","Leitos Hospitalares - SUS - Outras Especialidades",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "2688","Lobato","Leitos Hospitalares - SUS - Hospital / Dia",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"2689","Londrina","Leitos Hospitalares - Existente - Total",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"2689","Londrina","Leitos Hospitalares - Existente - Total",1643,1732,1765,1745,1728,1867,1865,1903,1927,1859,1953
 "2690","Londrina","Leitos Hospitalares - Existente - Cirúrgicos",545,576,602,599,578,650,630,669,679,660,664
 "2691","Londrina","Leitos Hospitalares - Existente - Clínicos",414,472,472,483,489,503,506,495,509,486,637
 "2692","Londrina","Leitos Hospitalares - Existente - Obstétricos",119,115,116,103,104,140,137,137,137,137,120
 "2693","Londrina","Leitos Hospitalares - Existente - Pediátricos",142,150,150,155,152,156,165,167,167,157,130
 "2694","Londrina","Leitos Hospitalares - Existente - Outras Especialidades",354,363,369,349,349,349,358,358,358,342,332
 "2695","Londrina","Leitos Hospitalares - Existente - Hospital / Dia",69,56,56,56,56,69,69,77,77,77,70
-"2696","Londrina","Leitos Hospitalares - SUS - Total",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"2696","Londrina","Leitos Hospitalares - SUS - Total",1106,1155,1161,1177,1199,1199,1213,1235,1204,1149,1237
 "2697","Londrina","Leitos Hospitalares - SUS - Cirúrgicos",310,308,308,313,313,321,316,347,327,311,308
 "2698","Londrina","Leitos Hospitalares - SUS - Clínicos",305,348,348,354,375,382,386,375,364,332,448
 "2699","Londrina","Leitos Hospitalares - SUS - Obstétricos",71,65,65,65,65,69,69,69,69,69,69
@@ -2939,7 +2939,7 @@
 "2938","Mariluz","Leitos Hospitalares - SUS - Pediátricos",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "2939","Mariluz","Leitos Hospitalares - SUS - Outras Especialidades",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 "2940","Mariluz","Leitos Hospitalares - SUS - Hospital / Dia",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-"2941","Maringá","Leitos Hospitalares - Existente - Total",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+"2941","Maringá","Leitos Hospitalares - Existente - Total",1178,1177,1216,1352,1389,1393,1463,1421,1462,1498,1748
 "2942","Maringá","Leitos Hospitalares - Existente - Cirúrgicos",353,350,370,381,399,403,416,420,435,441,473
 "2943","Maringá","Leitos Hospitalares - Existente - Clínicos",308,309,323,424,414,403,395,416,459,464,554
 "2944","Maringá","Leitos Hospitalares - Existente - Obstétricos",89,92,94,95,113,113,113,124,124,121,121

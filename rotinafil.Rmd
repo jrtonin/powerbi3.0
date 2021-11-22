@@ -460,7 +460,6 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   
   dAuxEmerg <- gather(dAuxEmerg, key = "variable", value = "result", "Elegiveis ao Auxilio", "Soma do Auxilio")
   dAuxEmerg$city <- tolower(dAuxEmerg$city)
-  dAuxEmerg$city <- gsub("¥", "'", dAuxEmerg$city)
   dAuxEmerg$standard <- case_when(dAuxEmerg$variable == "Elegiveis ao Auxilio" ~ "por mil hab",
                                   TRUE ~ "reais")
   
@@ -487,7 +486,6 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   
   # Step 4: Make City lower to join with code
   dCadUnico$city <- tolower(dCadUnico$city)
-  dCadUnico$city <- gsub("¥", "'", dCadUnico$city)
   
   # Step 5: Rearrange database
   dCadUnico$variable <- "Pessoas no CadUnico"
@@ -509,8 +507,7 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   
   # Step 7: Make city as lowercase to join
   dPessoBolsa$city <- tolower(dPessoBolsa$city) 
-  dPessoBolsa$city <- gsub("¥", "'", dPessoBolsa$city)
-  
+
   # Step 8: Make result yearly
   dPessoBolsa <- cbind(dPessoBolsa, str_split_fixed(dPessoBolsa$ref, "/", 2))
   colnames(dPessoBolsa)[5] <- "year"
@@ -541,7 +538,7 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   dValorBolsa$`Unidade Territorial` <- tolower(dValorBolsa$`Unidade Territorial`)
   
   # Step 11: Make rresult yearly
-  dValorBolsa <- cbind(dValorBolsa, str_split_fixed(dValorBolsa$ReferÍncia,"/", 2))
+  dValorBolsa <- cbind(dValorBolsa, str_split_fixed(dValorBolsa$Refer√™ncia,"/", 2))
   dValorBolsa <- dValorBolsa[, c(2,7, 5)]
   colnames(dValorBolsa)[c(1:3)] <- c("city", "year", "result")
   dValorBolsa <- dValorBolsa %>%
@@ -576,7 +573,7 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   
   fPoverVariable = dPover %>%
     select(group, variable) %>%
-    rbind(c("Indice", "Õndice Ipardes de Desempenho Municipal (IPDM)"))
+    rbind(c("Indice", "√çndice Ipardes de Desempenho Municipal (IPDM)"))
   
   fPoverVariable = fPoverVariable[!duplicated(fPoverVariable), ]
   fPoverVariable <- mutate(fPoverVariable, variable_code = sequence(n()))
