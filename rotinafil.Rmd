@@ -152,6 +152,7 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   dHospi <- dHospi[, c(1:2, 15:16, 4:14)]
   dHospi$variable <- gsub("\\s*\\([^\\)]+\\)","", dHospi$variable)
   
+  
 } # Part 2: Create group_code, variable_code and type_code for Hospitalization
 
 {
@@ -234,6 +235,8 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   dLeitos$variable <- gsub("Existente", "", dLeitos$variable)
   colnames(dLeitos)[14] <- "group"
   dLeitos <- dLeitos[, c(1:2, 14:15, 3:13)]
+  dLeitos <- dLeitos[!(dLeitos$variable == " Hospital / Dia" | dLeitos$variable == "SUS Hospital / Dia"), ]
+  dLeitos$variable <- paste("Leitos", dLeitos$variable)
   
 } # Part 6: Create Variable and Group for Leitos
 
@@ -271,6 +274,13 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   dMorta <- unite(dMorta, "variable", c("V2", "V3"), sep = " ", remove = TRUE)
   colnames(dMorta)[14] <- "group"
   dMorta <- dMorta[, c(1:2, 14:15, 3:13)]
+  cap <- c("Cap I ", "Cap II ", "Cap III ", "Cap IV ", "Cap V ",
+                            "Cap VI ", "Cap VII ", "Cap VIII ", "Cap IX ", "Cap X ",
+                            "Cap XI ", "Cap XII ", "Cap XIII ", "Cap XIV ", "Cap XV ",
+                            "Cap XVI ", "Cap XVII ")
+  for (i in 1:17) {
+    dMorta$variable <- gsub(cap[i], "", dMorta$variable)
+  }
   
 } # Part 8: Create Variable and Group Code Mortality
 
@@ -307,6 +317,7 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
                    as.data.frame(do.call("rbind", strsplit(as.character(dProfi$variable),' - '))))
   dProfi <- dProfi[, c(1:2, 15:16, 4:14)]
   colnames(dProfi)[3:4] <- c("group", "variable")
+  dProfi$variable <- paste("Numero de Profissionais", dProfi$variable)
   
 } # Part 10: Create Variable and Group Code Professional
 
@@ -355,6 +366,7 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   # Step 3: Eliminate problematic symbols
   dExpen$variable <- gsub("\\s*\\([^\\)]+\\)","", dExpen$variable)
   dExpen$group <- "Despesas Municipais"
+  dExpen$variable <- paste("Despesa com", dExpen$variable)
   
 } # Part 12: Create variable and group
 
