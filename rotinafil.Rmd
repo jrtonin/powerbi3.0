@@ -82,6 +82,7 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   colnames(fPop) <- c("city", "variable", "year", "population")
   fPop$variable <- "population"
   fPop$year <- as.character(fPop$year)
+  fPop <- left_join(fPop, fCity, "city")
   
   # Step 3: Export database
     write.csv(fPop, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fPop.csv")
@@ -93,7 +94,7 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   # Step 1: Create fType
   fType <- data.frame(type = c("absolute", "rate", "por mil"), type_code = c(1:3))
   
-  stand <- c("reais", "individuos", "dias",    "%", "por mil hab")
+  stand <- c("reais", "individuos", "dias",    "%", "por mil hab", "mil reais")
   fStandard <- data.frame(standard = stand,
                           standard_code = sequence(length(stand)))
   
@@ -585,7 +586,7 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   
   fPoverVariable = dPover %>%
     select(group, variable) %>%
-    rbind(c("Indice", "√çndice Ipardes de Desempenho Municipal (IPDM)"))
+    rbind(c("Indice", "Indice Ipardes de Desempenho Municipal (IPDM)"))
   
   fPoverVariable = fPoverVariable[!duplicated(fPoverVariable), ]
   fPoverVariable <- mutate(fPoverVariable, variable_code = sequence(n()))
@@ -651,5 +652,89 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
 
   
 } # Part 3: Join into one Povery DF
+
+```
+```{r wealth}
+
+{
+  # Step 1: Import Wealth database
+  dPIB <- read_delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/wealth/PIB.csv", 
+    delim = ";", escape_double = FALSE, locale = locale(decimal_mark = ",", 
+        grouping_mark = ".", encoding = "ISO-8859-1"), 
+    trim_ws = TRUE)
+  
+  colnames(dPIB)[1:2] <-  c("city", "variable") 
+  
+  # Step 2: Replace Variable names
+  dPIB$variable <- gsub(" *\\(.*?\\) *", "", dPIB$variable)
+  OldVariable <- unique(dPIB$variable)
+  NewVariable <- c("Produto Interno Bruto a PreÁos Correntes",
+                   "Valor Adicionado Bruto Total",
+                   "Valor Adicionado Bruto Agropecuaria",
+                   "Valor Adicionado Bruto Industria",
+                   "Valor Adicionado Bruto Comercio e ServiÁos",
+                   "Produto Interno Bruto per Capita",
+                   "Valor Adicionado Bruto AdministraÁao Publica",
+                   "Imposto Recolhidos")
+  for (i in 1:8) {
+    dPIB$variable <- gsub(OldVariable[i], NewVariable[i], dPIB$variable)
+  }
+  
+  # Step 3: Add Group Names
+  dPIB$group <- "PIB"
+  
+  # Step 3: Add Standard
+  dPIB$standard <- "mil reais"
+  
+  # Step 4: Add Type
+  dPIB$type <- "absolute"
+  
+} # Part 1: Import and Prepare Database
+
+{
+  # Step 1: Gather years
+  dPIB <- gather(dPIB, key = "year", value = "result", c("2010":"2018"))
+  
+  # Step 2: Create PIB Variable Codes 
+  variable <- unique(dPIB$variable)
+  fWealthVariable <- as.data.frame(variable) %>%
+    mutate(variable_code = sequence(n()))
+  fWealthVariable <- fWealthVariable[, c(2,1)]
+  
+  # Step 3: Create PIB Group Code
+  fWealthGroup <- data.frame(group_code = 1, group = "PIB")
+  
+  # Step 4: Add city code
+  dPIB <- left_join(dPIB, fCity, "city")
+  
+  # Step 5: Add Variable codes
+  dPIB <- left_join(dPIB, fWealthVariable, "variable")
+  
+  # Step 6: Add Group code
+  dPIB <- left_join(dPIB, fWealthGroup, "group")
+  
+  # Step 7: Add Standard code
+  dPIB <- left_join(dPIB, fStandard, "standard")
+
+  # Step 8: Add Type code
+  dPIB <- left_join(dPIB, fType, "type")
+  
+  # Step 9: Rearrange database
+  dPIB <- dPIB[, c(8, 11, 10, 13, 12, 6, 7)]
+  
+  # Step 10: Add population
+  dPIB <- left_join(dPIB, fPop, by = c("city_code", "year"))
+  
+  # Step 11: Rearrange Database
+  dPIB <- dPIB[, c(1:7, 10)]
+  
+} # Part 2: Add codes 
+
+# Part 3: Export clean dWealth
+write.table(dPIB,
+              "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/clean/wealth/dWealth.csv",
+              sep = ";", dec = ",",
+              row.names = FALSE, col.names = TRUE, 
+              na = "")
 
 ```
