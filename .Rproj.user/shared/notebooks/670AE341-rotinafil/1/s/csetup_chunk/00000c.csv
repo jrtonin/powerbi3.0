@@ -1,0 +1,4 @@
+"0","knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+"
+"2","Error: No root directory found in C:/Users/CepaTech/Documents/GitHub/powerbi3.0 or its parent directories. Root criterion: contains a file matching ""[.]Rproj$"" with contents matching ""^Version: "" in the first line
+"
