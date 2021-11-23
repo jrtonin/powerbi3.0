@@ -654,6 +654,8 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
 } # Part 3: Join into one Povery DF
 
 ```
+
+
 ```{r wealth}
 
 {
@@ -736,5 +738,121 @@ write.table(dPIB,
               sep = ";", dec = ",",
               row.names = FALSE, col.names = TRUE, 
               na = "")
+
+```
+
+
+```{r education}
+
+{
+  #Step 1:
+  dEduca <- read_delim("C:\\Users\\CepaTech\\Documents\\Profissional\\SEPL\\PowerBi 3\\Banco de Dados\\education\\edubas.csv", 
+    delim = ";", escape_double = FALSE, locale = locale(decimal_mark = ",", 
+        grouping_mark = ".", encoding = "ISO-8859-1"), 
+    trim_ws = TRUE)
+  
+  wd <- c("C:\\Users\\CepaTech\\Documents\\Profissional\\SEPL\\PowerBi 3\\Banco de Dados\\education\\edumateja.csv",
+          "C:\\Users\\CepaTech\\Documents\\Profissional\\SEPL\\PowerBi 3\\Banco de Dados\\education\\eduinfantil.csv",
+          "C:\\Users\\CepaTech\\Documents\\Profissional\\SEPL\\PowerBi 3\\Banco de Dados\\education\\eduprofissa.csv",
+          "C:\\Users\\CepaTech\\Documents\\Profissional\\SEPL\\PowerBi 3\\Banco de Dados\\education\\edudoccreche.csv",
+          "C:\\Users\\CepaTech\\Documents\\Profissional\\SEPL\\PowerBi 3\\Banco de Dados\\education\\edudocmed.csv",
+          "C:\\Users\\CepaTech\\Documents\\Profissional\\SEPL\\PowerBi 3\\Banco de Dados\\education\\edudoceja.csv",
+          "C:\\Users\\CepaTech\\Documents\\Profissional\\SEPL\\PowerBi 3\\Banco de Dados\\education\\edudocexclusivo.csv",
+          "C:\\Users\\CepaTech\\Documents\\Profissional\\SEPL\\PowerBi 3\\Banco de Dados\\education\\eduestcreche.csv",
+          "C:\\Users\\CepaTech\\Documents\\Profissional\\SEPL\\PowerBi 3\\Banco de Dados\\education\\eduestmedio.csv",
+          "C:\\Users\\CepaTech\\Documents\\Profissional\\SEPL\\PowerBi 3\\Banco de Dados\\education\\eduestprofissa.csv",
+          "C:\\Users\\CepaTech\\Documents\\Profissional\\SEPL\\PowerBi 3\\Banco de Dados\\education\\eduesteja.csv")
+  
+  for (i in 1:11){
+    dEduca <- rbind(dEduca, read_delim(wd[i], 
+    delim = ";", escape_double = FALSE, locale = locale(decimal_mark = ",", 
+        grouping_mark = ".", encoding = "ISO-8859-1"), 
+    trim_ws = TRUE))
+  }
+  
+  # Step 2: Rename Columns
+  colnames(dEduca)[1:2] <- c("city", "variable")
+  
+} # Part 1: Import database
+
+{
+  # Step 1: Separate Group
+  dEduca <- cbind(dEduca, 
+                   as.data.frame(do.call("rbind", strsplit(as.character(dEduca$variable),' '))))
+  dEduca <- dEduca[, c(1:14)]
+  mde <- c("Matrículas na ", "Matrículas no ", "Docentes na ", "Estabelecimentos de ")
+  
+  for(i in 1:4){
+    dEduca$variable <- gsub(mde[i], "", dEduca$variable)
+  }
+  
+  # Step 2: Separate Variable and web
+  dEduca <- cbind(dEduca, 
+                   as.data.frame(do.call("rbind", strsplit(as.character(dEduca$variable),' - '))))
+  dEduca <- dEduca[, c(1, 14:16, 3:13)]
+  colnames(dEduca)[2:4] <- c("group", "variable", "web")
+  dEduca$variable <- gsub("Total", "Todas as Redes", dEduca$variable)
+  
+} # Part 2: Separate Group, variable and web
+
+{
+  # Step 1: Variable Code
+  fEducaVariable <- data.frame( variable = unique(dEduca$variable))
+  fEducaVariable <- mutate(fEducaVariable, variable_code = sequence(n()))
+  fEducaVariable <- fEducaVariable[, c(2,1)]
+  
+  # Step 2: Group Code
+  fEducaGroup <- data.frame(group = unique(dEduca$group))
+  fEducaGroup <- mutate(fEducaGroup, group_code = sequence(n()))
+  fEducaGroup <- fEducaGroup[, c(2,1)]
+  
+  # Step 3: Web Code
+  fEducaWeb <- data.frame(web = unique(dEduca$web))
+  fEducaWeb <- mutate(fEducaWeb, web_code = sequence(n()))
+  fEducaWeb <- fEducaWeb[, c(2,1)]
+  
+} # Part 3: Create codes
+
+{
+  # Step 1: Join City
+  dEduca <- left_join(dEduca, fCity, "city")
+  
+  # Step 2: Join Group
+  dEduca <- left_join(dEduca, fEducaGroup, "group")
+  
+  # Step 3: Join Variable
+  dEduca <- left_join(dEduca, fEducaVariable, "variable")
+  
+  # Step 4: Join Web
+  dEduca <- left_join(dEduca, fEducaWeb, "web")
+  
+  # Step 5: Join Standard
+  dEduca$standard <- 5
+  
+  # Step 6: Join Type
+  dEduca$type <- 3
+
+  # Step 7: Rearrange data frame
+  dEduca <- dEduca[, c(16, 18:22, 5:15)]
+} # Part 4: Join codes in dEduca
+
+{
+  # Step 1: Gather
+  dEduca <- gather(dEduca, key = "year", value = "result", c("2010":"2020"))
+  
+  # Step 2: Join Pop
+  dEduca <- left_join(dEduca, fPop, c("city_code", "year"))
+  
+  # Step 3: Clean Database
+  dEduca <- dEduca[, -c(9,10,12)]
+} # Part 5: Gather and Join Pop
+
+# Part 3: Export clean dWealth
+write.table(dEduca,
+              "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/clean/education/dEduca.csv",
+              sep = ";", dec = ",",
+              row.names = FALSE, col.names = TRUE, 
+              na = "")
+
 
 ```

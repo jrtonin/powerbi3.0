@@ -1,5 +1,5 @@
 {
-    "path": "~/GitHub/powerbi3.0/db/raw/poverty",
+    "path": "~/GitHub/powerbi3.0/db/clean/wealth",
     "sortOrder": [
         {
             "columnIndex": 2,
