@@ -94,7 +94,7 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   # Step 1: Create fType
   fType <- data.frame(type = c("absolute", "rate", "por mil"), type_code = c(1:3))
   
-  stand <- c("reais", "individuos", "dias",    "%", "por mil hab", "mil reais")
+  stand <- c("reais", "individuos", "dias",    "%", "por mil hab", "mil reais", "estabelecimentos")
   fStandard <- data.frame(standard = stand,
                           standard_code = sequence(length(stand)))
   
@@ -109,6 +109,14 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
 
   
 } # Part 3: Create General use parameter
+
+
+# Function to replace
+str_pos_replace <- function(string, pattern, replacement, pos=1){
+  str_locate_all(string, pattern)[[1]][pos,, drop=FALSE] %>%
+    `str_sub<-`(string, ., value = replacement)
+}
+
 
 
 
@@ -847,12 +855,125 @@ write.table(dPIB,
   dEduca <- dEduca[, -c(9,10,12)]
 } # Part 5: Gather and Join Pop
 
-# Part 3: Export clean dWealth
+# Part 3: Export clean dEduca
 write.table(dEduca,
               "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/clean/education/dEduca.csv",
               sep = ";", dec = ",",
               row.names = FALSE, col.names = TRUE, 
               na = "")
+
+
+```
+```{r superior education}
+
+{
+  # Step 1: Import first Database
+  dSuperEduca <- read_delim("C:\\Users\\CepaTech\\Documents\\Profissional\\SEPL\\PowerBi 3\\Banco de Dados\\superior education\\DocSup.csv", 
+    delim = ";", escape_double = FALSE, locale = locale(decimal_mark = ",", 
+        grouping_mark = ".", encoding = "ISO-8859-1"), 
+    trim_ws = TRUE)
+  
+  # Step 2: Create import variable
+  vSupEdu <- c("C:\\Users\\CepaTech\\Documents\\Profissional\\SEPL\\PowerBi 3\\Banco de Dados\\superior education\\MatSupDis.csv",
+               "C:\\Users\\CepaTech\\Documents\\Profissional\\SEPL\\PowerBi 3\\Banco de Dados\\superior education\\MatSupPre.csv",
+               "C:\\Users\\CepaTech\\Documents\\Profissional\\SEPL\\PowerBi 3\\Banco de Dados\\superior education\\DocSupDot.csv")
+  
+  # Step 3: Loop to import all in the same base
+  for ( i in 1: length(vSupEdu)){
+    dSuperEduca <- rbind(dSuperEduca,
+                         read_delim(vSupEdu[i], 
+    delim = ";", escape_double = FALSE, col_types = cols(`2010` = col_number(), 
+        `2011` = col_number(), `2012` = col_number(), 
+        `2013` = col_number(), `2014` = col_number(), 
+        `2015` = col_number(), `2016` = col_number(), 
+        `2017` = col_number(), `2018` = col_number(), 
+        `2019` = col_number()), locale = locale(decimal_mark = ",", 
+        grouping_mark = ".", encoding = "ISO-8859-1"), 
+    trim_ws = TRUE))
+    
+  }
+  
+  # Step 4: Rename Columns
+    colnames(dSuperEduca)[1:2] <- c("city", "variable")
+} # Part 1: Import Superior Education
+
+
+{
+  # Step 1: Separate Group
+  for (i in 1:length(dSuperEduca$variable)){
+    dSuperEduca$variable[i] <- str_pos_replace(dSuperEduca$variable[i], " - ", " y ", pos = 1)
+  }
+  
+  dSuperEduca <- cbind(dSuperEduca, 
+                   as.data.frame(do.call("rbind", strsplit(as.character(dSuperEduca$variable),' y '))))
+  dSuperEduca <- cbind(dSuperEduca, 
+                   as.data.frame(do.call("rbind", strsplit(as.character(dSuperEduca$V2),' - '))))
+  dSuperEduca <- dSuperEduca[, c(1:13, 15:16)]
+  colnames(dSuperEduca)[13:15] <- c("group", "grade", "web")
+  
+  # Step 2: Determinate web
+  subs <- c("Total", "Rede Federal", "Rede Estadual", "Rede Municipal", "Rede Privada")
+  
+  for(i in 1: length(subs)){
+    dSuperEduca$grade <- gsub(subs[i], "", dSuperEduca$grade)
+  }
+  
+  
+  # Step 3: Determinate Group
+  dSuperEduca <- dSuperEduca %>%
+    mutate(way = dSuperEduca$group )
+  
+  subs <- c("Docentes na Educação Superior",
+            "Matrículas na Educação Superior a ",
+            "Concluintes na Educação Superior a ",
+            "Matrículas na Educação Superior ",
+            "Concluintes na Educação Superior ",
+            "Instituições de Educação Superior",
+            "Polos de Apoio dos Cursos de Educação Superior a ")
+  
+  for(i in 1:length(subs)){
+    dSuperEduca$way <- gsub(subs[i], "", dSuperEduca$way)
+  }
+  
+  
+  mde <- c(" na Educação Superior", "Distância", " de Educação Superior", " a ", "Presencial")
+  
+  for(i in 1:length(mde)){
+    dSuperEduca$group <- gsub(mde[i], "", dSuperEduca$group)
+  }
+  
+  dSuperEduca$group <- trimws(dSuperEduca$group)
+  
+  # Step 4: Determine Grade
+  dSuperEduca$grade <- case_when(dSuperEduca$grade == "" ~ "Total",
+                                 TRUE ~ as.character(dSuperEduca$grade))
+  dSuperEduca$grade <- trimws(dSuperEduca$grade)
+  dSuperEduca$web <- trimws(dSuperEduca$web)
+  dSuperEduca$way <- trimws(dSuperEduca$way)
+  
+  
+  # Step 5: fGroup 
+  fSuperEducaGroup <- data.frame(group = unique(dSuperEduca$group), group_code = sequence(length(unique(dSuperEduca$group))))
+  
+  # Step 6: fGrade
+  fSuperEducaGrade <- data.frame(grade = unique(dSuperEduca$grade), grade_code = sequence(length(unique(dSuperEduca$grade))))
+  
+  # Step 7: fWeb
+  fSuperEducaWeb <- data.frame(web = unique(dSuperEduca$web), web_code = sequence(length(unique(dSuperEduca$web))))
+  
+  # Step 8: fWay
+  fSuperEducaWay <- data.frame(way = unique(dSuperEduca$way), way_code = sequence(length(unique(dSuperEduca$way))))
+  
+  
+  # Step 9: Organize 
+  dSuperEduca <- dSuperEduca[, c(1, 13:16, 3:12)]
+  
+} # Part 2: Separate Group, variable and web
+
+{
+  
+} # Part 3: Insert Codes
+
 
 
 ```
