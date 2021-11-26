@@ -1004,6 +1004,7 @@ write.table(dEduca,
   
   # Step 4: Transform - into NA
   dSuperEduca$result[dSuperEduca$result == "-"] <- NA
+  
 } # Part 4: Gather and Join Population
 
 
