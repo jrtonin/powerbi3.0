@@ -742,12 +742,18 @@ str_pos_replace <- function(string, pattern, replacement, pos=1){
   
 } # Part 2: Add codes 
 
-# Part 3: Export clean dWealth
+# Part 3: Export clean dWealth and fWealthGroup fWealthVariable
 write.table(dPIB,
               "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/clean/wealth/dWealth.csv",
               sep = ";", dec = ",",
               row.names = FALSE, col.names = TRUE, 
               na = "")
+
+write.csv(fWealthGroup, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fWealthGroup.csv")
+
+write.csv(fWealthVariable, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fWealthVariable.csv")
 
 ```
 
@@ -808,14 +814,18 @@ write.table(dPIB,
 
 {
   # Step 1: Variable Code
-  fEducaVariable <- data.frame( variable = unique(dEduca$variable))
-  fEducaVariable <- mutate(fEducaVariable, variable_code = sequence(n()))
-  fEducaVariable <- fEducaVariable[, c(2,1)]
-  
-  # Step 2: Group Code
   fEducaGroup <- data.frame(group = unique(dEduca$group))
   fEducaGroup <- mutate(fEducaGroup, group_code = sequence(n()))
   fEducaGroup <- fEducaGroup[, c(2,1)]
+  
+  # Step 2: Group Code
+  fEducaVariable <- dEduca %>%
+    select(group, variable)
+  fEducaVariable = fEducaVariable[!duplicated(fEducaVariable), ]
+  fEducaVariable <- mutate(fEducaVariable, variable_code = sequence(n()))
+  fEducaVariable <- left_join(fEducaVariable, fEducaGroup, "group")
+  fEducaVariable <- fEducaVariable[, c(4,3,2)]
+
   
   # Step 3: Web Code
   fEducaWeb <- data.frame(web = unique(dEduca$web))
@@ -832,7 +842,7 @@ write.table(dPIB,
   dEduca <- left_join(dEduca, fEducaGroup, "group")
   
   # Step 3: Join Variable
-  dEduca <- left_join(dEduca, fEducaVariable, "variable")
+  dEduca <- left_join(dEduca, fEducaVariable, c("variable", "group_code"))
   
   # Step 4: Join Web
   dEduca <- left_join(dEduca, fEducaWeb, "web")
@@ -856,6 +866,10 @@ write.table(dPIB,
   
   # Step 3: Clean Database
   dEduca <- dEduca[, -c(9,10,12)]
+  
+  # Step 4: Transform - into NA
+  dEduca$result <- gsub("-", "", dEduca$result)
+  
 } # Part 5: Gather and Join Pop
 
 # Part 3: Export clean dEduca
@@ -864,6 +878,15 @@ write.table(dEduca,
               sep = ";", dec = ",",
               row.names = FALSE, col.names = TRUE, 
               na = "")
+
+write.csv(fEducaGroup, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fEducaGroup.csv")
+
+write.csv(fEducaVariable, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fEducaVariable.csv")
+
+write.csv(fEducaWeb, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fEducaWeb.csv")
 
 
 ```
@@ -999,9 +1022,6 @@ write.table(dEduca,
   dSuperEduca <- left_join(dSuperEduca, fPop, c("city_code", "year") )
   dSuperEduca <- dSuperEduca[, c(1:7, 10)]
   
-  # Step 3: Add Group Code in Grade 
-  fSuperEducaGrade <- left_join(fSuperEducaGrade, dSuperEduca[, c(2,3)], "grade_code")
-  
   # Step 4: Transform - into NA
   dSuperEduca$result[dSuperEduca$result == "-"] <- NA
   
@@ -1014,6 +1034,18 @@ write.table(dSuperEduca,
               sep = ";", dec = ",",
               row.names = FALSE, col.names = TRUE, 
               na = "")
+
+write.csv(fSuperEducaGroup, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fSuperEducaGroup.csv")
+
+write.csv(fSuperEducaWay, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fSuperEducaWay.csv")
+
+write.csv(fSuperEducaGrade, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fSuperEducaGrade.csv")
+
+write.csv(fSuperEducaWeb, 
+            "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fSuperEducaWeb.csv")
 
 
 
