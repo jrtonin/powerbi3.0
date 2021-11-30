@@ -610,6 +610,15 @@ str_pos_replace <- function(string, pattern, replacement, pos=1){
             "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fPoverGroup.csv")
   
   # Step 3: Join codes with dPover
+  dPover$city <- gsub("´","'", dPover$city)
+  exclude <- c("diamante doeste",
+                      "itapejara doeste",
+                      "pérola doeste",
+                      "rancho alegre doeste",
+                      "são jorge doeste")
+  for (i in 1:5){
+    dPover <- dPover[ !dPover$city == exclude[i], ]
+  }
   
   dPover <- left_join(dPover, fCity2, by = "city")
   dPover <- left_join(dPover, fPoverVariable, by = "variable")
