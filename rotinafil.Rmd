@@ -457,8 +457,6 @@ str_pos_replace <- function(string, pattern, replacement, pos=1){
               row.names = FALSE, col.names = TRUE, 
               na = "")
   
-  # Step 4: Remove Health parameters
-  remove(fHealthGroup, fHealthVariable)
 } # Part 17: Join dHealth and Population
 
 
