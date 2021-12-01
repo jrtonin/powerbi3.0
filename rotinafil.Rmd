@@ -445,10 +445,10 @@ str_pos_replace <- function(string, pattern, replacement, pos=1){
 
 {
   # Step 1: Join
-  dHealth <- left_join(dHealth, fPop, by = c("city", "year"))
+  dHealth <- left_join(dHealth, fPop, by = c("city", "year", "city_code"))
   
   # Step 2: Drop columns and prepare to export
-  dHealth <- dHealth[, -c(1, 9)]
+  dHealth <- dHealth[, -c(1, 9, 11)]
   
   # Step 3: Export clean base
   write.table(dHealth,
