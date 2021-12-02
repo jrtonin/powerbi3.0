@@ -954,6 +954,9 @@ write.csv(fEducaWeb,
   }
   
   
+  dSuperEduca$grade <- gsub("Feminino", "", dSuperEduca$grade)
+  dSuperEduca$grade <- gsub("Masculino", "", dSuperEduca$grade)
+  
   # Step 3: Determinate Group
   dSuperEduca <- dSuperEduca %>%
     mutate(way = dSuperEduca$group )
@@ -1031,6 +1034,8 @@ write.csv(fEducaWeb,
   
   # Step 4: Transform - into NA
   dSuperEduca$result[dSuperEduca$result == "-"] <- NA
+  
+
   
 } # Part 4: Gather and Join Population
 
