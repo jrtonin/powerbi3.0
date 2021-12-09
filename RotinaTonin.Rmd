@@ -35,9 +35,68 @@ dwdir = print(getwd()) # main personal project root
 
 # setting principal roots (dw + first 3 database words + data type)
 dwagriraw = paste0(dwdir, "/db/raw/agricultural")
+tempdir = tempdir()
 
 ```
 
 ```{r agriculture}
+
+# setting directory
+setwd(paste0(dwagriraw, "/vbp"))
+
+# clening temp dir
+unlink(tempdir, recursive=TRUE)
+
+# creating a list of .CSV databases
+temp <- list.files(pattern = "*.csv") 
+  
+for (file in 1:9){ 
+  
+  # setting directory
+  setwd(paste0(dwagriraw, "/vbp"))
+
+  # get the read_delim function working
+  vbp = read_delim(temp[file],
+                      delim = ";", escape_double = FALSE, 
+                      locale = locale(decimal_mark = ",",
+                                      grouping_mark = ".", 
+                                      encoding = "ISO-8859-1"),
+                      trim_ws = TRUE)
+    
+  # organizing database
+
+  # setting the directory      
+  setwd(tempdir()) 
+    
+  # Saving a single object to a file
+  saveRDS(vbp, paste(file, ".rds"))
+ 
+} # Creating looping for .txt files
+  
+{
+  # Step 1: set the working directory (where files are saved)
+  setwd(tempdir()) 
+  
+  # Step 2: get all the right file names
+  file_names = list.files(getwd())
+  file_names = file_names[grepl(".rds",file_names)]
+    
+  # Step 3: get the read.csv function working
+  files = readRDS("1 .rds")
+    
+  # Step 4: use lapply to apply the read.csv function to all values of file_names
+  files = lapply(file_names, readRDS)
+  files = rbindlist(files, fill = TRUE)
+    
+  # check structure of new data set
+  str(files)
+    
+  # rename
+  COMBINADA = files
+    
+} # Join databases
+  
+# Dropping unnecessary databases
+#remove(list = c("files", "file_names"))
 
 ```
