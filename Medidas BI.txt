@@ -1,0 +1,26 @@
+Coluna SuperEduca = CALCULATE(SUM(dSuperEduca[result]), dSuperEduca[grade_code] = 1, dSuperEduca[web_code] = 1)
+
+Label Grade = IF(SELECTEDVALUE(dSuperEduca[group_code]) = 1, 
+"Total de Docentes por Grau de Formação",
+"Total de " & SELECTEDVALUE(fSuperEducaGroup[group]) & " na Educação Superior")
+
+
+Linha Web = CALCULATE(SUM(dSuperEduca[result]),
+ dSuperEduca[web_code] = 1 ||
+ dSuperEduca[web_code] = 2 ||
+ dSuperEduca[web_code] = 3 ||
+ dSuperEduca[web_code] = 4 ||
+ dSuperEduca[web_code] = 5 ||
+ dSuperEduca[web_code] = 6,
+ dSuperEduca[grade_code] = 1) 
+
+
+Resultado Mapa = IF(OR(SELECTEDVALUE(dSuperEduca[group_code]) = 4, SELECTEDVALUE(dSuperEduca[group_code]) = 5), 
+CALCULATE(SUM(dSuperEduca[result]), dSuperEduca[grade_code] = 1, dSuperEduca[web_code] = 1),
+CALCULATE(DIVIDE(SUM(dSuperEduca[result]), SUM(dSuperEduca[population]))*1000, dSuperEduca[grade_code] = 1, dSuperEduca[web_code] = 1))
+
+
+Resultado total web = CALCULATE(SUM(dSuperEduca[result]), dSuperEduca[web_code] = 1)
+
+
+Total webgrade = CALCULATE(SUM(dSuperEduca[result]), dSuperEduca[grade_code] = 1, dSuperEduca[web_code] = 1)

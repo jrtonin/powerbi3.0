@@ -2,7 +2,9 @@
 title: "Health"
 author: "fildalboni"
 date: "04/11/2021"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 ---
 title: "BI PR Produtivo new version"
@@ -44,32 +46,23 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
 
 ```
 
+
 ```{r parameter}
 
 {
   # Step 1: import city database
-  fCity = read_delim("C:/Users/CepaTech/Documents/Profissional/SEPL/PowerBi 3/Banco de Dados/citiy/fcity2.csv", 
+  fCity = read_delim("C:/Users/CepaTech/Documents/Profissional/SEPL/PowerBi 3/Banco de Dados/citiy/fcity.csv", 
                        ";", escape_double = FALSE, 
                        locale = locale(decimal_mark = ",",
                                        grouping_mark = ".", 
-                                       encoding = "UTF-8"),
+                                       encoding = "ISO-8859-1"),
                        trim_ws = TRUE)
 
 
-  # Step 2: Rename columns
-  colnames(fCity)[1] <- "city_code"
 
-  # Step 3: creating a list 
-  temp = fCity 
-  temp = as.vector(temp)
-  temp = as.vector(fCity$city_code)
-
-  # Step4: Export do db paste
+  # Step2: Export do db paste
   write.csv(fCity, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fCity.csv")
-  
-  # Step 5: Create lowercase city parameter to joins with IBGE Databases
-  fCity2 <- fCity
-  fCity2$city <- tolower(fCity2$city)
+
   
 } # Part 1: Prepare City reference to forward joins
 
@@ -79,10 +72,12 @@ dwagriraw = paste0(dwdir, "/db/raw/agricultural")
   
   # Step 2: Melt to create a year column
   fPop <- melt(fPop)
-  colnames(fPop) <- c("city", "variable", "year", "population")
+  colnames(fPop) <- c("city_IPARDES", "variable", "year", "population")
   fPop$variable <- "population"
   fPop$year <- as.character(fPop$year)
-  fPop <- left_join(fPop, fCity, "city")
+  fPop <- left_join(fPop, fCity, "city_IPARDES")
+  
+  fPop <- fPop[,c(6, 1, 3, 4)]
   
   # Step 3: Export database
     write.csv(fPop, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fPop.csv")
@@ -135,13 +130,14 @@ str_pos_replace <- function(string, pattern, replacement, pos=1){
   write.csv(dHospi, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/health/dHospi.csv")
   
   # Step 2: Rename columns
-  colnames(dHospi)[1:2] <- c("city", "variable")
+  colnames(dHospi)[1:2] <- c("city_IPARDES", "variable")
   
   # Step 3: Join city code with database
-  dHospi <- left_join(dHospi, fCity, by = "city")
+  dHospi <- left_join(dHospi, fCity, by = "city_IPARDES")
   
   #Step 4: rearrange dHospi
-  dHospi <- dHospi[, c(1, 14, 2:13)]
+  dHospi <- dHospi[, c(15, 1, 2:13)]
+  
   
 }# Part 1: Import Hospitalization and Join with city_code
 
@@ -180,13 +176,13 @@ str_pos_replace <- function(string, pattern, replacement, pos=1){
   write.csv(dImun, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/health/dImun.csv")
   
   # Step 2: Rename columns
-  colnames(dImun)[1:2] <- c("city", "variable")
+  colnames(dImun)[1:2] <- c("city_IPARDES", "variable")
   
   # Step 3: Join city code with database
-  dImun <- left_join(dImun, fCity, by = "city")
+  dImun <- left_join(dImun, fCity, by = "city_IPARDES")
   
   #Step 4: rearrange dImun
-  dImun <- dImun[, c(1, 14, 2:13)]
+  dImun <- dImun[, c(15, 1, 2:13)]
   
 } # Part 3: Import and clean Imunization
 
@@ -225,13 +221,13 @@ str_pos_replace <- function(string, pattern, replacement, pos=1){
    
   
   # Step 2: Rename columns
-  colnames(dLeitos)[1:2] <- c("city", "variable")
+  colnames(dLeitos)[1:2] <- c("city_IPARDES", "variable")
   
   # Step 3: Join city code with database
-  dLeitos <- left_join(dLeitos, fCity, by = "city")
+  dLeitos <- left_join(dLeitos, fCity, by = "city_IPARDES")
   
   #Step 4: rearrange dLeitos
-  dLeitos <- dLeitos[, c(1, 14, 2:13)]
+  dLeitos <- dLeitos[, c(15, 1, 2:13)]
   
 } # Part 5: Import and clean Leitos
 
@@ -265,13 +261,13 @@ str_pos_replace <- function(string, pattern, replacement, pos=1){
   write.csv(dMorta, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/health/dMorta.csv")
   
   # Step 2: Rename columns
-  colnames(dMorta)[1:2] <- c("city", "variable")
+  colnames(dMorta)[1:2] <- c("city_IPARDES", "variable")
   
   # Step 3: Join city code with database
-  dMorta <- left_join(dMorta, fCity, by = "city")
+  dMorta <- left_join(dMorta, fCity, by = "city_IPARDES")
   
   #Step 4: rearrange dMorta
-  dMorta <- dMorta[, c(1, 14, 2:13)]
+  dMorta <- dMorta[, c(15, 1, 2:13)]
   
 } # Part 7: Import and clean Mortality
 
@@ -310,13 +306,13 @@ str_pos_replace <- function(string, pattern, replacement, pos=1){
   write.csv(dProfi, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/health/dProfi.csv")
 
   # Step 2: Rename columns
-  colnames(dProfi)[1:2] <- c("city", "variable")
+  colnames(dProfi)[1:2] <- c("city_IPARDES", "variable")
   
   # Step 3: Join city code with database
-  dProfi <- left_join(dProfi, fCity, by = "city")
+  dProfi <- left_join(dProfi, fCity, by = "city_IPARDES")
   
   #Step 4: rearrange dProfi
-  dProfi <- dProfi[, c(1, 14, 2:13)]
+  dProfi <- dProfi[, c(15, 1, 2:13)]
   
 } # Part 9: Import and clean professional
 
@@ -346,13 +342,13 @@ str_pos_replace <- function(string, pattern, replacement, pos=1){
   write.csv(dExpen, "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/raw/health/dExpen.csv")
      
   # Step 2: Rename columns
-  colnames(dExpen)[1:2] <- c("city", "variable")
+  colnames(dExpen)[1:2] <- c("city_IPARDES", "variable")
   
   # Step 3: Join city code with database
-  dExpen <- left_join(dExpen, fCity, by = "city")
+  dExpen <- left_join(dExpen, fCity, by = "city_IPARDES")
   
   #Step 4: rearrange dExpen
-  dExpen <- dExpen[, c(1, 14, 2:13)]
+  dExpen <- dExpen[, c(15, 1, 2:13)]
   
 } # Part 11: Import and clean Expenses
 
@@ -445,10 +441,10 @@ str_pos_replace <- function(string, pattern, replacement, pos=1){
 
 {
   # Step 1: Join
-  dHealth <- left_join(dHealth, fPop, by = c("city", "year", "city_code"))
+  dHealth <- left_join(dHealth, fPop, by = c("city_IPARDES", "year", "city_code7"))
   
   # Step 2: Drop columns and prepare to export
-  dHealth <- dHealth[, -c(1, 9, 11)]
+  dHealth <- dHealth[, -2]
   
   # Step 3: Export clean base
   write.table(dHealth,
@@ -672,7 +668,6 @@ str_pos_replace <- function(string, pattern, replacement, pos=1){
 
 ```
 
-
 ```{r wealth}
 
 {
@@ -763,7 +758,6 @@ write.csv(fWealthVariable,
             "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fWealthVariable.csv")
 
 ```
-
 
 ```{r education}
 
@@ -897,7 +891,6 @@ write.csv(fEducaWeb,
 
 
 ```
-
 
 ```{r superior education}
 
@@ -1058,6 +1051,147 @@ write.csv(fSuperEducaGrade,
 
 write.csv(fSuperEducaWeb, 
             "C:/Users/CepaTech/Documents/GitHub/powerbi3.0/db/parameters/fSuperEducaWeb.csv")
+
+
+
+```
+
+```{r infrastructure}
+{
+  # Step 1: Import CSV
+  dInfra <- read.csv("~/Profissional/SEPL/PowerBi 3/Banco de Dados/infrastructure/dInfrastructure.csv")
+  
+  dInfra <- dInfra[, c(7, 2,3,4,5,9)]
+  
+  # Step 2: Delete Education Rows
+  dInfra <- dInfra[!c(dInfra$group == "Instituições de Educação Superior" |
+                    dInfra$group == "Polos de Apoio dos Cursos de Educação Superior a Distância") , ]
+  
+} # Part I: Import dInfra
+
+{
+  # Step 1: Create references dataframes
+  fInfraGroup <- dInfra[, c(2,3)]
+  
+  # Step 2: Select Group
+  fInfraGroup <- fInfraGroup[ !duplicated(fInfraGroup), ]
+  
+  # Step 3: Generate Codes
+  fInfraGroup <- fInfraGroup %>%
+    mutate(variable_code = sequence(n()))
+  
+  x <- data.frame(group = unique(fInfraGroup$group)) %>%
+    mutate(group_code = sequence(n()))
+  
+  fInfraGroup <- left_join(fInfraGroup, x, "group")
+  
+} # Part 2: Extract f table
+
+```
+```{r Estabelecimentos}
+
+{
+  # Step 1: Import first databse
+  dEstab <- read_delim("~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ADMPUB0.csv",
+                       delim = ";",
+                       escape_double = FALSE,
+                       col_types = cols(Tamanho = col_character()),
+                       locale = locale(decimal_mark = ",",
+                                       grouping_mark = ".",
+                                       encoding = "ISO-8859-1"),
+                       trim_ws = TRUE)
+  
+  # Step 2: Address Vector
+  ad <- c("~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ADMPUB1.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ADMPUB2.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ADMPUB3.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ADMPUB4.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ADMPUB5.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ADMPUB6.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ADMPUB7.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ADMPUB8.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ADMPUB9.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ASS0.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ASS1.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ASS2.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ASS3.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ASS4.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ASS5.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ASS6.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ASS7.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ASS8.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ASS9.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/COO0.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/COO1.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/COO2.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/COO3.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/COO4.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/COO5.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/COO6.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/COO7.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/COO8.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/COO9.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/EMP0.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/EMP1.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/EMP2.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/EMP3.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/EMP4.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/EMP5.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/EMP6.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/EMP7.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/EMP8.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/EMP9.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/EMP10.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/EMP11.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ENT0.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ENT1.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ENT2.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ENT3.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ENT4.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ENT5.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ENT6.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ENT7.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ENT8.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ENT9.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/PES0.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/PES1.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/PES2.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/PES3.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/PES4.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/PES5.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/PES6.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/PES7.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/PES8.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/PES9.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ORG0.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ORG1.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ORG2.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ORG3.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ORG4.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ORG6.csv",
+          "~/Profissional/SEPL/PowerBi 3/Banco de Dados/RAIS/ESTABELECIMENTOS/ORG7.csv"
+          )
+  
+  # Step 3: Import and Bind all database
+  for (i in 1:length(ad)){
+    dEstab <- rbind(dEstab,
+                    read_delim(ad[i],
+                       delim = ";",
+                       escape_double = FALSE,
+                       col_types = cols(Tamanho = col_character()),
+                       locale = locale(decimal_mark = ",",
+                                       grouping_mark = ".",
+                                       encoding = "ISO-8859-1"),
+                       trim_ws = TRUE)
+                    )
+  }
+  
+  colnames(dEstab)[c(1:2,13:15)] <- c("city",
+                                      "cnae",
+                                      "simple",
+                                      "jure",
+                                      "size")
+} # Part 1: Import Data Base
 
 
 
