@@ -35,7 +35,8 @@ dwdir = print(getwd()) # main personal project root
 
 # setting principal roots (dw + first 3 database words + data type)
 dwagriraw = paste0(dwdir, "/db/raw/agricultural")
-tempdir = tempdir()
+d = tempdir()
+
 
 ```
 
@@ -45,7 +46,7 @@ tempdir = tempdir()
 setwd(paste0(dwagriraw, "/vbp"))
 
 # clening temp dir
-unlink(tempdir, recursive=TRUE)
+file.remove(dir(d, full.names=TRUE))
 
 # creating a list of .CSV databases
 temp <- list.files(pattern = "*.csv") 
@@ -57,11 +58,17 @@ for (file in 1:9){
 
   # get the read_delim function working
   vbp = read_delim(temp[file],
-                      delim = ";", escape_double = FALSE, 
-                      locale = locale(decimal_mark = ",",
-                                      grouping_mark = ".", 
-                                      encoding = "ISO-8859-1"),
-                      trim_ws = TRUE)
+                   delim = ";", escape_double = FALSE, col_types = cols(area = col_double(),
+                                                                        production = col_double(),
+                                                                        slaughter = col_double(),
+                                                                        gpv = col_double(), 
+                                                                        cattle = col_double(), 
+                                                                        production2 = col_double(),
+                                                                        year = col_double()),
+                   locale = locale(decimal_mark = ",", 
+                                   grouping_mark = ".", 
+                                   encoding = "ISO-8859-1"),
+                   trim_ws = TRUE)
     
   # organizing database
 
@@ -92,11 +99,23 @@ for (file in 1:9){
   str(files)
     
   # rename
-  COMBINADA = files
+  vbp = files %>%
+    mutate(across(everything(), ~replace_na(.x, 0)))
     
 } # Join databases
   
 # Dropping unnecessary databases
-#remove(list = c("files", "file_names"))
+remove(list = c("files"))
+
+base = vbp %>%
+  mutate(production = case_when(year %in% c(2012, 2013, 2014, 2015, 2016, 2017, 2018) ~ production2,
+                                TRUE ~ production)) %>%
+  group_by(year, variable_code) %>%
+  dplyr::summarise(across(area:cattle, sum)) %>%
+  gather(variable, value, area:cattle) %>%
+  spread(year, value) %>%
+  mutate(across(`2012`:`2020`, ~ round(.x, 0)))
+
+write.table(base, "base.csv", sep = ";", dec = ",", na = "")
 
 ```
